@@ -77,12 +77,7 @@
 			<artifactId>mariadb-java-client</artifactId>
 			<version>2.7.4</version>
 		</dependency>
-		<!-- 오라클 디비 -->
-		<dependency>
-			<groupId>com.oracle</groupId>
-			<artifactId>ojdbc6</artifactId>
-			<version>11.2.0.3</version>
-		</dependency>
+
 		<!-- MySQL -->
 		<dependency>
 			<groupId>mysql</groupId>

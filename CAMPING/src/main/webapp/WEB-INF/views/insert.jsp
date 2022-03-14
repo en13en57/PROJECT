@@ -35,6 +35,26 @@
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath }/resources/assets/css/swiper.min.css">
 <script type="text/javascript">
+	$(function(){
+		// 아이디 입력시 Ajax를 호출하여 아이디 중복확인하기	
+		$("#ID").keyup(function() {
+			var value = $(this).val();
+			if(value!=null && value.length>=6){
+				// alert(value);
+				$.ajax("idCheck", {
+					type : "GET",
+					data : {"ID":value},
+					success : function(data){
+						alert(data);
+					},
+					error : function(){
+						alert('에러다!');
+					}
+				});
+			}
+		});
+	});
+
 	function daumPostcode() {
 		new daum.Postcode({
 			oncomplete : function(data) {
@@ -53,6 +73,102 @@
 				document.getElementById("address2").focus();
 			}
 		}).open();
+	}
+	// 폼검증하는 자바스크립트 함수
+	function formCheck() {
+		var value = $("#ID").val();
+		if (value == null || value.trim().length == 0) {
+			alert('아이디는 반드시 입력해야 합니다.');
+			$("#ID").val("");
+			$("#ID").focus();
+			return false;
+		}
+		if ($("#msg").html() != "&nbsp;&nbsp;사용가능") {
+			alert('사용 불가능한 아이디입니다.');
+			$("#ID").val("");
+			$("#msg").text("");
+			$("#ID").focus();
+			return false;
+		}
+		
+		if (!flexCheckDefault.checked) { //약관동의
+			alert('약관에동의해주세요.');
+			flexCheckDefault.focus();
+			return false;
+		}
+		var value = $("#password").val();
+		if (value == null || value.trim().length == 0) {
+			alert('사용자 비빌번호는 반드시 입력해야 합니다.');
+			$("#password").val("");
+			$("#password").focus();
+			return false;
+		}
+		var value = $("#username").val();
+		if (value == null || value.trim().length == 0) {
+			alert('사용자 이름은 반드시 입력해야 합니다.');
+			$("#username").val("");
+			$("#username").focus();
+			return false;
+		}
+		var value = $("#nickname").val();
+		if (value == null || value.trim().length == 0) {
+			alert('사용자 별명은 반드시 입력해야 합니다.');
+			$("#nickname").val("");
+			$("#nickname").focus();
+			return false;
+		}
+		var value = $("#email").val();
+		if (value == null || value.trim().length == 0) {
+			alert('이메일 주소는 반드시 입력해야 합니다.');
+			$("#email").val("");
+			$("#email").focus();
+			return false;
+		}
+		var value = $("#hp").val();
+		if (value == null || value.trim().length == 0 || value.trim().length >= 13 ) {
+			alert('전화번호는 반드시 입력해야 합니다.-를 포함한 13를 입력해주세요.');
+			$("#hp").val("");
+			$("#hp").focus();
+			return false;
+		}
+		var value = $("#zipcode").val();
+		if (value == null || value.trim().length == 0) {
+			alert('우편번호는 반드시 입력해야 합니다.');
+			$("#zipcode").val("");
+			$("#zipcode").focus();
+			return false;
+		}
+		var value = $("#address2").val();
+		if (value == null || value.trim().length == 0) {
+			alert('상세 주소는 반드시 입력해야 합니다.');
+			$("#address2").val("");
+			$("#address2").focus();
+			return false;
+		}
+
+		var value = $("#birthYear").val();
+		if (value == null || value.trim().length == 0) {
+			alert('태어난 년도를 입력해주세요.');
+			$("#birthYear").val("");
+			$("#birthYear").focus();
+			return false;
+		}
+		var value = $("#month").val();
+		if (value == null) {
+			alert('태어난 월을 선택해주세요.');
+			$("#month").val("");
+			$("#month").focus();
+			return false;
+		}
+		
+		var value = $("#day").val();
+		if (value == null) {
+			alert('태어난 날짜를 선택해주세요.');
+			$("#day").val("");
+			$("#day").focus();
+			return false;
+		}
+		
 	}
 </script>
 
@@ -210,122 +326,160 @@ NG캠핑은 원칙적으로 이용자의 개인정보를 회원 탈퇴 시 지�
 							id="flexCheckDefault"> <label class="form-check-label"
 							for="flexCheckDefault"> 동의합니다. </label>
 					</div>
+					<div class="mb-4">
+						<form action="insertOk" method="post"
+							onsubmit="return formCheck();">
+							<div style="width: 50%;">
+								<div class="title">회원가입하기</div>
+								<br>
+								<div class="mb-4 row">
+									<label for="id" class="col-sm-3 col-form-label">아이디</label>
+									<div class="col-sm-5">
+										<input type="text" class="form-control" id="ID" name="ID"
+											placeholder="아이디입력" required>
+									</div>
+									 <label for="id" class="col-sm-3 col-form-label" id ="msg"></label>
+									</div>
+
+								<div class="mb-4 row">
+									<label for="password" class="col-sm-3 col-form-label">비밀번호</label>
+									<div class="col-sm-5">
+										<input type="password" class="form-control" id="password"
+											name="password" placeholder="비밀번호입력" required>
+									</div>
+								</div>
+
+								<div class="mb-4 row">
+									<label for="username" class="col-sm-3 col-form-label">
+										이름</label>
+									<div class="col-sm-4">
+										<input type="text" class="form-control" id="username"
+											name="username" placeholder="이름 입력" required>
+									</div>
+								</div>
+
+								<div class="mb-4 row">
+									<label for="nickname" class="col-sm-3 col-form-label">
+										닉네임</label>
+									<div class="col-sm-4">
+										<input type="text" class="form-control" id="nickname"
+											name="nickname" placeholder="닉네임 입력" required>
+									</div>
+								</div>
+
+								<div class="mb-4 row">
+									<label for="email" class="col-sm-3 col-form-label"> 이메일</label>
+									<div class="col-sm-5">
+										<input type="text" class="form-control" id="email"
+											name="email" placeholder="이메일 입력" required>
+									</div>
+								</div>
+
+								<div class="mb-4 row">
+									<label for="hp" class="col-sm-3 col-form-label">전화번호</label>
+									<div class="col-sm-5">
+										<input type="text" id="hp" placeholder="-포함입력" value="" required
+											maxlength="13">
+									</div>
+									</div>
+
+									<div class="mb-4 row">
+										<label for="email" class="col-sm-3 col-form-label">
+											생년월일</label>
+										<div class="col-sm-3">
+											<input type="text" id="birthYear" placeholder="" value=""
+												required maxlength="4">
+										</div>
+										<div class="col-sm-3"">
+											<select name="month">
+												<option value="">-- 선택 --</option>
+												<option value="1">1</option>
+												<option value="2">2</option>
+												<option value="3">3</option>
+												<option value="4">4</option>
+												<option value="5">5</option>
+												<option value="6">6</option>
+												<option value="7">7</option>
+												<option value="8">8</option>
+												<option value="9">9</option>
+												<option value="10">10</option>
+												<option value="11">11</option>
+												<option value="12">12</option>
+											</select>
+										</div>
+
+										<div class="col-sm-3">
+											<select name="day">
+												<option value="">-- 선택 --</option>
+												<option value="1">1</option>
+												<option value="2">2</option>
+												<option value="3">3</option>
+												<option value="4">4</option>
+												<option value="5">5</option>
+												<option value="6">6</option>
+												<option value="7">7</option>
+												<option value="8">8</option>
+												<option value="9">9</option>
+												<option value="10">10</option>
+												<option value="11">11</option>
+												<option value="12">12</option>
+												<option value="13">13</option>
+												<option value="14">14</option>
+												<option value="15">15</option>
+												<option value="16">16</option>
+												<option value="17">17</option>
+												<option value="18">18</option>
+												<option value="19">19</option>
+												<option value="20">20</option>
+												<option value="21">21</option>
+												<option value="22">22</option>
+												<option value="23">23</option>
+												<option value="24">24</option>
+												<option value="25">25</option>
+												<option value="26">26</option>
+												<option value="27">27</option>
+												<option value="28">28</option>
+												<option value="29">29</option>
+												<option value="30">30</option>
+												<option value="31">31</option>
+											</select>
+										</div>
+									</div>
+
+									<div class="col mb-3">
+										주소 &nbsp;&nbsp;&nbsp; <input type="button" class="btn-check"
+											id="zipCodebtn" onclick="daumPostcode();"> <label
+											class="btn btn-outline-primary" for="zipCodebtn">찾기</label>
+										<div class="col-sm-3">
+											<input type="text" class="form-control" id="zipcode"
+												placeholder="" required>
+										</div>
+										<div class="col-sm-30">
+											<input type="text" class="form-control" id="address"
+												placeholder="" required> <input type="text"
+												class="form-control" id="address2" placeholder="상세주소">
+										</div>
+									</div>
+									<div class="mb-3 row">
+										<div class="col-sm-12" style="text-align: right;">
+											<!-- 시큐리트에서 사용자가 지정한 폼을 사용하려면 반드시 아래의 코드를 첨부해줘야 한다.-->
+											<input type="hidden" name="${_csrf.parameterName}"
+												value="${_csrf.token}" /> <input type="submit"
+												class="btn-check" id="submitBtn"> <label
+												class="btn btn-outline-success" for="submitBtn">회원가입</label>
+											<input type="reset" class="btn-check" id="resetBtn">
+											<label class="btn btn-outline-success" for="resetBtn">다시쓰기</label>
+											<input type="button" class="btn-check" id="cancelBtn"
+												onclick="location.href='/'">
+											<label class="btn btn-outline-success" for="cancelBtn">돌아가기</label>
+										</div>
+									</div>
 
 
-					<div id="membertitle">
-						<b> 회원정보 입력 </b>
-						<p>
-						<div class="row">
-							<div class="col-md-3 mb-4">
-								<label for="id">아이디</label> <input type="text"
-									class="form-control" id="Id" placeholder="" value="" required
-									maxlength="12">
-
-							</div>
-
-							<div class="col-md-3 mb-4">
-								<label for="nickname">비밀번호</label> <input type="password"
-									class="form-control" id="password" placeholder="" value=""
-									required maxlength="15">
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-md-3 mb-4">
-								<label for="id">닉네임</label> <input type="text"
-									class="form-control" id="nickname" placeholder="" value=""
-									required maxlength="10">
-							</div>
-
-
-							<div class="col-md-3 mb-4">
-								<label for="nickname">이메일</label> <input type="email"
-									class="form-control" id="email" placeholder="you@example.com"
-									required>
-							</div>
-						</div>
-
-						<div class="row">
-							<label for="nickname">생년월일</label>
-
-							<div class="col-md-2 mb-6">
-								<input type="text" id="birthYear" placeholder="" value=""
-									required maxlength="4">
-							</div>
-							<div class="col-md-2 mb-6">
-								<select name="month">
-									<option value="">-- 선택 --</option>
-									<option value="1">1</option>
-									<option value="2">2</option>
-									<option value="3">3</option>
-									<option value="4">4</option>
-									<option value="5">5</option>
-									<option value="6">6</option>
-									<option value="7">7</option>
-									<option value="8">8</option>
-									<option value="9">9</option>
-									<option value="10">10</option>
-									<option value="11">11</option>
-									<option value="12">12</option>
-								</select>
-							</div>
-
-							<div class="col-md-2 mb-6">
-								<select name="day">
-									<option value="">-- 선택 --</option>
-									<option value="1">1</option>
-									<option value="2">2</option>
-									<option value="3">3</option>
-									<option value="4">4</option>
-									<option value="5">5</option>
-									<option value="6">6</option>
-									<option value="7">7</option>
-									<option value="8">8</option>
-									<option value="9">9</option>
-									<option value="10">10</option>
-									<option value="11">11</option>
-									<option value="12">12</option>
-									<option value="13">13</option>
-									<option value="14">14</option>
-									<option value="15">15</option>
-									<option value="16">16</option>
-									<option value="17">17</option>
-									<option value="18">18</option>
-									<option value="19">19</option>
-									<option value="20">20</option>
-									<option value="21">21</option>
-									<option value="22">22</option>
-									<option value="23">23</option>
-									<option value="24">24</option>
-									<option value="25">25</option>
-									<option value="26">26</option>
-									<option value="27">27</option>
-									<option value="28">28</option>
-									<option value="29">29</option>
-									<option value="30">30</option>
-									<option value="31">31</option>
-								</select>
-							</div>
-						</div>
-						<p>
-						<div class="col-md-6 mb-3">
-							주소 &nbsp;&nbsp;&nbsp; <input type="button" class="btn-check"
-								id="zipCodebtn" onclick="daumPostcode();"> <label
-								class="btn btn-outline-primary" for="zipCodebtn">우편번호찾기</label>
-							<div class="col-sm-2">
-								<input type="text" class="form-control" id="zipcode"
-									placeholder="" required>
-							</div>
-							<input type="text" class="form-control" id="address"
-								placeholder="" required> <input type="text"
-								class="form-control" id="address2" placeholder="상세주소">
-						</div>
-						<div id="wrapper">
-							<button class="btn btn-primary btn-block" type="button"
-								style="font-size: 20px">가입하기</button>
-						</div>
+								</div>
+						</form>
 					</div>
 				</div>
-			</div>
 		</section>
 
 

@@ -63,11 +63,13 @@ CREATE TABLE `camp_member` (
   `mb_address1` varchar(200) not NULL,
   `mb_address2` varchar(300) not NULL,
   `gr_grade` int(11) NOT NULL,
-  `mb_use` int(11) default 1,
+  `mb_use` int(11) default 0,
+  `authkey` varchar(200) not NULL,
   PRIMARY KEY (`mb_idx`),
   KEY `camp_member_FK` (`gr_grade`),
   CONSTRAINT `camp_member_FK` FOREIGN KEY (`gr_grade`) REFERENCES `camp_grade` (`gr_grade`) ON UPDATE CASCADE
 );
+
 desc camp_member;
 alter table camp_member add mb_zipcode int not null;
 alter table camp_member drop mb_zipcode;
@@ -114,6 +116,7 @@ CREATE TABLE `camp_question` (
   PRIMARY KEY (`q_idx`),
   CONSTRAINT `camp_question_FK` FOREIGN KEY (`mb_idx`) REFERENCES `camp_member` (`mb_idx`) ON UPDATE CASCADE
 );
+
 
 -- CREATE TABLE `camp_answer` (
 --  `mb_nick` varchar(30) NOT NULL,

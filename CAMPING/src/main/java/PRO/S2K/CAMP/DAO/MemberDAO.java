@@ -26,7 +26,7 @@ public interface MemberDAO {
 	// 9. ID와과 전화번호로 가져오기(비번찾기 사용)
 	MemberVO selectByUserId(HashMap<String, String> map);
 	// 10. 인증여부를 변경하는 쿼리
-	void updateUse(HashMap<String, String> map);
+	void updateUse(HashMap<String, Object> map);
 	// 11. 비밀번호 변경하기
 	void updatePassword(HashMap<String, String> map);
 	// 12. ID로 가져오기

@@ -28,7 +28,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 
 public class MemberVO {
-	private int idx;
+	private int mb_idx;
 	private String mb_ID;
 	private String mb_password;
 	private String mb_name;
@@ -41,4 +41,5 @@ public class MemberVO {
 	private String address2;
 	private int gr_grade;
 	private int mb_use;
+	private String authkey;
 }

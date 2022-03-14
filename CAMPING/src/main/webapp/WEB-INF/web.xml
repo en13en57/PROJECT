@@ -56,7 +56,7 @@
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 
-		<!-- .do로 시작되는 페이지 열림 -->
+	<!-- .do로 시작되는 페이지 열림 -->
 	<servlet-mapping>
 		<servlet-name>appServlet</servlet-name>
 		<url-pattern>*.do</url-pattern>
