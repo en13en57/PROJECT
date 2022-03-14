@@ -58,7 +58,7 @@
 </script>
 </head>
 <body>
-	<form action="result" method="post">
+	<form action="result.do" method="post">
 		<input type="text" size="60" name="subject"><br>
 		<textarea id="summernote" name="note"></textarea>
 		<input type="submit" value="전송" class="btn btn-outline-success btn-sm" >
