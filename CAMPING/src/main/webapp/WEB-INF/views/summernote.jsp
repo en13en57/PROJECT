@@ -35,6 +35,7 @@
 					}
 				});
 	});
+	
 	// 실제 업로드되는 서버의 파일을 Ajax로 호출해 줘야한다.
 	function sendFile(file, el) {
 		// 폼 작성
