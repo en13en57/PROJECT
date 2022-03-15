@@ -4,8 +4,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<meta id="_csrf" name="_csrf" th:content="${_csrf.token}"/>
-<meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}"/>
+<meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
+<meta id="_csrf_header" name="_csrf_header"
+	th:content="${_csrf.headerName}" />
 <link rel="shortcut icon" type="image/x-icon"
 	href="${pageContext.request.contextPath }/resources/assets/css/images/logo.png" />
 <title>캠핑은 NG캠핑!</title>
@@ -36,10 +37,6 @@
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath }/resources/assets/css/swiper.min.css">
 <script type="text/javascript">
-
-	
-
-
 	function daumPostcode() {
 		new daum.Postcode({
 			oncomplete : function(data) {
@@ -61,16 +58,49 @@
 	}
 	// 폼검증하는 자바스크립트 함수
 	function formCheck() {
+		var num = /^[0-9]{4}$/;
+		var han = /[^가-힣]{3,4}$/;
+		var eng = /[^a-zA-Z]$/;
+		var regExp = /\s/g;
+		 
+	 var value = $("#birthYear").val();
+	 if (!num.test(value)) {
+		alert('년도는 숫자만 입력해주세요. 공백 불가');
+		return false; 
+	 }
+	 
+	 
+	 var value = $("#username").val();
+	 if (!han.test(value)) {
+		alert('이름은 한글만 입력해주세요. 3~4글자만 가능. 공백불가');
+		return false; 
+	 }
+	 
+	 
+		
+		/*
+		num이 유효성 검사하기 위한 기준을 설정해놓은거야 
+		if(num.test(검사할 값)) 이렇게 가야해. 아하
+		*/ 
+	 
+	 
+	 
+
 		if (!$('#flexCheckDefault').is(":checked")) {
 			alert("약관에 동의해주세요.");
 			return false;
 		}
-		
-		if(!idCheckYn){ // 처음에 false / 중복이여도 false
+
+		if (!idCheckYn) { // 처음에 false / 중복이여도 false
 			alert('ID 중복확인을 해주세요. ');
-			return false;  // 
+			return false; // 
 		}
-		
+
+		if (!FnNickcheck) { // 처음에 false / 중복이여도 false
+			alert('닉네임 중복확인을 해주세요.');
+			return false; // 
+		}
+
 		var value = $("#month").val();
 		if (value === '') {
 			alert('태어난 월을 선택해주세요.');
@@ -86,121 +116,71 @@
 			$("#day").focus();
 			return false;
 		}
-		
-	
-		
-			
-		/* 일일
-		var value = $("#ID").val();
-		if (value == null || value.trim().length == 0) {
-			alert('아이디는 반드시 입력해야 합니다.');
-			$("#ID").val("");
-			$("#ID").focus();
-			return false;
-		}
-		if ($("#msg").html() != "&nbsp;&nbsp;사용가능") {
-			alert('사용 불가능한 아이디입니다.');
-			$("#ID").val("");
-			$("#msg").text("");
-			$("#ID").focus();
-			return false;
-		}
-		var value = $("#password").val();
-		if (value == null || value.trim().length == 0) {
-			alert('사용자 비빌번호는 반드시 입력해야 합니다.');
-			$("#password").val("");
-			$("#password").focus();
-			return false;
-		}
-		var value = $("#username").val();
-		if (value == null || value.trim().length == 0) {
-			alert('사용자 이름은 반드시 입력해야 합니다.');
-			$("#username").val("");
-			$("#username").focus();
-			return false;
-		}
-		var value = $("#nickname").val();
-		if (value == null || value.trim().length == 0) {
-			alert('사용자 별명은 반드시 입력해야 합니다.');
-			$("#nickname").val("");
-			$("#nickname").focus();
-			return false;
-		}
-		var value = $("#email").val();
-		if (value == null || value.trim().length == 0) {
-			alert('이메일 주소는 반드시 입력해야 합니다.');
-			$("#email").val("");
-			$("#email").focus();
-			return false;
-		}
-		var value = $("#hp").val();
-		if (value == null || value.trim().length == 0
-				|| value.trim().length >= 13) {
-			alert('전화번호는 반드시 입력해야 합니다.-를 포함한 13를 입력해주세요.');
-			$("#hp").val("");
-			$("#hp").focus();
-			return false;
-		}
-		var value = $("#zipcode").val();
-		if (value == null || value.trim().length == 0) {
-			alert('우편번호는 반드시 입력해야 합니다.');
-			$("#zipcode").val("");
-			$("#zipcode").focus();
-			return false;
-		}
-		var value = $("#address2").val();
-		if (value == null || value.trim().length == 0) {
-			alert('상세 주소는 반드시 입력해야 합니다.');
-			$("#address2").val("");
-			$("#address2").focus();
-			return false;
-		}
 
-		var value = $("#birthYear").val();
-		if (value == null || value.trim().length == 0) {
-			alert('태어난 년도를 입력해주세요.');
-			$("#birthYear").val("");
-			$("#birthYear").focus();
-			return false;
-		}
-		
-	*/
+		var year = $('#birthYear').val() + $('#month').val() + $('#day').val();
+
+		$('#mb_birth').val(year);
+
 	}
-	
-	// 중복확인을 했는지 필요하잖아? 그럴 때 쓰는 내가 하는 방식
-	
+
 	// 아이디 체크여부
-	var idCheckYn = false;  // 전역변수여서 어디든 사용 가능.
-	
+	var idCheckYn = false; // 전역변수여서 어디든 사용 가능.
+
 	function FnIdcheck() {
 		var value = $('#ID').val();
-		  $.ajax({
-             type : "POST",            // Post 방식으로 찾아야겠네 이거 ㅇㅇ 일단 영상은 있는데...
-             url : "idCheck.do",      // 컨트롤러에서 대기중인 URL 주소이다.
-             data : {"userid":value},
-             dataType:"text",
-             success : function(res){ // 비동기통신의 성공일경우 success콜백으로 들어옵니다. 'res'는 응답받은 데이터이다.
-                	var count = 1;
-             	// 보니깐 count로 할거같던데
-             	if(count === 0 ){ // 있으면
-             		alert("ID 사용가능");
-             		idCheckYn = true;  // 아이디 중복처리를 했다는걸 여기서 true값을 줌.
-             	}else if(count > 0){ // 0 이면 없음
-             		alert("ID 중복");
-             		idCheckYn = false; // 중복된걸 통과시킬순없음 X
-             		
-             	}else{ // 이건 오류 (밑에도 타겠지만 값이 안넘오는 경우에 여기서 걸릴거임.)
-             		alert("기타 오류입니다.");
-             	}
-             },
-             error : function(XMLHttpRequest, textStatus, errorThrown){ // 비동기 통신이 실패할경우 error 콜백으로 들어옵니다.
-                 alert("회원가입 실패")
-             }
-         });  		
+		$.ajax({
+			type : "POST", // Post 방식으로 찾아야겠네 이거 ㅇㅇ 일단 영상은 있는데...
+			url : "idCheck.do", // 컨트롤러에서 대기중인 URL 주소이다.
+			data : {
+				"userid" : value
+			},
+			dataType : "text",
+			success : function(count) { // 비동기통신의 성공일경우 success콜백으로 들어옵니다. 'res'는 응답받은 데이터이다.
+				// 보니깐 count로 할거같던데
+				if (count == 0) { // 있으면
+					alert("ID 사용가능");
+					idCheckYn = true; // 아이디 중복처리를 했다는걸 여기서 true값을 줌.
+				} else if (count > 0) { // 0 이면 없음
+					alert("ID 중복");
+					idCheckYn = false; // 중복된걸 통과시킬순없음 X
+
+				} else { // 이건 오류 (밑에도 타겠지만 값이 안넘오는 경우에 여기서 걸릴거임.)
+					alert("기타 오류입니다.");
+				}
+			},
+			error : function(XMLHttpRequest, textStatus, errorThrown) { // 비동기 통신이 실패할경우 error 콜백으로 들어옵니다.
+				alert("회원가입 실패")
+			}
+		});
 	}
-	
-	
-	
+
+	function FnNickcheck() {
+		var value = $('#nick').val();
+		$.ajax({
+			type : "POST", // Post 방식으로 찾아야겠네 이거 ㅇㅇ 일단 영상은 있는데...
+			url : "nickCheck.do", // 컨트롤러에서 대기중인 URL 주소이다.
+			data : {
+				"nick" : value
+			},
+			dataType : "text",
+			success : function(count1) { // 비동기통신의 성공일경우 success콜백으로 들어옵니다. 'res'는 응답받은 데이터이다.
+				// 보니깐 count로 할거같던데
+				if (count1 == 0) { // 있으면
+					alert("닉네임 사용가능");
+					idCheckYn = true; // 아이디 중복처리를 했다는걸 여기서 true값을 줌.
+				} else if (count1 > 0) { // 0 이면 없음
+					alert("닉네임 중복");
+					idCheckYn = false; // 중복된걸 통과시킬순없음 X
+
+				} else { // 이건 오류 (밑에도 타겠지만 값이 안넘오는 경우에 여기서 걸릴거임.)
+					alert("기타 오류입니다.");
+				}
+			},
+			error : function(XMLHttpRequest, textStatus, errorThrown) { // 비동기 통신이 실패할경우 error 콜백으로 들어옵니다.
+				alert("가입 실패")
+			}
+		});
+	}
 </script>
 
 <style type="text/css">
@@ -208,7 +188,7 @@
 	padding: 100px 0;
 	top: 20px;
 }
- 
+
 #content1 {
 	text-align: left;
 }
@@ -362,33 +342,24 @@ NG캠핑은 원칙적으로 이용자의 개인정보를 회원 탈퇴 시 지�
 							<div style="width: 50%;">
 								<div class="title">회원가입하기</div>
 								<br>
-								<div class="mb-4 row"> 
-									<label for="email" class="col-sm-3 col-form-label">
-										아이디</label>
+								<div class="mb-4 row">
+									<label for="ID" class="col-sm-3 col-form-label"> 아이디</label>
 									<div class="col-sm-5">
-										<input type="text" class="form-control" id="ID" name="ID"
+										<input type="text" class="form-control" id="ID" name="mb_ID"
 											placeholder="아이디입력" required>
 									</div>
-									<div class="col-sm-3"">
-										<input type="button" id = "idcheck" value="중복확인" onclick="FnIdcheck();"/>
+									<div class="col-sm-3">
+										<input type="button" id="idcheck" value="중복확인"
+											onclick="FnIdcheck();" />
 									</div>
 
 								</div>
-								
-								<!-- <div class="mb-4 row">
-									<label for="id" class="col-sm-3 col-form-label">아이디</label>
-									<div class="col-sm-5">
-										<input type="text" class="form-control" id="ID" name="ID"
-											placeholder="아이디입력" required>
-											<input type="button" id = "idcheck" value="중복확인"/>
-									</div>
-								</div> -->
 
 								<div class="mb-4 row">
 									<label for="password" class="col-sm-3 col-form-label">비밀번호</label>
 									<div class="col-sm-5">
 										<input type="password" class="form-control" id="password"
-											name="password" placeholder="비밀번호입력" required>
+											name="mb_password" placeholder="비밀번호입력" required>
 									</div>
 								</div>
 
@@ -397,53 +368,61 @@ NG캠핑은 원칙적으로 이용자의 개인정보를 회원 탈퇴 시 지�
 										이름</label>
 									<div class="col-sm-4">
 										<input type="text" class="form-control" id="username"
-											name="username" placeholder="이름 입력" required></div>
-								</div>
-
-								<div class="mb-4 row">
-									<label for="nickname" class="col-sm-3 col-form-label">
-										닉네임</label>
-									<div class="col-sm-4">
-										<input type="text" class="form-control" id="nickname"
-											name="nickname" placeholder="닉네임 입력" required>
+											name="mb_name" placeholder="이름 입력" required>
 									</div>
 								</div>
+
+
+								<div class="mb-4 row">
+									<label for="nick" class="col-sm-3 col-form-label"> 닉네임</label>
+									<div class="col-sm-5">
+										<input type="text" class="form-control" id="nick"
+											name="mb_nick" placeholder="닉네임입력" required>
+									</div>
+									<div class="col-sm-3">
+										<input type="button" id="nickcheck" value="중복확인"
+											onclick="FnNickcheck();" />
+									</div>
+
+								</div>
+
 
 								<div class="mb-4 row">
 									<label for="email" class="col-sm-3 col-form-label"> 이메일</label>
 									<div class="col-sm-5">
 										<input type="text" class="form-control" id="email"
-											name="email" placeholder="이메일 입력" required>
+											name="mb_email" placeholder="이메일 입력" required>
 									</div>
 								</div>
 
 								<div class="mb-4 row">
 									<label for="hp" class="col-sm-3 col-form-label">전화번호</label>
 									<div class="col-sm-5">
-										<input type="text" id="hp" placeholder="-포함입력" value=""
-											required maxlength="13">
+										<input type="text" id="hp" name="mb_tel" placeholder="-포함입력"
+											value="" required maxlength="13">
 									</div>
 								</div>
 
 								<div class="mb-4 row">
-									<label for="email" class="col-sm-3 col-form-label">
+									<input type="hidden" id="mb_birth" name="mb_birth" value="">
+									<label for="birth" class="col-sm-3 col-form-label">
 										생년월일</label>
 									<div class="col-sm-3">
-										<input type="text" id="birthYear" placeholder="" value=""
-											required maxlength="4">
+										<input type="text" id="birthYear" name="mb_year"
+											placeholder="" value="" required maxlength="8">
 									</div>
 									<div class="col-sm-3">
-										<select name="month" id="month">
-											<option value="">-- 선택 --</option> 벝
-											<option value="1">1</option>
-											<option value="2">2</option>
-											<option value="3">3</option>
-											<option value="4">4</option>
-											<option value="5">5</option>
-											<option value="6">6</option>
-											<option value="7">7</option>
-											<option value="8">8</option>
-											<option value="9">9</option>
+										<select name="mb_month" id="month">
+											<option value="">-- 선택 --</option>
+											<option value="01">1</option>
+											<option value="02">2</option>
+											<option value="03">3</option>
+											<option value="04">4</option>
+											<option value="05">5</option>
+											<option value="06">6</option>
+											<option value="07">7</option>
+											<option value="08">8</option>
+											<option value="09">9</option>
 											<option value="10">10</option>
 											<option value="11">11</option>
 											<option value="12">12</option>
@@ -451,17 +430,17 @@ NG캠핑은 원칙적으로 이용자의 개인정보를 회원 탈퇴 시 지�
 									</div>
 
 									<div class="col-sm-3">
-										<select name="day" id="day">
+										<select name="mb_day" id="day">
 											<option value="">-- 선택 --</option>
-											<option value="1">1</option>
-											<option value="2">2</option>
-											<option value="3">3</option>
-											<option value="4">4</option>
-											<option value="5">5</option>
-											<option value="6">6</option>
-											<option value="7">7</option>
-											<option value="8">8</option>
-											<option value="9">9</option>
+											<option value="01">1</option>
+											<option value="02">2</option>
+											<option value="03">3</option>
+											<option value="04">4</option>
+											<option value="05">5</option>
+											<option value="06">6</option>
+											<option value="07">7</option>
+											<option value="08">8</option>
+											<option value="09">9</option>
 											<option value="10">10</option>
 											<option value="11">11</option>
 											<option value="12">12</option>
@@ -494,12 +473,13 @@ NG캠핑은 원칙적으로 이용자의 개인정보를 회원 탈퇴 시 지�
 										class="btn btn-outline-primary" for="zipCodebtn">찾기</label>
 									<div class="col-sm-3">
 										<input type="text" class="form-control" id="zipcode"
-											placeholder="" required>
+											name="mb_zipcode" placeholder="" required>
 									</div>
 									<div class="col-sm-30">
 										<input type="text" class="form-control" id="address"
-											placeholder="" required> <input type="text"
-											class="form-control" id="address2" placeholder="상세주소">
+											name="address1" placeholder="" required> <input
+											type="text" class="form-control" id="address2"
+											name="address2" placeholder="상세주소">
 									</div>
 								</div>
 								<div class="mb-3 row">
@@ -521,6 +501,7 @@ NG캠핑은 원칙적으로 이용자의 개인정보를 회원 탈퇴 시 지�
 							</div>
 						</form>
 					</div>
+				</div>
 				</div>
 		</section>
 

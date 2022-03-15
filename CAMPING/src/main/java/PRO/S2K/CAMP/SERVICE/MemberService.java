@@ -20,12 +20,16 @@ public interface MemberService {
 	MemberVO updateUse(String mb_ID, String authkey);
 // 8. 아이디 중복확인
 	int idCheck(String mb_ID);
-// 9. 아이디 찾기
+// 9. 닉네임 중복확인
+   int nickCheck(String mb_nick);
+// 10. 아이디 찾기
 	MemberVO idSearch(MemberVO memberVO);
-// 10. 비번 찾기
+// 11. 비번 찾기
 	MemberVO passwordsearch(MemberVO memberVO);
-// 11. 임시비번 만들기
+// 12. 임시비번 만들기
 	String makePassword(int length);
-// 12. id와 비번이 같은것 가져오기
+// 13. id와 비번이 같은것 가져오기
 	MemberVO selectByUserId(MemberVO memberVO);
+
+	
 }

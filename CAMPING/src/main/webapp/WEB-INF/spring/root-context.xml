@@ -59,7 +59,7 @@
         <security:logout logout-success-url="/login?logout"/> 
          -->
         <!-- csrf 프로텍션 사용하겠다. -->
-        <security:csrf/>
+        <security:csrf disabled="true"/>
     </security:http>
   
 	<!-- Security 사용자 설정 -->

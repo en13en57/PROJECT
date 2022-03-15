@@ -161,5 +161,9 @@ CREATE TABLE `camp_review` (
 --  CONSTRAINT `camp_comment_FK` FOREIGN KEY (`idx`) REFERENCES `camp_review` (`idx`) ON UPDATE CASCADE
 -- );
 
+INSERT INTO camp_grade values(0,'미인증','user');
+INSERT INTO camp_grade values(1,'인증','member');
+INSERT INTO camp_grade values(2,'관리자','admin');
+
 
 

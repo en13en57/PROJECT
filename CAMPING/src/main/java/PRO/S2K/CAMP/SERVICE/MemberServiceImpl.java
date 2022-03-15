@@ -49,8 +49,8 @@ public class MemberServiceImpl implements MemberService{
 	public void insert(MemberVO memberVO) {
 		if(memberVO!=null) {
 			memberDAO.insert(memberVO);
-			gradeDAO.insert(memberVO.getMb_ID());
-			sendEmail(memberVO);
+			/* gradeDAO.insert(memberVO.getMb_ID()); 이거 사용 X*/   
+			/* sendEmail(memberVO);  나중에 다시 활성화 ON */
 		}
 	}
 
@@ -105,6 +105,11 @@ public class MemberServiceImpl implements MemberService{
 	@Override
 	public int idCheck(String mb_ID) {
 		return memberDAO.selectCountByUserId(mb_ID);		
+	}
+	
+	@Override
+	public int nickCheck(String mb_nick) {
+		return memberDAO.selectCountByUsernick(mb_nick);
 	}
 
 	@Override

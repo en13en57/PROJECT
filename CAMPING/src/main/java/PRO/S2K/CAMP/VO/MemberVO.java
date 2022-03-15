@@ -17,7 +17,9 @@ CREATE TABLE `camp_member` (
   PRIMARY KEY (`mb_idx`),
  */
 
-import java.util.Date;
+
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -35,11 +37,12 @@ public class MemberVO {
 	private String mb_nick;
 	private String mb_email;
 	private String mb_tel;
-	private Date mb_birth;
-	private String zipcode;
+	private String mb_zipcode;
 	private String address1;
 	private String address2;
 	private int gr_grade;
 	private int mb_use;
 	private String authkey;
+	private String mb_birth; 
+	
 }

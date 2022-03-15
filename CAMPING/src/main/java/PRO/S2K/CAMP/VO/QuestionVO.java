@@ -1,6 +1,7 @@
 package PRO.S2K.CAMP.VO;
 
-import java.util.Date;
+
+import java.sql.Date;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
