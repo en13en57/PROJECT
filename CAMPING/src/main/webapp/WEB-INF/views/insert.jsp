@@ -5,8 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
-<meta id="_csrf_header" name="_csrf_header"
-	th:content="${_csrf.headerName}" />
+<meta id="_csrf_header" name="_csrf_header"	th:content="${_csrf.headerName}" />
 <link rel="shortcut icon" type="image/x-icon"
 	href="${pageContext.request.contextPath }/resources/assets/css/images/logo.png" />
 <title>캠핑은 NG캠핑!</title>
@@ -86,7 +85,7 @@
 		var num = /^[0-9]{4}$/;
 		var han = /^[가-힣]{3,4}$/;
 		var eng = /^[a-zA-Z]$/;
-		var regPass = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,10}$/;
+		var regPass = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,15}$/;
 		var emailcheck = /^([0-9a-zA-Z_\.-]+)@([0-9a-zA-Z_-]+)(\.[0-9a-zA-Z_-]+)$/;
 
 		var thisDate = new Date();
@@ -109,7 +108,7 @@
 
 		var value = $("#password").val();
 		if (!regPass.test(value)) {
-			alert('영문, 숫자, 특수기호 조합으로 8-10자리로 입력해주세요.');
+			alert('영문, 숫자, 특수기호 조합으로 8-15자리로 입력해주세요.');
 			$("#password").focus();
 			return false;
 		}
@@ -283,13 +282,13 @@ textarea {
 		<!-- Header -->
 		<header id="header">
 			<h1 id="logo">
-				<a href="index.jsp"><img
+				<a href="/main.do"><img
 					src="${pageContext.request.contextPath }/resources/assets/css/images/logo.png"
 					alt="" /> </a>
 			</h1>
 			<nav id="nav">
 				<ul>
-					<li><a href="index.jsp">Home</a></li>
+					<li><a href="/main.do">Home</a></li>
 					<li><a href="#">캠핑장</a>
 						<ul>
 							<li><a href="#">일반 야영장</a></li>
@@ -305,7 +304,7 @@ textarea {
 							<li><a href="#">QnA</a></li>
 						</ul></li>
 					<li><a href="/insert.do">회원가입</a></li>
-					<li><a href="html/login.html">로그인</a></li>
+					<li><a href="/login.do">로그인</a></li>
 				</ul>
 			</nav>
 		</header>
@@ -412,7 +411,7 @@ NG캠핑은 원칙적으로 이용자의 개인정보를 회원 탈퇴 시 지�
 									<label for="password" class="col-sm-3 col-form-label">비밀번호</label>
 									<div class="col-sm-5">
 										<input type="password" class="form-control" id="password"
-											name="mb_password" placeholder="영어,숫자,특수문자 8~10글자" required
+											name="mb_password" placeholder="영어,숫자,특수문자 8~15글자" required
 											maxlength="15">
 									</div>
 									<div class="col-sm-3 col-form-label" id="pwcheckval"></div>
@@ -550,9 +549,12 @@ NG캠핑은 원칙적으로 이용자의 개인정보를 회원 탈퇴 시 지�
 								</div>
 								<div class="mb-3 row">
 									<div class="col-sm-12" style="text-align: right;">
+										
 										<!-- 시큐리트에서 사용자가 지정한 폼을 사용하려면 반드시 아래의 코드를 첨부해줘야 한다.-->
 										<input type="hidden" name="${_csrf.parameterName}"
-											value="${_csrf.token}" /> <input type="submit"
+											value="${_csrf.token}" /> 
+											
+											<input type="submit"
 											class="btn-check" id="submitBtn"> <label
 											class="btn btn-outline-success" for="submitBtn">회원가입</label>
 										<input type="reset" class="btn-check" id="resetBtn"> <label

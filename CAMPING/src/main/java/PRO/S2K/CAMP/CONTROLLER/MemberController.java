@@ -7,6 +7,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -40,9 +42,10 @@ public class MemberController {
 	}
 	
 	@RequestMapping(value = "/insertOk.do", method = RequestMethod.POST)
-	public String insertOk(MemberVO memberVO) {
+	public String insertOk(MemberVO memberVO, Model model) {
 		memberVO.setAuthkey(UUID.randomUUID().toString());
 		memberService.insert(memberVO);
+		model.addAttribute("memberVO",memberVO);
 		return "insertOk";
 	}
 	
@@ -84,14 +87,63 @@ public class MemberController {
 		return count + "";
 	}
 	
-	@RequestMapping(value = "/login.do", method = RequestMethod.GET)
-	public String login() {
+	
+	@RequestMapping(value = "/login.do")
+	public String login(
+		@RequestParam(value = "error", required = false) String error,
+		@RequestParam(value = "logout", required = false) String logout,
+		Model model
+		) {
+		if(error!=null) {
+			model.addAttribute("error", "아이디가 없거나 비번이 일치하지 않습니다.");
+		}
+		if(logout!=null) {
+			model.addAttribute("msg", "성공적으로 로그아웃을 했습니다.");
+		}
 		return "login";
 	}
+	
+	@RequestMapping(value = "/confirm.do")
+	   public String confirm(@RequestParam String mb_ID, @RequestParam String authkey, Model model) {
+
+	      MemberVO memberVO = memberService.updateGrade(mb_ID, authkey); // grade값을 1로 변경
+	      model.addAttribute("memberVO", memberVO);
+	      return "confirm";
+	   }
+ 
 	
 	@RequestMapping(value = "/callback.do", method = RequestMethod.GET)
 	public String callback() {
 		return "callback";
+	}
+	
+	 @RequestMapping(value = "/findUserId.do")
+	public String findUserId(
+			@RequestParam(value = "error", required = false) String error,
+			@RequestParam(value = "logout", required = false) String logout,
+			Model model
+			) {
+			 if(error!=null) {
+					model.addAttribute("error", "입력하신 정보의 아이디는 존재하지 않습니다.");
+			}
+		return "findUserId"; 
+	}
+	
+	@RequestMapping(value = "/findUserIdOk.do",method = RequestMethod.GET)
+	public String findUserIdOk() {
+		return "findUserId";
+	}
+	@RequestMapping(value = "/findUserIdOk.do",method = RequestMethod.POST)
+	public String findUserIdOkPOST(@ModelAttribute MemberVO memberVO, Model model) {
+		MemberVO vo = memberService.idSearch(memberVO);
+		if(vo==null) {
+			// 일치하는 정보가 없다.
+			return "redirect:findUserId.do?error";
+		}else {
+			// 일치하는 정보가 있다.
+			model.addAttribute("memberVO", vo);  
+			return "findUserIdOk";
+		}
 	}
 	
 }

@@ -41,8 +41,6 @@ public class MemberVO {
 	private String address1;
 	private String address2;
 	private int gr_grade;
-	private int mb_use;
 	private String authkey;
 	private String mb_birth; 
-	
 }

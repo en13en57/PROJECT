@@ -42,18 +42,16 @@
 	<!-- Security 권한 설정 -기본 bean에 security:를 붙여줘야함.  -->
 	<security:http auto-config="true" use-expressions="true">
         <security:intercept-url pattern="/" access="permitAll" />
-        <security:intercept-url pattern="/admin/**" access="hasRole('admin')" />
-        <security:intercept-url pattern="/board/**" access="hasRole('user')" />
         <!-- 접근 불가능한 곳에 접근할때 에러가 아닌 보여줄 페이지 지정 -->
         <security:access-denied-handler error-page="/403"/>
         <!-- 사용자가 만든 로그인 폼을 사용하기 위해서는 이부분을 수정해 준다. -->
         <security:form-login  
-        login-page="/login"
-        username-parameter="userid"
-        password-parameter="password"
+        login-page="/login.do"
+        username-parameter="mb_ID"
+        password-parameter="mb_password"
         default-target-url="/"
         authentication-success-handler-ref="customSuccessHandler"
-        authentication-failure-url="/login?error" /> <!-- 로그인 실패시 이동할 페이지 -->
+        authentication-failure-url="/login.do?error" /> <!-- 로그인 실패시 이동할 페이지 -->
         <security:logout logout-success-url="/"/> <!-- 로그아웃 성공시 이동할 페이지 -->
         <!-- 
         <security:logout logout-success-url="/login?logout"/> 
@@ -69,7 +67,7 @@
     		 <security:password-encoder ref="bCryptPasswordEncoder"/>
 			 <security:jdbc-user-service 
 			 	data-source-ref="dataSource"
-			 	users-by-username-query="select mb_name, mb_password, mb_use from camp_member where mb_ID=?"
+			 	users-by-username-query="select mb_ID, mb_password, gr_grade from camp_member where mb_ID=?"
 			 	authorities-by-username-query="select gr_name, gr_role from camp_grade where gr_name=?"
 			 	/>   	
     	</security:authentication-provider> 
@@ -86,8 +84,8 @@
 	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
 		<property name="host" value="smtp.gmail.com"></property>
 		<property name="port" value="587"></property>
-		<property name="username" value="S2KCCamp@gmail.com"></property>
-		<property name="password" value="220316!!"></property>
+		<property name="username" value="ngcamppp@gmail.com"></property>
+		<property name="password" value="220317!!a"></property>
 		<property name="javaMailProperties">
 			<props>
 				<prop key="mail.smtp.starttls.enable">true</prop>

@@ -98,14 +98,14 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
-	public MemberVO updateUse(String mb_ID, String authkey) {
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("use", 1);
-		map.put("mb_ID", mb_ID);
-		map.put("authkey", authkey);
-		memberDAO.updateUse(map);
-		return memberDAO.selectUserId(mb_ID);
-	}
+	   public MemberVO updateGrade(String mb_ID, String authkey) {
+	      HashMap<String, Object> map = new HashMap<String, Object>();
+	      map.put("gr_grade", "1");
+	      map.put("mb_ID", mb_ID);
+	      map.put("authkey", authkey);
+	      memberDAO.updateGrade(map);
+	      return memberDAO.selectUserId(mb_ID);
+	   }
 
 	@Override
 	public int idCheck(String mb_ID) {
@@ -117,13 +117,13 @@ public class MemberServiceImpl implements MemberService{
 		return memberDAO.selectCountByUsernick(mb_nick);
 	}
 
-	@Override
+	@Override // 아이디 찾기 :이름과 전화번호를 넘겨서 DB에서 가져온다.
 	public MemberVO idSearch(MemberVO memberVO) {
 		MemberVO vo = null;
 		if(memberVO!=null) {
 			HashMap<String, String> map = new HashMap<String, String>();
-			map.put("mb_Name", memberVO.getMb_name());
-			map.put("mb_Tel", memberVO.getMb_tel());
+			map.put("mb_name", memberVO.getMb_name());
+			map.put("mb_tel", memberVO.getMb_tel());
 			vo = memberDAO.selectByUsername(map);
 		}
 		return vo;
@@ -166,7 +166,7 @@ public class MemberServiceImpl implements MemberService{
  
             public void prepare(MimeMessage mimeMessage) throws Exception {
             	MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
-            	helper.setFrom("S2KCCamp@gmail.com");
+            	helper.setFrom("ngcamppp@gmail.com");
             	helper.setTo(to);
             	helper.setSubject(subject);
             	helper.setText(content, true);
