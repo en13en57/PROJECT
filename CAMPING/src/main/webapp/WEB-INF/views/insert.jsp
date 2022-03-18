@@ -4,8 +4,6 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
-<meta id="_csrf_header" name="_csrf_header"	th:content="${_csrf.headerName}" />
 <link rel="shortcut icon" type="image/x-icon"
 	href="${pageContext.request.contextPath }/resources/assets/css/images/logo.png" />
 <title>캠핑은 NG캠핑!</title>
@@ -182,7 +180,7 @@
 		var value = $('#ID').val();
 		if (value != null && check.test(value)) {
 			$.ajax({
-				type : "POST", // Post 방식으로 찾아야겠네 이거 ㅇㅇ 일단 영상은 있는데...
+				type : "GET", // Post 방식으로 찾아야겠네 이거 ㅇㅇ 일단 영상은 있는데...
 				url : "idCheck.do", // 컨트롤러에서 대기중인 URL 주소이다.
 				data : {
 					"userid" : value
@@ -215,7 +213,7 @@
 		var value = $('#nick').val();
 		if (value != null && check.test(value)) {
 			$.ajax({
-				type : "POST", // Post 방식으로 찾아야겠네 이거 ㅇㅇ 일단 영상은 있는데...
+				type : "GET", // Post 방식으로 찾아야겠네 이거 ㅇㅇ 일단 영상은 있는데...
 				url : "nickCheck.do", // 컨트롤러에서 대기중인 URL 주소이다.
 				data : {
 					"nick" : value
@@ -389,8 +387,7 @@ NG캠핑은 원칙적으로 이용자의 개인정보를 회원 탈퇴 시 지�
 							for="flexCheckDefault"> 동의합니다. </label>
 					</div>
 					<div class="mb-4">
-						<form action="/insertOk.do" method="post"
-							onsubmit="return formCheck();">
+						<form action="/insertOk.do" method="post" onsubmit="return formCheck();">
 							<div style="width: 50%;">
 								<div class="title">회원가입하기</div>
 								<br>
@@ -541,9 +538,9 @@ NG캠핑은 원칙적으로 이용자의 개인정보를 회원 탈퇴 시 지�
 									</div>
 									<div class="col-sm-30">
 										<input type="text" class="form-control" id="address"
-											name="address1" placeholder="" required readonly
+											name="mb_address1" placeholder="" required readonly
 											style="background-color: #272833"> <input type="text"
-											class="form-control" id="address2" name="address2"
+											class="form-control" id="address2" name="mb_address2"
 											placeholder="상세주소">
 									</div>
 								</div>

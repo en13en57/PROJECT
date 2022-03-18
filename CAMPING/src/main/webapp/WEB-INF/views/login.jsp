@@ -4,8 +4,6 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
-<meta id="_csrf_header" name="_csrf_header"	th:content="${_csrf.headerName}" />
 <link rel="shortcut icon" type="image/x-icon"
 	href="${pageContext.request.contextPath }/resources/assets/css/images/logo.png" />
 <title>NG캠핑 로그인</title>
@@ -43,9 +41,16 @@ function login(){
 
 <style type="text/css">
 
+
+element.style {
+    width: 500px;
+    height: 100px;
+    margin: 0 auto;
+}
+
 #banner1 {
 	padding:200px;
-
+	padding-top:300px;
 }
 
 
@@ -117,7 +122,7 @@ textarea {
 		</header>
 		<!-- Banner -->
 		<section id="banner1">
-			<form action="${pageContext.request.contextPath}/login.do" method="post">
+			<form action="${pageContext.request.contextPath}/login" method="post">
 				<%-- 로그인 실패시 에러메세지 출력 --%>
 				<c:if test="${not empty error }">
 					<div style="color: red;">${error }</div>
@@ -148,25 +153,28 @@ textarea {
 				<div style="font:white;  font-size: 10px; text-align:left; padding-left: 65%;">
 					<a href="/findUserId.do">아이디찾기</a>
 					&nbsp; | &nbsp;
-					<a href="/findUserPassword.do">비밀번호 찾기 </a>
+					<a href="/findPassword.do">비밀번호 찾기 </a>
 					&nbsp; | &nbsp;
 					<a href="/insert.do">회원가입 </a></div>
-			</div>
-		<div class="row" style="width: 300px; height: 300px; margin: 0 auto;" >
+	
+	
+	
+		<div class="row" style="width: 300px; height: 300px; margin: 0 auto; padding-right:3;" >
 		<div class="col-md-4">
-  		<a href="/naverLogin.do"><span id="naver"><img style="width: 80%; height: 12%;"
+  		<a href="/naverLogin.do"><span id="naver"><img style="width: 50px; height: 50px;"
 			src="${pageContext.request.contextPath }/resources/images/naverLogin.png"
 			alt="" /></span></a>
 		</div>
 		<div class="col-md-4">
-		<a href="/kakaoLogin.do"><span class="col-md-4" id="kakao"><img style="width: 80%; height: 12%;"
+		<a href="/kakaoLogin.do"><span class="col-md-4" id="kakao"><img style="width: 50px; height: 50px;"
 			src="${pageContext.request.contextPath }/resources/images/kakaoLogin.png"
 			alt="" /></span></a>
 		</div>
 		<div class="col-md-4">
-		<a href="googleLogin.do"><span class="col-md-4" id="google"><img style="width: 80%; height: 12%;"
+		<a href="googleLogin.do"><span class="col-md-4" id="google"><img style="width: 50px; height: 50px;"
 			src="${pageContext.request.contextPath }/resources/images/googleLogin.png"
 			alt="" /></span></a>
+			</div>
 			</div>
 		</div> 
 		</form>
