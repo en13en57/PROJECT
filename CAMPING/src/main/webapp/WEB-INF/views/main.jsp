@@ -97,14 +97,15 @@
 						</ul>
 					</li>
 						
+					<c:if test="${sessionScope.mvo eq null }">
 							<li><a href="/insert.do">회원가입</a></li>
 							<li><a href="/login.do">로그인</a></li>
-				<%-- 	<c:if test="${sessionScope.mvo eq null }">
 					</c:if> 
+										
+										
+										
 					<c:if test="${sessionScope.mvo ne null }">
-										
-										
-										
+							<c:choose>
 					<c:when test="${role eq 'ROLE_USER' }">
                         <c:url value="/logout" var="logoutURL" />
                            <li>
@@ -115,10 +116,10 @@
                            </li>
                            <li><a href="/login.do">마이페이지</a></li>
                  	    </c:when>							
+							</c:choose>
 					</c:if>
-					--%>
+					
 							<%--
-							<c:choose>
 								<c:when test="${role eq 'ROLE_USER' }">
 									<li><a href="/logout">로그아웃</a></li>
 									<li><a href="/login.do">마이페이지</a></li>
@@ -127,7 +128,6 @@
 									<li><a href="/insert.do">로그아웃</a></li>
 									<li><a href="/login.do">관리자페이지</a></li>								
 								</c:otherwise>
-							</c:choose>
 							 --%>
 						
 					<%-- <c:choose>

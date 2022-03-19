@@ -7,7 +7,6 @@ public interface MemberService {
 	MemberVO loginOk(MemberVO memberVO);
 // 2. 로그아웃
 	MemberVO logout (MemberVO memberVO);	
-	
 // 3. 회원가입
 	void insert(MemberVO memberVO);
 // 4. 회원정보수정
@@ -30,6 +29,7 @@ public interface MemberService {
 	String makePassword(int length);
 // 13. id와 비번이 같은것 가져오기
 	MemberVO selectByUserId(MemberVO memberVO);
-
+// 14. 임시 비밀번호 업데이트
+	void updateImsi(MemberVO memberVO);
 	
 }

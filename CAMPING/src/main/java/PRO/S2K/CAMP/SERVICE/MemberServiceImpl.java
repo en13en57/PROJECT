@@ -89,11 +89,11 @@ public class MemberServiceImpl implements MemberService{
 	@Override
 	public void updatePassword(MemberVO memberVO) {
 		HashMap<String, String> map = new HashMap<String, String>();
-		map.put("mb_Id", memberVO.getMb_ID());
+		map.put("mb_ID", memberVO.getMb_ID());
 		String encryptPassword = bCryptPasswordEncoder.encode(memberVO.getMb_password());
-		map.put("mb_Password", encryptPassword);
+		map.put("mb_password", encryptPassword);
 		memberDAO.updatePassword(map);
-	}
+		}
 
 	@Override
 	   public MemberVO updateUse(String mb_ID, String authkey) {
@@ -145,7 +145,8 @@ public class MemberServiceImpl implements MemberService{
 	      String subject = "회원 가입을 축하드립니다.";
 	      String to = memberVO.getMb_email();
 	      String content = "반갑습니다. " + memberVO.getMb_nick() + "님!!!<br>" + "회원 가입을 축하드립니다.<br> "
-	            + "회원 가입을 완료하려면 다음의 링크를 클릭해서 인증하시기 바랍니다.<br>" + "<a href='http://localhost:8080/confirm.do?mb_ID="
+	            + "회원 가입을 완료하려면 다음의 링크를 클릭해서 인증하시기 바랍니다.<br>" 
+	    		+ "<a href='http://localhost:8080/confirm.do?mb_ID="
 	            + memberVO.getMb_ID() + "&authkey=" + memberVO.getAuthkey() + "'>인증</a><br>";
 
 	      MimeMessagePreparator preparator = getMessagePreparator(to, subject, content);
@@ -171,6 +172,23 @@ public class MemberServiceImpl implements MemberService{
         };
         return preparator;
     }
+    
+    // 비밀번호 찾기 임시비밀번호 메일 보내는 메서드 
+    public void sendPassword(MemberVO memberVO) {
+    	String subject = "NG_CAMP 임시 비밀번호 입니다.";
+    	String to = memberVO.getMb_email();
+    	String content = "반갑습니다. " + memberVO.getMb_ID() + "님!!!<br>" + "NG_CAMP에서 요청하신 비밀번호 찾기 메일로,<br> "
+    			+ "회원님의 임시 비밀번호는 "+ memberVO.getMb_password()+ " 입니다.";
+    	
+    	MimeMessagePreparator preparator = getMessagePreparator(to, subject, content);
+    	try {
+    		mailSender.send(preparator);
+    		System.out.println("메일 보내기 성공 ***************************************************");
+    	} catch (MailException ex) {
+    		System.err.println(ex.getMessage());
+    	}
+    }
+    
 	
  // 임시 비번
  	@Override
@@ -229,4 +247,16 @@ public class MemberServiceImpl implements MemberService{
 		}
 		return vo; 
 	}
+
+	@Override
+	public void updateImsi(MemberVO memberVO) {
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put("mb_ID", memberVO.getMb_ID());
+		String encryptPassword = bCryptPasswordEncoder.encode(memberVO.getMb_password());
+		map.put("mb_password", encryptPassword);
+		memberDAO.updatePassword(map);
+		sendPassword(memberVO);
+	}
+	
+
 }

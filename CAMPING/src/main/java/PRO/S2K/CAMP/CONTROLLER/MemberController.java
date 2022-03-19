@@ -165,9 +165,8 @@ public class MemberController {
 			// 임시비밀번호를 만들어서 DB에 저장
 			String newPassword = memberService.makePassword(15);
 			memberVO.setMb_password(newPassword);
-			memberService.updatePassword(memberVO);
-			// 만들어진 임시 비밀번호를 알려준다.
-			model.addAttribute("memberVO",vo);
+			memberService.updateImsi(memberVO);
+			// 만들어진 임시 비밀번호 메일로 보낸다.
 			return "findPasswordOk";
 		}
 	}

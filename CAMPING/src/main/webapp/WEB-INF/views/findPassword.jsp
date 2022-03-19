@@ -134,7 +134,7 @@ textarea {
 						&nbsp; | &nbsp;
 						<a href="/insert.do">회원가입</a>
 						
-				
+				</div>
 			</div>
 			</form>
 		</section>

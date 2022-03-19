@@ -122,7 +122,7 @@ textarea {
 		</header>
 		<!-- Banner -->
 		<section id="banner1">
-			<form action="${pageContext.request.contextPath}/login" method="post">
+			<form action="${pageContext.request.contextPath}/login.do" method="post">
 				<%-- 로그인 실패시 에러메세지 출력 --%>
 				<c:if test="${not empty error }">
 					<div style="color: red;">${error }</div>
