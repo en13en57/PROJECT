@@ -1,4 +1,4 @@
-package PRO.S2K.CAMP;
+package PRO.S2K.CAMP.CONTROLLER;
 
 import java.util.Locale;
 

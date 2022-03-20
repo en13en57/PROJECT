@@ -2,10 +2,17 @@ package PRO.S2K.CAMP.CONTROLLER;
 
 import java.util.UUID;
 
+import javax.inject.Inject;
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.social.google.connect.GoogleConnectionFactory;
+import org.springframework.social.oauth2.GrantType;
+import org.springframework.social.oauth2.OAuth2Operations;
+import org.springframework.social.oauth2.OAuth2Parameters;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -14,6 +21,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+
+import PRO.S2K.CAMP.AUTH.SnsLogin;
+import PRO.S2K.CAMP.AUTH.SnsValue;
 import PRO.S2K.CAMP.SERVICE.MemberService;
 import PRO.S2K.CAMP.VO.MemberVO;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +36,62 @@ public class MemberController {
 	
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
+	
+	
+	
+	
+	
+	// 서블릿 컨텍스트에서 불러 사용
+	@Inject 
+	private SnsValue naverSns;
+	@Inject
+	private SnsValue googleSns;
+	
+	@Inject
+	private GoogleConnectionFactory googleConnectionFactory;
+	
+	@Inject
+	private OAuth2Parameters googleOAuth2Parameters;
+	
+	@RequestMapping(value = "/login.do", method = RequestMethod.GET)
+	public void login(Model model) throws Exception {
+		log.info("login GET .....");
+		
+		SnsLogin snsLogin = new SnsLogin(naverSns);
+		model.addAttribute("naver_url", snsLogin.getNaverAuthURL());
+		
+//		SNSLogin googleLogin = new SNSLogin(googleSns);
+//		model.addAttribute("google_url", googleLogin.getNaverAuthURL());
+		
+		/* 구글code 발행을 위한 URL 생성 */
+		OAuth2Operations oauthOperations = googleConnectionFactory.getOAuthOperations();
+		String url = oauthOperations.buildAuthorizeUrl(GrantType.AUTHORIZATION_CODE, googleOAuth2Parameters);
+		model.addAttribute("google_url", url);
+	}
+	
+	
+	
+	@RequestMapping(value="/naver.do", method= RequestMethod.GET) 
+	public String naver() { 
+		log.info("home controller"); 
+		return "APIExamNaverLogin"; 
+		}
+	@RequestMapping(value="/oauth2/naver/callback.do", method=RequestMethod.GET) 
+	public String loginPOSTNaver(HttpSession session) { 
+		log.info("callback controller"); 
+		return "callback"; 
+		} 
+
+	
+	@RequestMapping(value="/kakao.do", method= RequestMethod.GET) 
+	public String kakao() { 
+		return "kakaoLogin"; 
+	}
+	
+	
+	
+	
+	
 	
 	
 	@RequestMapping(value = "/insert.do", method = RequestMethod.GET)
@@ -99,7 +165,7 @@ public class MemberController {
 	@RequestMapping(value = "/confirm.do")
 	public String confirm(@RequestParam String mb_ID, @RequestParam String authkey, Model model) {
 
-		MemberVO memberVO = memberService.updateUse(mb_ID, authkey); // grade값을 1로 변경
+		MemberVO memberVO = memberService.updateRole(mb_ID, authkey); // grade값을 1로 변경
 		model.addAttribute("memberVO", memberVO);
 		return "confirm";
 	}

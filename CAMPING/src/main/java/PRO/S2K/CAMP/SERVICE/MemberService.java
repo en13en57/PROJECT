@@ -16,7 +16,7 @@ public interface MemberService {
 // 6. 비번 변경
 	void updatePassword(MemberVO memberVO);
 // 7. 인증 완료
-	MemberVO updateUse(String mb_ID, String authkey);
+	MemberVO updateRole(String mb_ID, String authkey);
 // 8. 아이디 중복확인
 	int idCheck(String mb_ID);
 // 9. 닉네임 중복확인

@@ -96,12 +96,12 @@ public class MemberServiceImpl implements MemberService{
 		}
 
 	@Override
-	   public MemberVO updateUse(String mb_ID, String authkey) {
+	   public MemberVO updateRole(String mb_ID, String authkey) {
 	      HashMap<String, String> map = new HashMap<String, String>();
-	      map.put("mb_use", "1");
+	      map.put("gr_grade", "ROLE_USER");
 	      map.put("mb_ID", mb_ID);
 	      map.put("authkey", authkey);
-	      memberDAO.updateUse(map);
+	      memberDAO.updateRole(map);
 	      return memberDAO.selectUserId(mb_ID);
 	   }
 

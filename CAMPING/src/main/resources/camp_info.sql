@@ -50,7 +50,7 @@ CREATE TABLE `camp_info` (
 
 drop table camp_member ;
 drop table member_role ;
-CREATE TABLE `member_role` (
+CREATE TABLE `camp_member` (
   `mb_idx` int(11) NOT NULL auto_increment primary key,
   `mb_ID` varchar(12) not NULL,
   `mb_password` varchar(60) not NULL,
@@ -66,7 +66,7 @@ CREATE TABLE `member_role` (
   `authkey` varchar(200) not null
 );
 
-CREATE TABLE `camp_role` (
+CREATE TABLE `member_role` (
   `gr_idx` int(11) NOT null AUTO_INCREMENT primary key,
    `mb_ID` varchar(12) not NULL,
   `gr_role` varchar(15) not NULL
@@ -157,4 +157,22 @@ INSERT INTO camp_grade values(1,'인증','member');
 INSERT INTO camp_grade values(2,'관리자','admin');
 
 
+CREATE TABLE `sns_member` (
+  `mb_idx` int(11) NOT NULL,
+  `sns_id` varchar(255) NOT NULL,
+  `sns_type` varchar(10)  NULL,
+  `sns_name` varchar(255)  NULL,
+  `sns_profile` varchar(255)  NULL,
+  `sns_connect_date` datetime  NULL,
+  CONSTRAINT `mb_idx` FOREIGN KEY (`mb_idx`) REFERENCES `camp_member` (`mb_idx`)
+);
 
+		update camp_member a 
+			join member_role mr on 
+			a.mb_ID = mr.mb_ID
+		set 
+			mr.gr_role ='ROLE_USER'
+		where 
+			mr.mb_ID='rkdendh' and a.authkey='b516e506-649a-4ff7-99e7-112088b65491';
+
+alter table camp_member add column sns_email varchar (200);

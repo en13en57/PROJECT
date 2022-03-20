@@ -24,7 +24,7 @@
 			#{mb_zipcode},
 			#{mb_address1},
 			#{mb_address2},
-			'0', <!-- 인증 유무 -->
+			'1', <!-- 인증 유무 -->
 			#{authkey}  <!-- 임시 authKey 나중에 바꿔야함. -->
 			
 		)
@@ -70,8 +70,14 @@
 		select * from camp_member where mb_ID=#{mb_ID} and mb_email=#{mb_email}
 	</select>
 	<!-- 10. 인증여부를 변경하는 쿼리 -->
-	<update id="updateUse" parameterType="hashmap">
-		update camp_member set mb_use= '1' where mb_ID=#{mb_ID} and authkey=#{authkey}
+	<update id="updateRole" parameterType="hashmap">
+		update camp_member a 
+			join member_role mr on 
+			a.mb_ID = mr.mb_ID
+		set 
+			mr.gr_role ='ROLE_USER'
+		where 
+			mr.mb_ID=#{mb_ID} and a.authkey=#{authkey}
 	</update>
 	<!-- 11. 비밀번호 변경하기 -->
 	<update id="updatePassword" parameterType="hashmap">
