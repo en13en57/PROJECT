@@ -2,17 +2,10 @@ package PRO.S2K.CAMP.CONTROLLER;
 
 import java.util.UUID;
 
-import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.social.google.connect.GoogleConnectionFactory;
-import org.springframework.social.oauth2.GrantType;
-import org.springframework.social.oauth2.OAuth2Operations;
-import org.springframework.social.oauth2.OAuth2Parameters;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -21,10 +14,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-
-import PRO.S2K.CAMP.AUTH.SnsLogin;
-import PRO.S2K.CAMP.AUTH.SnsValue;
 import PRO.S2K.CAMP.SERVICE.MemberService;
+import PRO.S2K.CAMP.VO.KakaoVO;
 import PRO.S2K.CAMP.VO.MemberVO;
 import lombok.extern.slf4j.Slf4j;
 @Slf4j
@@ -37,44 +28,16 @@ public class MemberController {
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	
+	@Autowired
+	private HttpSession session;
 	
-	
-	
-	
-	// 서블릿 컨텍스트에서 불러 사용
-	@Inject 
-	private SnsValue naverSns;
-	@Inject
-	private SnsValue googleSns;
-	
-	@Inject
-	private GoogleConnectionFactory googleConnectionFactory;
-	
-	@Inject
-	private OAuth2Parameters googleOAuth2Parameters;
-	
-	@RequestMapping(value = "/login.do", method = RequestMethod.GET)
-	public void login(Model model) throws Exception {
-		log.info("login GET .....");
-		
-		SnsLogin snsLogin = new SnsLogin(naverSns);
-		model.addAttribute("naver_url", snsLogin.getNaverAuthURL());
-		
-//		SNSLogin googleLogin = new SNSLogin(googleSns);
-//		model.addAttribute("google_url", googleLogin.getNaverAuthURL());
-		
-		/* 구글code 발행을 위한 URL 생성 */
-		OAuth2Operations oauthOperations = googleConnectionFactory.getOAuthOperations();
-		String url = oauthOperations.buildAuthorizeUrl(GrantType.AUTHORIZATION_CODE, googleOAuth2Parameters);
-		model.addAttribute("google_url", url);
-	}
 	
 	
 	
 	@RequestMapping(value="/naver.do", method= RequestMethod.GET) 
 	public String naver() { 
 		log.info("home controller"); 
-		return "APIExamNaverLogin"; 
+		return "naverLogin"; 
 		}
 	@RequestMapping(value="/oauth2/naver/callback.do", method=RequestMethod.GET) 
 	public String loginPOSTNaver(HttpSession session) { 
@@ -85,10 +48,26 @@ public class MemberController {
 	
 	@RequestMapping(value="/kakao.do", method= RequestMethod.GET) 
 	public String kakao() { 
-		return "kakaoLogin"; 
+		return "kakaoLogin2"; 
 	}
 	
-	
+	@RequestMapping(value="/kakaoLogin.do", method=RequestMethod.GET)
+	public String kakaoLogin(@RequestParam(value = "code", required = false) String code) throws Exception {
+		System.out.println("#########" + code);
+		String access_Token = memberService.getAccessToken(code);
+		KakaoVO userInfo = memberService.getUserInfo(access_Token);
+		System.out.println("###access_Token#### : " + access_Token);
+		// 아래 코드가 추가되는 내용
+		session.invalidate();
+		// 위 코드는 session객체에 담긴 정보를 초기화 하는 코드.
+		session.setAttribute("email", userInfo.getK_email());
+		// 위 2개의 코드는 닉네임과 이메일을 session객체에 담는 코드
+		// jsp에서 ${sessionScope.kakaoN} 이런 형식으로 사용할 수 있다.
+		
+		return "kakaoLogin2";
+    	}
+
+
 	
 	
 	
@@ -231,7 +210,8 @@ public class MemberController {
 			// 임시비밀번호를 만들어서 DB에 저장
 			String newPassword = memberService.makePassword(15);
 			memberVO.setMb_password(newPassword);
-			memberService.updateImsi(memberVO);
+			memberService.updatePassword(memberVO);
+			memberService.sendPassword(memberVO);
 			// 만들어진 임시 비밀번호 메일로 보낸다.
 			return "findPasswordOk";
 		}

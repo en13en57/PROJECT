@@ -32,4 +32,11 @@ public interface MemberDAO {
 		void updatePassword(HashMap<String, String> map);
 		// 13. ID로 가져오기
 		MemberVO selectUserId(String userid);
+		
+		//14. 카카오 정보 찾기
+		MemberVO findKakao(HashMap<String, Object> userInfo);
+		//15. 카카오 정보 저장
+		void kakaoInsert(HashMap<String, Object> userInfo);
+
+
 } 

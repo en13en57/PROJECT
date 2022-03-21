@@ -6,6 +6,8 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <body>
     <a href="#" id="kakaoLogin"><img src="${pageContext.request.contextPath }/resources/images/kakaoLogin.png" alt="카카오계정 로그인" style="height: 100px;"/></a>
 
@@ -37,7 +39,8 @@
             }
         });
     };
-
+    
+    
     const login = document.querySelector('#kakaoLogin');
     login.addEventListener('click', kakaoLogin);
 </script>

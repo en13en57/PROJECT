@@ -44,56 +44,6 @@
 	
 	<context:component-scan base-package="PRO.S2K.CAMP" />
 	
-	<!-- oauth2 login -->
-	<!-- naver -->
-	<beans:bean id="naverClientID" class="java.lang.String">
-			<beans:constructor-arg value="eT2NCIHgedo2uVebssZm"/>
-	</beans:bean>
-	<beans:bean id="naverClientSecret" class="java.lang.String">
-			<beans:constructor-arg value="dBx60NTCAZ"/>
-	</beans:bean>
-	<beans:bean id="naverRedirectUrl" class="java.lang.String">
-			<beans:constructor-arg value="http://localhost:8080/auth/naver/callback"/>
-	</beans:bean>
-	
-	<beans:bean id="naverSns" class="PRO.S2K.CAMP.AUTH.SnsValue"> 
-		<beans:constructor-arg value="naver"/>
-		<beans:constructor-arg ref="naverClientID"/>
-		<beans:constructor-arg ref="naverClientSecret"/>
-		<beans:constructor-arg ref="naverRedirectUrl"/>
-	</beans:bean>
-	
-	<!-- google -->
-	<beans:bean id="googleClientID" class="java.lang.String">
-			<beans:constructor-arg value="38922475779-ddp06g9ek43r48925vooltt0mjtd6ur6.apps.googleusercontent.com"/>
-	</beans:bean>
-	<beans:bean id="googleClientSecret" class="java.lang.String">
-			<beans:constructor-arg value="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"/>
-	</beans:bean>
-	<beans:bean id="googleRedirectUrl" class="java.lang.String">
-			<beans:constructor-arg value="http://localhost:8080/auth/google/callback"/>
-	</beans:bean>
-	
-	<beans:bean id="googleSns" class="PRO.S2K.CAMP.AUTH.SnsValue"> 
-		<beans:constructor-arg value="google"/>
-		<beans:constructor-arg ref="googleClientID"/>
-		<beans:constructor-arg ref="googleClientSecret"/>
-		<beans:constructor-arg ref="googleRedirectUrl"/>
-	</beans:bean>
-	
-	<beans:bean id="googleConnectionFactory"
-				class="org.springframework.social.google.connect.GoogleConnectionFactory">
-		<beans:constructor-arg ref="googleClientID"/>		
-		<beans:constructor-arg ref="googleClientSecret"/>		
-	</beans:bean>
-	
-	<beans:bean id="googleOAuth2Parameters"
-				class="org.springframework.social.oauth2.OAuth2Parameters">
-		<beans:property name="scope" value="https://www.googleapis.com/auth/userinfo.email"/>		
-		<!-- <beans:property name="scope" value="https://www.googleapis.com/auth/plus.login"/ > --> <!-- 더많은 정보를 요할때 구글플러스에서 가져 -->
-		<beans:property name="redirectUri" ref="googleRedirectUrl" />	
-	</beans:bean>
-	
 	
 </beans:beans>
 

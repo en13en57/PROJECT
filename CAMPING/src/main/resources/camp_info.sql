@@ -156,16 +156,13 @@ INSERT INTO camp_grade values(0,'미인증','user');
 INSERT INTO camp_grade values(1,'인증','member');
 INSERT INTO camp_grade values(2,'관리자','admin');
 
-
-CREATE TABLE `sns_member` (
-  `mb_idx` int(11) NOT NULL,
-  `sns_id` varchar(255) NOT NULL,
-  `sns_type` varchar(10)  NULL,
-  `sns_name` varchar(255)  NULL,
-  `sns_profile` varchar(255)  NULL,
-  `sns_connect_date` datetime  NULL,
-  CONSTRAINT `mb_idx` FOREIGN KEY (`mb_idx`) REFERENCES `camp_member` (`mb_idx`)
+drop table sns_kakao;
+CREATE TABLE `sns_kakao` (
+	k_idx int primary key auto_increment,
+    k_nick varchar(20) not null,
+    k_email varchar(50) not null
 );
+  CONSTRAINT `sns_kakao_FK` FOREIGN KEY (`mb_idx`) REFERENCES `camp_member` (`mb_idx`) ON UPDATE CASCADE
 
 		update camp_member a 
 			join member_role mr on 
