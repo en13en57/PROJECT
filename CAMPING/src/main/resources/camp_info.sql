@@ -145,11 +145,12 @@ CREATE TABLE `camp_review` (
 );
 
 ALTER table camp_review ADD rv_password int not null ;
- 
+ drop table camp_comment ;
 CREATE TABLE `camp_comment` (
 --  `mb_idx` int(11) NOT NULL,
-  `rv_idx` int NOT NULL,
-  co_idx int NOT NULL auto_increment,
+ `rv_idx` int NOT NULL,  
+co_idx int NOT NULL auto_increment,
+  co_ref int DEFAULT 0,
   co_seq int DEFAULT 0, 
   co_lev int DEFAULT 0,
   `co_content` text not NULL,
@@ -190,3 +191,4 @@ CREATE TABLE `sns_kakao` (
 			mr.mb_ID='rkdendh' and a.authkey='b516e506-649a-4ff7-99e7-112088b65491';
 
 alter table camp_member add column sns_email varchar (200);
+alter table camp_comment  auto_increment =1;

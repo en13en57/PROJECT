@@ -72,6 +72,9 @@ public class MemberController {
 	
 	
 	
+
+	
+
 	
 	@RequestMapping(value = "/insert.do", method = RequestMethod.GET)
 	public String insert() {

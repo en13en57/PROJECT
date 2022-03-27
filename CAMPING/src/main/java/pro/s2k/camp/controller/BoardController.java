@@ -9,12 +9,14 @@ import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -123,6 +125,7 @@ public class BoardController {
 			commVO.setB(Integer.parseInt(params.get("b")));
 			commVO.setRv_idx(Integer.parseInt(params.get("rv_idx")));
 		}
+		
 		ReviewVO reviewVO = reviewService.selectByIdx(commVO.getRv_idx());
 		reviewVO.setRv_idx(commVO.getRv_idx());
 		log.info(reviewVO.getRv_idx()+"############################################################################################################");
@@ -137,8 +140,9 @@ public class BoardController {
 	
 	
 	// 저장 
-	@RequestMapping(value = "/replyInsertOk.do")
-	public String replyInsertOk(
+	@RequestMapping(value = "/replyInsertOk.do",method = RequestMethod.POST, produces = "application/json; charset=UTF8")
+	@ResponseBody
+	public Map<String, String> replyInsertOk(
 		@ModelAttribute CommonVO commVO,
 		@ModelAttribute CommentVO commentVO, 
 		HttpServletRequest request, Model model,
@@ -150,9 +154,34 @@ public class BoardController {
 	map.put("p",commVO.getCurrentPage() + "");
 	map.put("s",commVO.getPageSize() + "");
 	map.put("b",commVO.getBlockSize() + "");
+	map.put("rv_idx",commVO.getRv_idx() + "");
 	redirectAttributes.addFlashAttribute("map", map);
-	return "reviewView";
+	return map;
 	}
+	
+	
+	// 저장 
+	@RequestMapping(value = "/rereply.do",method = RequestMethod.POST, produces = "application/json; charset=UTF8")
+	@ResponseBody
+	public Map<String, String> rereply(
+		@ModelAttribute CommonVO commVO,
+		@ModelAttribute CommentVO commentVO, 
+		HttpServletRequest request, Model model,
+		RedirectAttributes redirectAttributes) { // redirect시 POST전송을 위해 RedirectAttributes 변수 추가
+	// 일단 VO로 받고
+	commentVO.setCo_ip(request.getRemoteAddr()); // 아이피 추가로 넣어주고 
+	commentService.reply(commentVO);
+	Map<String, String> map = new HashMap<>();
+	map.put("p",commVO.getCurrentPage() + "");
+	map.put("s",commVO.getPageSize() + "");
+	map.put("b",commVO.getBlockSize() + "");
+	map.put("rv_idx",commVO.getRv_idx() + "");
+	redirectAttributes.addFlashAttribute("map", map);
+	return map;
+	}
+	
+	
+	
 	
 	
 	// 저장 
@@ -216,7 +245,7 @@ public class BoardController {
 	map.put("s", commVO.getPageSize() + "");
 	map.put("b",commVO.getBlockSize() + "");
 	redirectAttributes.addFlashAttribute("map", map);
-	return "redirect:/review.do";
+	return "reviewView";
 	}
 
 
@@ -265,8 +294,6 @@ public class BoardController {
 		// 일단 VO로 받고
 		reviewVO.setRv_ip(request.getRemoteAddr()); // 아이피 추가로 넣어주고 
 		log.info("{}의 updateOKPost 호출 : {}", this.getClass().getName(), commVO + "\n" + reviewVO);
-		String a = null;
-		a = reviewVO.getRv_idx() + "";
 //		// 넘어온 파일 처리를 하자
 //		List<FileUploadVO> fileList = new ArrayList<>(); // 파일 정보를 저장할 리스트
 //		

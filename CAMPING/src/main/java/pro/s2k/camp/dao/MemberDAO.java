@@ -30,8 +30,10 @@ public interface MemberDAO {
 		MemberVO selectByUserId(HashMap<String, String> map);
 		// 11. 인증여부를 변경하는 쿼리
 		void updateRole(HashMap<String, String> map);
+		
 		// 12. 비밀번호 변경하기
 		void updatePassword(HashMap<String, String> map);
+		
 		// 13. ID로 가져오기
 		MemberVO selectUserId(String userid);
 		

@@ -6,12 +6,13 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
 import lombok.extern.slf4j.Slf4j;
 import pro.s2k.camp.dao.CommentDAO;
 import pro.s2k.camp.vo.CommentVO;
-import pro.s2k.camp.vo.CommonVO;
+
 import pro.s2k.camp.vo.PagingVO;
-import pro.s2k.camp.vo.ReviewVO;
+
 
 @Slf4j
 @Service("commentService")
@@ -58,8 +59,8 @@ public class CommentServiceImpl implements CommentService {
 		if(commentVO!=null) {
 			// ref가 같으면서 나보다 seq가 큰값들을 모두 seq 값을 1씩 증가한다.
 			HashMap<String, Integer> map = new HashMap<>();
-			map.put("ref", commentVO.getRv_idx());
-			map.put("seq", commentVO.getCo_seq());
+			map.put("rv_idx", commentVO.getRv_idx());
+			map.put("co_seq", commentVO.getCo_seq());
 			commentDAO.updateSeq(map);
 			// ref는 그대로
 			// seq는 +1
@@ -68,9 +69,27 @@ public class CommentServiceImpl implements CommentService {
 			commentVO.setCo_lev(commentVO.getCo_lev()+1);
 			// 댓글 저장
 			commentDAO.insert(commentVO);
+			commentDAO.refEqalIdx();
 		}
 	}
-
+	@Override // 답변 저장
+	public void reply(CommentVO commentVO) {
+		if(commentVO!=null) {
+			// ref가 같으면서 나보다 seq가 큰값 들을 모두 seq값을 1씩 증가시킨다.
+			HashMap<String, Integer> map = new HashMap<>();
+			map.put("co_ref", commentVO.getCo_ref());
+			map.put("co_seq", commentVO.getCo_seq());
+			// seq는 그대로
+			// lev는 +1
+			commentVO.setCo_lev(commentVO.getCo_lev()+1);
+			
+			// 댓글 저장
+			commentDAO.reply(commentVO);
+		}
+	}
+	
+	
+	
 	@Override
 	public void update(CommentVO commentVO, String[] delFiles, String realPath) {
 		if(commentVO!=null) {
@@ -93,7 +112,11 @@ public class CommentServiceImpl implements CommentService {
 	}
 
 
-
-
-
+	
 }
+
+
+
+
+
+

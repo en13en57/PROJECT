@@ -14,8 +14,10 @@ public interface MemberService {
 	MemberVO update(MemberVO memberVO);
 // 5. 회원 탈퇴
 	void delete(MemberVO memberVO);
+
 // 6. 비번 변경
 	void updatePassword(MemberVO memberVO);
+
 // 7. 인증 완료
 	MemberVO updateRole(String mb_ID, String authkey);
 // 8. 아이디 중복확인

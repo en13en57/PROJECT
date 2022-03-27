@@ -32,7 +32,10 @@ public interface CommentDAO {
 	
 	// 저장한 idx값 알아내기 (현재 Sequence값)
 	int selectSeq();
-	
+	// 대댓
+	void reply(CommentVO commentVO);
+	// ref=idx
+	void refEqalIdx();
 	
 	
 }
