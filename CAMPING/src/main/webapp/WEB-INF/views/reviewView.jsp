@@ -68,16 +68,16 @@
 			return false;
 		}
 	}
-	function formCheck2() {
-		var value = $("#rereplyContent").val();
+/* 	function formCheck2(idx) {
+		var value = $("#rereplyContent"+idx).val();
 		if (!value || value.trim().length == 0) {
 			alert('답변을 반드시 입력해야 합니다.');
-			$("#rereplyContent").val("");
-			$("#rereplyContent").focus();
+			$("#rereplyContent"+idx).val("");
+			$("#rereplyContent"+idx).focus();
 			return false;
 		}
 	
-	}
+	} */
 	/* const url = new URL(window.location.href);
 	 const urlParams = url.searchParams;
 	 alert(urlParams.get('idx'));
@@ -107,22 +107,44 @@
 		});
 	}
 	
-	 function sendReplyParam(idx) {
+	 function sendReplyParam(index) {
 		 $.ajax({
 			type : "POST", // Post 방식으로 찾아야겠네 이거 ㅇㅇ 일단 영상은 있는데...
 			url : "rereply.do", // 컨트롤러에서 대기중인 URL 주소이다.
-			data : $('#rView3'+idx).serialize(),
+			data : $('#rView3'+index).serialize(),
 			dataType : "text",
 
 			success : function(res) { // 비동기통신의 성공일경우 success콜백으로 들어옵니다. 'res'는 응답받은 데이터이다.
 				var jsonStr = JSON.parse(res);
 				console.log(jsonStr);
 				/* location.href='/reviewView.do?p='+jsonStr.p+'&s='+jsonStr.s+'&b='+jsonStr.b+'&rv_dix='+jsonStr.rv_idx; */
-				document.sendData2.p.value = jsonStr.p;
-				document.sendData2.s.value = jsonStr.s;
-				document.sendData2.b.value = jsonStr.b;
-				document.sendData2.rv_idx.value = jsonStr.rv_idx;
-				document.sendData2.submit();
+				document.sendData.p.value = jsonStr.p;
+				document.sendData.s.value = jsonStr.s;
+				document.sendData.b.value = jsonStr.b;
+				document.sendData.rv_idx.value = jsonStr.rv_idx;
+				document.sendData.submit();
+			},
+			error : function(XMLHttpRequest, textStatus, errorThrown) { // 비동기 통신이 실패할경우 error 콜백으로 들어옵니다.
+			}
+		});
+	}
+	
+	 function deleteParam(index) {
+		 $.ajax({
+			type : "POST", // Post 방식으로 찾아야겠네 이거 ㅇㅇ 일단 영상은 있는데...
+			url : "replyDeleteOk.do", // 컨트롤러에서 대기중인 URL 주소이다.
+			data : $('#deleteRe'+index).serialize(),
+			dataType : "text",
+
+			success : function(res) { // 비동기통신의 성공일경우 success콜백으로 들어옵니다. 'res'는 응답받은 데이터이다.
+				var jsonStr = JSON.parse(res);
+				console.log(jsonStr);
+				/* location.href='/reviewView.do?p='+jsonStr.p+'&s='+jsonStr.s+'&b='+jsonStr.b+'&rv_dix='+jsonStr.rv_idx; */
+				document.sendData.p.value = jsonStr.p;
+				document.sendData.s.value = jsonStr.s;
+				document.sendData.b.value = jsonStr.b;
+				document.sendData.rv_idx.value = jsonStr.rv_idx;
+				document.sendData.submit();
 			},
 			error : function(XMLHttpRequest, textStatus, errorThrown) { // 비동기 통신이 실패할경우 error 콜백으로 들어옵니다.
 			}
@@ -420,7 +442,7 @@ table th {
 					<!-- 삭제표시가 되어 있으면 삭제표시된 글이라고 표시한다. -->
 					<c:if test="${vo.del2==0 }">
 						<div onclick="return false;"
-							style="background-color: gray; color: red;">삭제된 댓글입니다.</div>
+							style="background-color: gray; color: red; padding-left: 2%; margin-bottom: 5px;">삭제된 댓글입니다. </div>
 					</c:if>
 					<!-- 삭제표시가 되어 있지 않으면 보여준다. -->
 
@@ -445,7 +467,19 @@ table th {
 								<!-- 권한 주시면됨 본인 이면 수정삭제-->
 								<div style="text-align: right;">
 									<button class="btn btn-outline-success btn-sm ">수정</button>
-									<button class="btn btn-outline-danger btn-sm  ">삭제</button>
+									<form action="${pageContext.request.contextPath}/replyDeleteOk.do" method="post" id="deleteRe${vs.index}">
+										<sec:csrfInput/> 										
+										<input type="hidden" name="p" value="${cv.currentPage }" /> 
+										<input type="hidden" name="s" value="${cv.pageSize }" />
+										<input type="hidden" name="b" value="${cv.blockSize }" />
+										<input type="hidden" name="rv_idx" value="${vo.rv_idx }"/>
+										<input type="hidden" name="co_idx" value="${vo.co_idx }"/>
+										<input type="hidden" name="co_ref" value="${vo.co_ref }"/>
+										<input type="hidden" name="co_seq" value="${vo.co_seq }"/>
+										<input type="hidden" name="co_lev" value="${vo.co_lev }"/>
+										
+										<input type="submit" class="btn btn-outline-danger btn-sm " onclick="deleteParam('${vs.index }');" value="삭제"/>
+									</form>
 								</div>
 								<br />
 							</div>
@@ -454,16 +488,19 @@ table th {
 									<span id="rereplyy${vo.co_idx }"  style="cursor: pointer;" onclick="move('${vo.co_idx}');"  >ㄴ대댓글</span>
 								</div>
 							<div id="rereply${vo.co_idx }" class="hide"> 
-							<form action="${pageContext.request.contextPath}/rereply.do" method="post"  id="rView3${vs.index}"onclick="return formCheck2();" >
+							<form action="${pageContext.request.contextPath}/rereply.do" method="post"  id="rView3${vs.index}" >
 								<sec:csrfInput/>
-								<input type="hidden" name="rv_idx" value="${vo.rv_idx }"/>
-								<input type="hidden" name="co_idx" value="${vo.co_idx }"/>
-								<input type="hidden" name="co_ref" value="${vo.co_ref }"/>
-								<input type="hidden" name="co_seq" value="${vo.co_seq }"/>
-								<input type="hidden" name="co_lev" value="${vo.co_lev }"/>
-								<textarea name="co_content" id="rereplyContent" required="required"></textarea> 
+									<input type="hidden" name="p" value="${cv.currentPage }" /> 
+									<input type="hidden" name="s" value="${cv.pageSize }" />
+									<input type="hidden" name="b" value="${cv.blockSize }" />
+									<input type="hidden" name="rv_idx" value="${vo.rv_idx }"/>
+									<input type="hidden" name="co_idx" value="${vo.co_idx }"/>
+									<input type="hidden" name="co_ref" value="${vo.co_ref }"/>
+									<input type="hidden" name="co_seq" value="${vo.co_seq }"/>
+									<input type="hidden" name="co_lev" value="${vo.co_lev }"/>
+									<textarea name="co_content" id="rereplyContent" required="required"></textarea> 
 									<div style="text-align: right;"  >
-										<input class="btn-outline-success btn-sm" type="submit"  onclick="sendReplyParam('${vs.index}');" value="대댓글"/>
+										<input class="btn-outline-success btn-sm" type="submit"  value="대댓글" onclick="sendReplyParam('${vs.index }');"/>
 									</div>
 								
 								
@@ -488,7 +525,7 @@ table th {
 		<p style="font-size: 20px; text-align: center; font-weight: bold;">댓글작성</p>
 	</div>
 	<form action="${pageContext.request.contextPath}/replyInsertOk.do"
-		onclick="return formCheck();" method="post" id="rView2">
+		 method="post" id="rView2">
 		<sec:csrfInput />
 		<input type="hidden" name="p" value="${cv.currentPage }" /> <input
 			type="hidden" name="s" value="${cv.pageSize }" /> <input
@@ -515,15 +552,7 @@ table th {
 			type="hidden" name="b" value="${cv.blockSize }" /> <input
 			type="hidden" name="rv_idx" value="${rv.rv_idx }" />
 	</form>
-	<%-- 실제적으로 갈 jsp --%>
-	<form action="${pageContext.request.contextPath}/reviewView.do"
-		method="post" id="sendData2" name="sendData2">
-		<sec:csrfInput />
-		<input type="hidden" name="p" value="${cv.currentPage }" /> <input
-			type="hidden" name="s" value="${cv.pageSize }" /> <input
-			type="hidden" name="b" value="${cv.blockSize }" /> <input
-			type="hidden" name="rv_idx" value="${rv.rv_idx }" />
-	</form>
+
 
 
 	<!-- Footer -->

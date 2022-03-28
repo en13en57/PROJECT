@@ -26,7 +26,7 @@
 	</select>
 	<!-- ref = idx -->
 	<update id="refEqalIdx">
-		update camp_comment set co_ref=co_idx where co_seq=co_lev
+		update camp_comment set co_ref=co_idx where co_seq = 0
 	</update>
 	
 	
@@ -53,7 +53,7 @@
 	
 	<!-- 나보다 seq가 크거나 같은값을 모두 1증가시킴 대댓글 -->
 	<update id="updateSeq" parameterType="hashmap">
-		update camp_comment set co_seq = co_seq + 1 where co_idx = #{rv_idx} and co_seq >= #{co_seq}
+		update camp_comment set co_seq = co_seq + 1 where rv_idx = #{rv_idx} and co_seq >= #{co_seq}
 	</update>
 	
 	<!-- 나와 ref가 같으면서 seq가 크거나 같은것 뽑기 -->
@@ -78,7 +78,7 @@
 		delete from camp_comment where co_idx=#{co_idx} and del2 = 0
 	</delete>	
 	<delete id="delete2" parameterType="int">
-		delete from camp_comment where co_idx=#{co_idx}
+		delete from camp_comment where co_ref=#{co_ref}
 	</delete>
 	<!-- 삭제표시로 변경하기 -->
 	<update id="updateDel" parameterType="int">
@@ -86,7 +86,7 @@
 	</update>
 	<!-- 삭제표시값이 'Y' 모든 데이터 가져오기 -->	
 	<select id="selectDelList" resultType="commentVO">
-		select*from camp_comment where del2 = 0 order by co_idx desc
+		select * from camp_comment where del2 = 0 and co_ref=#{co_ref} order by co_idx desc
 	</select>
 	
 	  	<!-- 현재 저장한 idx값 알아내기 -->

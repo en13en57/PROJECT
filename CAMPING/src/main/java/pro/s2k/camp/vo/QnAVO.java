@@ -28,17 +28,15 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class QuestionVO {
+public class QnAVO {
 	private int mb_idx;
-	private int q_idx;
-	private int ref;
-	private int seq;
-	private int lev;
-	private String q_title;
-	private String q_content;
+	private int qna_idx;
+	private int qna_ref;
+	private String qna_title;
+	private String qna_content;
+	private Date qna_regDate;
+	private Date qna_modiDate;
+	private String qna_ip;
+	
 	private String mb_nick;
-	private Date q_regDate;
-	private Date q_modiDate;
-	private int q_hit;
-	private int del;
 }

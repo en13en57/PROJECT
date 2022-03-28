@@ -24,15 +24,6 @@
    src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
 
-<!-- 서머노트를 위해 추가해야할 부분 -->
-<script
-   src="${pageContext.request.contextPath}/resources/summernote/summernote-lite.js"></script>
-<script
-   src="${pageContext.request.contextPath}/resources/summernote/lang/summernote-ko-KR.js"></script>
-<link rel="stylesheet"
-   href="${pageContext.request.contextPath}/resources/summernote/summernote-lite.css">
-
-
 <link rel="stylesheet"
    href="${pageContext.request.contextPath }/resources/assets/css/main.css" />
 <link rel="stylesheet"
@@ -77,15 +68,6 @@
 
 p {
     margin: 0 0 1em 0;
-}
-
-
-.note-editor.note-frame .note-editing-area .note-editable, .note-editor.note-airframe .note-editing-area .note-editable
-   {
-   padding: 10px;
-   background: white;
-   overflow: auto;
-   word-wrap: break-word;
 }
 
 b {
@@ -239,13 +221,13 @@ b {
       <br> <br>
       <div>
          <p
-            style="font-size: 50px; padding-left: 12%; padding-top: 3%; font-weight: bold;">캠핑후기</p>
+            style="font-size: 50px; padding-left: 12%; padding-top: 3%; font-weight: bold;">QnA</p>
       </div>
          </div>
       <br >
       <section
          style="padding-right: 10%; padding-left: 10%; margin: 0 auto;">
-         <form action="${pageContext.request.contextPath}/reviewInsertOk.do" enctype="multipart/form-data" method="get" onsubmit="return formCheck();">
+         <form action="${pageContext.request.contextPath}/QnAInsertOk.do" enctype="multipart/form-data" method="get" onsubmit="return formCheck();">
              	<%-- 페이지번호, 페이지 크기, 블록크기를 숨겨서 넘긴다.  --%>
              	
 					<input type="hidden" name="s"  value="${cv.pageSize }"/>
@@ -256,10 +238,11 @@ b {
 					<div class="row">
 							<div class="col-sm-7">
 			            	    <label for="ID"  style="font-size: 20px;font-weight: bold;"> 제목</label>
-			            		<input type="text" id="title" name="rv_title" style="background-color: white; color: black;"><br>
+			            		<input type="text" id="title" name="qna_title" style="background-color: white; color: black;"><br>
 							</div>
 						</div>
-          <textarea id="content" name="rv_content" class="summernote"></textarea>
+		  <label for="ID"  style="font-size: 20px;font-weight: bold;"> 질문</label>
+          <textarea id="content" name="qna_content" style="height:250px;color:black; background-color: white;">내용을 작성하여 주세요</textarea>
 
            <c:if test="${role eq 'ROLE_ADMIN' }">
            <div style="padding-top: 1%; float: right;">
@@ -295,78 +278,6 @@ b {
          </ul>
       </footer>
 
-
-   <!-- Scripts -->
-   <script>
-   $(function() {
-   		$('.summernote').summernote(
-            {
-               // 에디터 높이
-               height : 150,
-               // 에디터 한글 설정
-               lang : "ko-KR",
-               // 에디터에 커서 이동 (input창의 autofocus라고 생각하시면 됩니다.)
-               focus : true,
-               toolbar : [
-                     // 글꼴 설정
-                     [ 'fontname', [ 'fontname' ] ],
-                     // 글자 크기 설정
-                     [ 'fontsize', [ 'fontsize' ] ],
-                     // 굵기, 기울임꼴, 밑줄,취소 선, 서식지우기
-                     [
-                           'style',
-                           [ 'bold', 'italic', 'underline',
-                                 'strikethrough', 'clear' ] ],
-                     // 글자색
-                     [ 'color', [ 'forecolor', 'color' ] ],
-                     // 표만들기
-                     [ 'table', [ 'table' ] ],
-                     // 글머리 기호, 번호매기기, 문단정렬
-                     [ 'para', [ 'ul', 'ol', 'paragraph' ] ],
-                     // 줄간격
-                     [ 'height', [ 'height' ] ],
-                     // 그림첨부, 링크만들기, 동영상첨부
-                     [ 'insert', [ 'picture', 'link', 'video' ] ],
-                     // 코드보기, 확대해서보기, 도움말
-                     [ 'view', [ 'codeview', 'fullscreen', 'help' ] ] ],
-               // 추가한 글꼴
-               fontNames : [ 'Arial', 'Arial Black', 'Comic Sans MS',
-                     'Courier New', '맑은 고딕', '궁서', '굴림체', '굴림', '돋음체',
-                     '바탕체' ],
-               // 추가한 폰트사이즈
-               fontSizes : [ '8', '9', '10', '11', '12', '14', '16', '18',
-                     '20', '22', '24', '28', '30', '36', '50', '72' ],
-         // 이미지가 1MB를 넘을경우 수동으로 업로드를 처리하고 실행될 코드를 지정해준다.
-			callbacks : { // 여기 부분이 이미지를 첨부하는 부분.
-				onImageUpload : function(files, editor, welEditable) {
-					for (var i = files.length - 1; i >= 0; i--) {
-						sendFile(files[i], this);
-					}
-				}
-			}
-		});
-	});
-  	
-   function sendFile(file, el) {
-		var form_data = new FormData();
-      	form_data.append('file', file);
-      	$.ajax({
-        	data: form_data,
-        	type: "POST",
-        	url: 'imageUpload.do',
-        	cache: false,
-        	contentType: false,
-        	enctype: 'multipart/form-data',
-        	processData: false,
-        	success: function(img_name) {
-          		$(el).summernote('editor.insertImage', img_name);
-        	},
-        	error : function(){
-        		alert('에러!!!');
-        	}
-      	});
-    }
-   </script>
    <script
       src="${pageContext.request.contextPath }/resources/assets/js/jquery.scrolly.min.js"></script>
    <script

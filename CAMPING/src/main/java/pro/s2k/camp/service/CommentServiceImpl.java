@@ -6,11 +6,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
 import lombok.extern.slf4j.Slf4j;
 import pro.s2k.camp.dao.CommentDAO;
 import pro.s2k.camp.vo.CommentVO;
-
 import pro.s2k.camp.vo.PagingVO;
 
 
@@ -94,7 +92,7 @@ public class CommentServiceImpl implements CommentService {
 	public void update(CommentVO commentVO, String[] delFiles, String realPath) {
 		if(commentVO!=null) {
 			// DB에서 해당 글번호의 글 읽어온다.
-			CommentVO dbVO = commentDAO.selectByIdx(commentVO.getRv_idx());
+			CommentVO dbVO = commentDAO.selectByIdx(commentVO.getCo_idx());
 			if(dbVO!=null) {
 				commentDAO.update(commentVO);
 			}
@@ -104,19 +102,55 @@ public class CommentServiceImpl implements CommentService {
 	@Override
 	public void delete(CommentVO commentVO, String uploadPath) {
 		if(commentVO!=null) {		
-			CommentVO dbVO = commentDAO.selectByIdx(commentVO.getRv_idx());
+			CommentVO dbVO = commentDAO.selectByIdx(commentVO.getCo_idx());
 			if(dbVO!=null) {
-				commentDAO.delete2(dbVO.getCo_idx());
-			}
-		}
-	}
+				// 자식이 있으면 삭제표시만하고 자식이 없으면 지운다.
+				HashMap<String, Integer> map = new HashMap<>();
+				map.put("co_ref", dbVO.getCo_ref());
+				map.put("co_seq", dbVO.getCo_seq());
+				List<CommentVO> list = commentDAO.selectSeqList(map); // ref가 같으면서 seq가 크거나 같은것들 가져오기
+				int childCount = 0; // 자식의 개수를 구한다.
+				if(!list.isEmpty()) {
+					int lev = list.get(0).getCo_lev(); // 0번의 레벨값
+					for(int i=1;i<list.size();i++) {
+						if(lev>=list.get(i).getCo_lev()); // 같은 레벨이 나온면 종료
+						childCount++; // 자식의 개수 증가
+					}
+				}
+				// 자식이 있으면 삭제표시만하고 자식이 없으면 지운다.
+				if(childCount==0) {
+					commentDAO.delete2(commentVO.getCo_idx()); // 지우기 === 이 때는 삭제표시가 바뀌지 않은 상태 'N'에서 삭제
+				}else {
+					commentDAO.updateDel(commentVO.getCo_idx()); // 삭제 표시
+				}
+//				// 전체글을 반복하면서 del값이 'Y'이면서 자식이 없는 항목은 완전 삭제를 해줘야 한다.
+//				List<CommentVO> delList = commentDAO.selectDelList(); // 삭제표시된 목록
+//				log.info(delList+"delList%%%%%%%4");
+//				if(!delList.isEmpty()) {
+//					for(CommentVO vo : delList) { // 반복
+//						// 반복하는 요소의 자식의 개수
+//						HashMap<String, Integer> map2 = new HashMap<>();
+//						map2.put("co_ref", vo.getCo_ref());
+//						map2.put("co_seq", vo.getCo_seq());
+//						List<CommentVO> list2  = commentDAO.selectSeqList(map2);
+//						int count = 0;
+//						if(!list2.isEmpty()) {
+//							int lev = list2.get(0).getCo_lev();
+//							for(int i=1;i<list2.size();i++) {
+//								if(lev>=list2.get(i).getCo_lev());
+//								count++;
+//								log.info(count+"222####4");
+//							}
+//						}
+//						if(count==0) { // 삭제 표시가 있으면서 자식이 없다면 
+//							log.info(count+"333####4");
+//							commentDAO.delete1(vo.getCo_ref()); // 이미 삭제표시가 'Y'인 상태에서 삭제 쿼리 조건에 del='Y'를 포함
+//						} // end if
+//					}// end for
+//				}// end if
+			}//end if
+		} // end if
+	} // end method
 
-
-	
 }
-
-
-
-
-
 
