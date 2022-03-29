@@ -7,11 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
+import pro.s2k.camp.dao.MemberDAO;
 import pro.s2k.camp.dao.QnADAO;
 import pro.s2k.camp.vo.CommonVO;
+import pro.s2k.camp.vo.MemberVO;
 import pro.s2k.camp.vo.PagingVO;
 import pro.s2k.camp.vo.QnAVO;
-import pro.s2k.camp.vo.ReviewVO;
 
 @Slf4j
 @Service("QnAService")
@@ -19,6 +20,9 @@ public class QnAServiceImpl implements QnAService{
 
 	@Autowired
 	private QnADAO qnaDAO;
+	
+	@Autowired
+	private MemberDAO memberDAO;
 	
 	
 	
@@ -47,6 +51,11 @@ public class QnAServiceImpl implements QnAService{
 		QnAVO qnaVO = qnaDAO.selectByIdx(idx);
 		return qnaVO;
 	}
+	@Override
+	public QnAVO selectByIdxAnswer(int idx) {
+		QnAVO qnaVO = qnaDAO.selectByIdxAnswer(idx);
+		return qnaVO;
+	}
 
 	@Override
 	public void insert(QnAVO qnaVO) {
@@ -57,9 +66,10 @@ public class QnAServiceImpl implements QnAService{
 	}
 
 	@Override
-	public void reply(QnAVO qnaVO) {
-		// TODO Auto-generated method stub
-		
+	public void answer(QnAVO qnaVO) {
+		if(qnaVO!=null) {
+			qnaDAO.answer(qnaVO);
+			}
 	}
 
 	@Override
@@ -71,6 +81,12 @@ public class QnAServiceImpl implements QnAService{
 	@Override
 	public void delete(QnAVO qnaVO) {
 		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void updateRead(int idx) {
+		qnaDAO.updateRead(idx);
 		
 	}
 

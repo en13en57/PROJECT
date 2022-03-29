@@ -8,8 +8,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,13 +30,17 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
 import com.google.gson.JsonObject;
+import com.mysql.fabric.xmlrpc.base.Member;
 
 import lombok.extern.slf4j.Slf4j;
+import pro.s2k.camp.dao.QnADAO;
 import pro.s2k.camp.service.CommentService;
+import pro.s2k.camp.service.MemberService;
 import pro.s2k.camp.service.QnAService;
 import pro.s2k.camp.service.ReviewService;
 import pro.s2k.camp.vo.CommentVO;
 import pro.s2k.camp.vo.CommonVO;
+import pro.s2k.camp.vo.MemberVO;
 import pro.s2k.camp.vo.PagingVO;
 import pro.s2k.camp.vo.QnAVO;
 import pro.s2k.camp.vo.ReviewVO;
@@ -239,10 +245,7 @@ public class BoardController {
 			commVO.setB(Integer.parseInt(params.get("b")));
 			commVO.setRv_idx(Integer.parseInt(params.get("rv_idx")));
 		}
-		
 		ReviewVO reviewVO = reviewService.selectByIdx(commVO.getRv_idx());
-		reviewVO.setRv_idx(commVO.getRv_idx());
-		log.info(reviewVO.getRv_idx()+"############################################################################################################");
 		model.addAttribute("rv", reviewVO);
 		model.addAttribute("cv", commVO);
 		CommentVO commentVO = commentService.selectByIdx(commVO.getRv_idx());
@@ -382,7 +385,6 @@ public class BoardController {
 			commVO.setRv_idx(Integer.parseInt(params.get("rv_idx")));
 		}
 		ReviewVO reviewVO = reviewService.selectByIdx(commVO.getRv_idx());
-		reviewVO.setRv_idx(commVO.getRv_idx());
 		model.addAttribute("rv", reviewVO);
 		model.addAttribute("cv", commVO);
 		return "reviewUpdate";
@@ -553,7 +555,7 @@ public class BoardController {
 	// QnA--------------------------------------------------------------------
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/QnA.do")
-	public String QnAView(@RequestParam Map<String, String> params, HttpServletRequest request,@ModelAttribute CommonVO commVO, Model model) {
+	public String QnA(@RequestParam Map<String, String> params, HttpServletRequest request,@ModelAttribute CommonVO commVO, Model model) {
 		Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
 		if(flashMap!=null) {
 			params = (Map<String, String>) flashMap.get("map");
@@ -592,9 +594,59 @@ public class BoardController {
 		return "redirect:/QnA.do";
 		}
 	
-	
-	
-	
+		
+		@SuppressWarnings("unchecked")
+		@RequestMapping(value = "/QnAView.do") 
+		public String QnAView(@RequestParam Map<String, String> params, @RequestParam String role, HttpServletRequest request, Model model, 
+				@ModelAttribute CommonVO commVO ) {
+			Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
+			if(flashMap!=null) {
+				params = (Map<String, String>) flashMap.get("map");
+				commVO.setP(Integer.parseInt(params.get("p")));
+				commVO.setS(Integer.parseInt(params.get("s")));
+				commVO.setB(Integer.parseInt(params.get("b")));
+				commVO.setQna_idx(Integer.parseInt(params.get("qna_idx")));
+			}
+			PagingVO<QnAVO> pagingVO = qnaService.selectList(commVO);
+			model.addAttribute("pv", pagingVO);
+			QnAVO qnaVO = qnaService.selectByIdx(commVO.getQna_idx());
+			model.addAttribute("qv", qnaVO);
+			model.addAttribute("cv", commVO);
+			QnAVO qnaVO2 = qnaService.selectByIdxAnswer(commVO.getQna_idx());
+			model.addAttribute("qv2", qnaVO2);
+		
+//			if(memberVO.getGr_role()=="ROLE_ADMIN" && qnaVO.getQna_read()==0) {
+//	            qnaVO.setQna_read(1);
+//	         }
+			if(qnaVO.getQna_read()==0 && role.equals("ROLE_ADMIN")) {
+				qnaVO.setQna_read(qnaVO.getQna_read()+1);
+				qnaService.updateRead(qnaVO.getQna_idx());
+			}
+		
+			return "QnAView";
+		}
+		
+		// 저장 
+		@RequestMapping(value = "/answerInsertOk.do",method = RequestMethod.POST, produces = "application/json; charset=UTF8")
+		public String answerInsertOk(
+			@ModelAttribute CommonVO commVO,
+			@ModelAttribute QnAVO qnaVO, 
+			HttpServletRequest request, Model model,
+			RedirectAttributes redirectAttributes) { // redirect시 POST전송을 위해 RedirectAttributes 변수 추가
+		// 일단 VO로 받고
+		qnaVO.setQna_ip(request.getRemoteAddr()); // 아이피 추가로 넣어주고 
+		qnaService.answer(qnaVO);
+		Map<String, String> map = new HashMap<>();
+		map.put("p",commVO.getCurrentPage() + "");
+		map.put("s",commVO.getPageSize() + "");
+		map.put("b",commVO.getBlockSize() + "");
+		map.put("qna_idx",commVO.getRv_idx() + "");
+		redirectAttributes.addFlashAttribute("map", map);
+		return "redirect:/QnA.do";
+		}
+		
+		
+		
 	
 	
 	

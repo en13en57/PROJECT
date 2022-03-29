@@ -227,7 +227,7 @@ b {
       <br >
       <section
          style="padding-right: 10%; padding-left: 10%; margin: 0 auto;">
-         <form action="${pageContext.request.contextPath}/QnAInsertOk.do" enctype="multipart/form-data" method="get" onsubmit="return formCheck();">
+         <form action="${pageContext.request.contextPath}/QnAInsertOk.do" method="get" onsubmit="return formCheck();">
              	<%-- 페이지번호, 페이지 크기, 블록크기를 숨겨서 넘긴다.  --%>
              	
 					<input type="hidden" name="s"  value="${cv.pageSize }"/>

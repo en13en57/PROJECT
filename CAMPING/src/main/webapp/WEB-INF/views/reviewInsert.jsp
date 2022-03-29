@@ -298,9 +298,10 @@ b {
 
    <!-- Scripts -->
    <script>
-   $(function() {
-   		$('.summernote').summernote(
-            {
+ 
+   $(document).ready(function() {
+	      $('.summernote').summernote(
+	        {
                // 에디터 높이
                height : 150,
                // 에디터 한글 설정
@@ -335,37 +336,13 @@ b {
                      '바탕체' ],
                // 추가한 폰트사이즈
                fontSizes : [ '8', '9', '10', '11', '12', '14', '16', '18',
-                     '20', '22', '24', '28', '30', '36', '50', '72' ],
+                     '20', '22', '24', '28', '30', '36', '50', '72' ]
          // 이미지가 1MB를 넘을경우 수동으로 업로드를 처리하고 실행될 코드를 지정해준다.
-			callbacks : { // 여기 부분이 이미지를 첨부하는 부분.
-				onImageUpload : function(files, editor, welEditable) {
-					for (var i = files.length - 1; i >= 0; i--) {
-						sendFile(files[i], this);
-					}
-				}
-			}
-		});
-	});
+
+            });
+            });
   	
-   function sendFile(file, el) {
-		var form_data = new FormData();
-      	form_data.append('file', file);
-      	$.ajax({
-        	data: form_data,
-        	type: "POST",
-        	url: 'imageUpload.do',
-        	cache: false,
-        	contentType: false,
-        	enctype: 'multipart/form-data',
-        	processData: false,
-        	success: function(img_name) {
-          		$(el).summernote('editor.insertImage', img_name);
-        	},
-        	error : function(){
-        		alert('에러!!!');
-        	}
-      	});
-    }
+ 
    </script>
    <script
       src="${pageContext.request.contextPath }/resources/assets/js/jquery.scrolly.min.js"></script>
