@@ -21,8 +21,6 @@ public class QnAServiceImpl implements QnAService{
 	@Autowired
 	private QnADAO qnaDAO;
 	
-	@Autowired
-	private MemberDAO memberDAO;
 	
 	
 	
@@ -69,24 +67,40 @@ public class QnAServiceImpl implements QnAService{
 	public void answer(QnAVO qnaVO) {
 		if(qnaVO!=null) {
 			qnaDAO.answer(qnaVO);
+			qnaDAO.updateRead(qnaVO.getQna_idx());
 			}
 	}
 
 	@Override
 	public void update(QnAVO qnaVO) {
-		// TODO Auto-generated method stub
-		
+		if(qnaVO!=null) {
+			qnaDAO.update(qnaVO);
+		}
 	}
 
 	@Override
 	public void delete(QnAVO qnaVO) {
-		// TODO Auto-generated method stub
+		qnaDAO.delete(qnaVO.getQna_idx());
 		
 	}
 
 	@Override
 	public void updateRead(int idx) {
 		qnaDAO.updateRead(idx);
+		
+	}
+
+	@Override
+	public int selectMb_idx(int idx) {
+		int mbIdx = qnaDAO.selectMb_idx(idx);
+		return mbIdx;
+	}
+
+	@Override
+	public void updateAnswer(QnAVO qnaVO) {
+		if(qnaVO!=null) {
+			qnaDAO.updateAnswer(qnaVO);
+		}
 		
 	}
 

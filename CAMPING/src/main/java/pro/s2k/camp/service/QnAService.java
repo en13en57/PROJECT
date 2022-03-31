@@ -22,5 +22,7 @@ public interface QnAService {
 	
 	void updateRead(int idx);
 	
+	int selectMb_idx(int idx);
 	
+	void updateAnswer(QnAVO qnaVO);
 }

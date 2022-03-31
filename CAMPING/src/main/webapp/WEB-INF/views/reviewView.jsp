@@ -176,6 +176,9 @@
 				} */
 			});
 	}
+	
+	alert("${rv.rv_idx}");
+	alert("${rv.del}");
 	</script>
 
 
@@ -381,7 +384,7 @@ table th {
 		</div>
 	</div>
 
-
+	
 	<section style="padding-right: 10%; padding-left: 10%; margin: 0 auto;">
 		<form
 			action='<c:url value='${pageContext.request.contextPath }/reviewUpdate.do'/>'
@@ -391,42 +394,60 @@ table th {
 				type="hidden" name="s" value="${cv.pageSize }" /> <input
 				type="hidden" name="b" value="${cv.blockSize }" /> <input
 				type="hidden" name="rv_idx" value="${rv.rv_idx }" />
-			<div style="text-align: right;">
-				<input type="button" onclick="location.href='/review.do'"
-					class="btn btn-outline-secondary btn-sm" value="목록" /> <a href="#"
-					onclick="document.getElementById('ruView').submit()"><input
-					type="submit" class="btn btn-outline-secondary btn-sm" value="수정" /></a>
+		<c:choose>
+			<c:when test="${mi==mvo.mb_idx }">
+				<div style="text-align: right;">
+					<a href="#" onclick="document.getElementById('ruView').submit()">
+					<input type="submit" class="btn btn-outline-secondary btn-sm" value="수정" /></a>
+					<input type="submit" formaction="/reviewDeleteOk.do"
+							class="btn btn-outline-secondary btn-sm" value="삭제" />
+					<input type="button" onclick="location.href='/review.do'"
+						class="btn btn-outline-secondary btn-sm" value="목록" /> 
 			</div>
+			</c:when>
+			<c:otherwise>
+				<div style="text-align: right;">
+					<input type="button" onclick="location.href='/review.do'"
+						class="btn btn-outline-secondary btn-sm" value="목록" /> 
+				</div>
+			</c:otherwise>
+		</c:choose>
 		</form>
-
-		<br>
-		<table class="table" style="border: 1px solid white;">
-			<thead class="thead-dark">
-				<tr>
-					<th>
-						<div
-							style="text-align: left; font-size: 20px; font-weight: bold; padding-bottom: 1%; padding-left: 2%; padding-right: 2%;">
-							${rv.rv_title }</div>
-						<div class="row" style="padding-left: 2%">
-							<div class="col-4" style="text-align: left; font-size: 15px;">닉네임
-								: ${rv.mb_nick }</div>
-							<div class="col-3" style="text-align: left; font-size: 15px;">
-								등록일 :
-								<fmt:formatDate value="${rv.rv_modiDate }"
-									pattern="yyyy년 MM월 dd일 HH:mm:ss" />
+		<c:if test="${rv.del==0}">
+			<div onclick="return false;"
+				style="background-color: gray; height:80px; color: red; padding-left: 2%; margin-bottom: 5px;">삭제된 후기입니다. </div>
+		</c:if>
+		<c:if test="${rv.del==1}">
+			<br>
+			<table class="table" style="border: 1px solid white;">
+				<thead class="thead-dark">
+					<tr>
+						<th>
+							<div
+								style="text-align: left; font-size: 20px; font-weight: bold; padding-bottom: 1%; padding-left: 2%; padding-right: 2%;">
+								${rv.rv_title }</div>
+							<div class="row" style="padding-left: 2%">
+								<div class="col-4" style="text-align: left; font-size: 15px;">닉네임
+									: ${rv.mb_nick }</div>
+								<div class="col-3" style="text-align: left; font-size: 15px;">
+									등록일 :
+									<fmt:formatDate value="${rv.rv_modiDate }"
+										pattern="yyyy년 MM월 dd일 HH:mm:ss" />
+								</div>
+								<div class="col-4" style="text-align: right; font-size: 15px;">조회수
+									: ${rv.rv_hit }</div>
 							</div>
-							<div class="col-4" style="text-align: right; font-size: 15px;">조회수
-								: ${rv.rv_hit }</div>
-						</div>
-					</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td style="color: white; padding-left: 3%;">${rv.rv_content }</td>
-				</tr>
-			</tbody>
-		</table>
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td style="color: white; padding-left: 3%;">${rv.rv_content }</td>
+					</tr>
+				</tbody>
+			</table>
+		</c:if>
+		
 						
 							</section>
 	<br />
@@ -465,9 +486,25 @@ table th {
 									value="${fn:replace(content, newLine, br ) }" />
 								${content }
 											
-								<!-- 권한 주시면됨 본인 이면 수정삭제-->
+								
+								
 								<div style="text-align: right;">
-									<button class="btn btn-outline-success btn-sm ">수정</button>
+									
+									<input type="submit" class="btn btn-outline-success btn-sm " onclick="updateParam('${vs.index}');" value="수정">
+									<form action="${pageContext.request.contextPath}/reply.do" method="post" id="updateRe${vs.index}">
+										<sec:csrfInput/> 										
+										<input type="hidden" name="p" value="${cv.currentPage }" /> 
+										<input type="hidden" name="s" value="${cv.pageSize }" />
+										<input type="hidden" name="b" value="${cv.blockSize }" />
+										<input type="hidden" name="rv_idx" value="${vo.rv_idx }"/>
+										<input type="hidden" name="co_idx" value="${vo.co_idx }"/>
+										<input type="hidden" name="co_ref" value="${vo.co_ref }"/>
+										<input type="hidden" name="co_seq" value="${vo.co_seq }"/>
+										<input type="hidden" name="co_lev" value="${vo.co_lev }"/>
+										
+										<input type="submit" class="btn btn-outline-success btn-sm " onclick="updateParam('${vs.index}');" value="수정">
+										<input type="submit" class="btn btn-outline-danger btn-sm " onclick="deleteParam('${vs.index }');" value="삭제"/>
+									</form>
 									<form action="${pageContext.request.contextPath}/replyDeleteOk.do" method="post" id="deleteRe${vs.index}">
 										<sec:csrfInput/> 										
 										<input type="hidden" name="p" value="${cv.currentPage }" /> 

@@ -51,7 +51,7 @@ function QnAInsert() { //관리자, 회원이 글쓰기를 눌렀을때
 	location.href = "/QnAInsert.do";
 }
 
-
+alert("${qv.qna_idx}");
 </script>
 
 

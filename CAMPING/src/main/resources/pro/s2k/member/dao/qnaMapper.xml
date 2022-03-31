@@ -14,6 +14,10 @@
 		order by
 			qna_idx desc limit #{startNo}, #{pageSize}
 	</select>
+	<!-- 가져오기 판단 -->
+	<select id="selectMb_idx" parameterType="int" resultType="int" >
+		select mb_idx from camp_qna where qna_idx=#{qna_idx}
+	</select>
 
 	<!--  1개 가져오기 -->
 	<select id="selectByIdx" parameterType="int" resultType="QnAVO">
@@ -30,7 +34,7 @@
 		 (select mb_nick from camp_member where mb_idx = a.mb_idx) as mb_nick
 		from
 			camp_qna a
-		where qna_ref=#{qna_idx}
+		where qna_ref = #{qna_idx}
 	</select>
 	
 	<!-- 전체 질문 개수 구하기 -->
@@ -58,10 +62,20 @@
 		update camp_qna set
 			qna_title = #{qna_title},
 			qna_content = #{qna_content},
-			qna_modiDate = #{rv_modiDate},
-			qna_ip = ${qna_ip}
+			qna_modiDate = #{qna_modiDate},
+			qna_ip = #{qna_ip}
 		where
 			qna_idx = #{qna_idx}
+	</update>
+	
+	<!-- 답변 수정하기 -->
+	<update id="updateAnswer" parameterType="QnAVO">
+		update camp_qna set
+			qna_content = #{qna_content},
+			qna_modiDate = #{qna_modiDate},
+			qna_ip = #{qna_ip}
+		where
+			qna_ref = #{qna_idx}
 	</update>
 	<!-- 삭제하기 -->
 	<delete id="delete" parameterType="int">
@@ -72,7 +86,8 @@
 	<update id="updateRead" parameterType="int">
 		update camp_qna set
 			qna_read = qna_read +1
-		where qna_idx = #{qna_idx}
+		where 
+		<![CDATA[ qna_idx = #{qna_idx} and qna_read  <  3 ]]>
 	</update>
 	
 	

@@ -18,7 +18,8 @@ public interface QnADAO {
 	void updateRead(int idx);
 	// idx 와 ref값을 같은 수로 만들어줌으로 answer인지 판
 	void updateRef();
-	
+	int selectMb_idx(int idx);
+	void updateAnswer(QnAVO qnaVO);
 	
 	
 	
