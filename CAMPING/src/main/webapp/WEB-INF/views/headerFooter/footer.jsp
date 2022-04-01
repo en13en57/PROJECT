@@ -30,8 +30,6 @@
 
 </script>
 
-</style>
-
 <noscript>
 	<link rel="stylesheet"
 		href="${pageContext.request.contextPath }/resources/assets/css/noscript.css" />
@@ -60,7 +58,7 @@
 		</footer>
 
 	<!-- Scripts -->
-<script
+	<script
 		src="${pageContext.request.contextPath }/resources/assets/js/jquery.min.js"></script>
 		<script
 		src="${pageContext.request.contextPath }/resources/assets/js/browser.min.js"></script>
@@ -70,6 +68,5 @@
 		src="${pageContext.request.contextPath }/resources/assets/js/util.js"></script>
 	<script
 		src="${pageContext.request.contextPath }/resources/assets/js/main.js"></script>
-	</div>
 </body>
 </html>

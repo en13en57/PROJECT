@@ -39,21 +39,19 @@ function logoutSubmit() {
 }
 function certification() { // 인증안된 회원이 글쓰기 버튼을 눌렀을때
 	alert("메일인증이 필요합니다.");
-	location.href = "/QnA.do";
+	location.href = "/board/QnA.do";
 }
 
 function loginSubmit() { // 비회원이 글쓰기를 눌렀을때
 	alert("로그인 필요합니다.");
-	location.href = "/login.do";
+	location.href = "/board/login.do";
 }
 
 function QnAInsert() { //관리자, 회원이 글쓰기를 눌렀을때
-	location.href = "/QnAInsert.do";
+	location.href = "/board/QnAInsert.do";
 }
 
-alert("${qv.qna_idx}");
 </script>
-
 
 
 
@@ -140,127 +138,7 @@ table {
 
 </head>
 <body class="is-preload landing">
-	<div id="page-wrapper">
-
-
-		<!-- Header -->
-		<header id="header">
-			<h1 id="logo">
-				<a href="/main.do"><img
-					src="${pageContext.request.contextPath }/resources/assets/css/images/logo.png"
-					alt="" /> </a>
-			</h1>
-			<c:set value="${sessionScope.mvo.gr_role}" var="role" />
-			<c:set value="${sessionScope.mvo.mb_name}" var="name" />
-			<nav id="nav">
-				<ul>
-					<c:if test="${sessionScope.mvo eq null }">
-						<li><a href="/main.do">Home</a></li>
-						<li><a href="#">캠핑장</a>
-							<ul>
-								<li><a href="#">일반 야영장</a></li>
-								<li><a href="#">자동차 야영장</a></li>
-								<li><a href="#">카라반</a></li>
-								<li><a href="#">글램핑</a></li>
-							</ul></li>
-						<li><a href="#">캠핑톡</a>
-							<ul>
-								<li><a href="/notice.do">공지사항</a></li>
-								<li><a href="/review.do">캠핑후기</a></li>
-								<li><a href="/QnA.do">QnA</a></li>
-							</ul></li>
-						<li><a href="/insert.do">회원가입</a></li>
-						<li><a href="/login.do">로그인</a></li>
-
-
-					</c:if>
-					<c:if test="${sessionScope.mvo ne null }">
-						<c:choose>
-							<c:when test="${role eq 'ROLE_USER' }">
-								<li>"${name}" 님 환영합니다.</li>
-								<li><a href="/main.do">Home</a></li>
-								<li><a href="#">캠핑장</a>
-									<ul>
-										<li><a href="#">일반 야영장</a></li>
-										<li><a href="#">자동차 야영장</a></li>
-										<li><a href="#">카라반</a></li>
-										<li><a href="#">글램핑</a></li>
-									</ul></li>
-								<li><a href="#">캠핑톡</a>
-									<ul>
-										<li><a href="/notice.do">공지사항</a></li>
-										<li><a href="/review.do">캠핑후기</a></li>
-										<li><a href="/QnA.do">QnA</a></li>
-									</ul></li>
-
-								<c:url value="/logout" var="logoutURL" />
-								<li>
-									<form action="${logoutURL }" method="post" name="logout">
-										<input type="hidden" name="${_csrf.parameterName }"
-											value="${_csrf.token }"> <a href="#"
-											onclick="logoutSubmit()">로그아웃</a>
-									</form>
-								</li>
-								<li><a href="/login.do">마이페이지</a></li>
-							</c:when>
-							<c:when test="${role eq 'ROLE_ADMIN' }">
-								<li>"${name}" 님 환영합니다.</li>
-								<li><a href="/main.do">Home</a></li>
-								<li><a href="#">캠핑장</a>
-									<ul>
-										<li><a href="#">일반 야영장</a></li>
-										<li><a href="#">자동차 야영장</a></li>
-										<li><a href="#">카라반</a></li>
-										<li><a href="#">글램핑</a></li>
-									</ul></li>
-								<li><a href="#">캠핑톡</a>
-									<ul>
-										<li><a href="/notice.do">공지사항</a></li>
-										<li><a href="/review.do">캠핑후기</a></li>
-										<li><a href="/QnA.do">QnA</a></li>
-									</ul></li>
-								<c:url value="/logout" var="logoutURL" />
-								<li>
-									<form action="${logoutURL }" method="post" name="logout">
-										<input type="hidden" name="${_csrf.parameterName }"
-											value="${_csrf.token }"> <a href="#"
-											onclick="logoutSubmit()">로그아웃</a>
-									</form>
-								</li>
-								<li><a href="#">관리자페이지</a></li>
-							</c:when>
-							<c:otherwise>
-								<li>"${name}"님 메일인증을 해주시길바랍니다.</li>
-								<li><a href="/main.do">Home</a></li>
-								<li><a href="#">캠핑장</a>
-									<ul>
-										<li><a href="#">일반 야영장</a></li>
-										<li><a href="#">자동차 야영장</a></li>
-										<li><a href="#">카라반</a></li>
-										<li><a href="#">글램핑</a></li>
-									</ul></li>
-								<li><a href="#">캠핑톡</a>
-									<ul>
-										<li><a href="/notice.do">공지사항</a></li>
-										<li><a href="/review.do">캠핑후기</a></li>
-										<li><a href="/QnA.do">QnA</a></li>
-									</ul></li>
-								<c:url value="/logout" var="logoutURL" />
-								<li>
-									<form action="${logoutURL }" method="post" name="logout">
-										<input type="hidden" name="${_csrf.parameterName }"
-											value="${_csrf.token }"> <a href="#"
-											onclick="logoutSubmit()">로그아웃</a>
-									</form>
-								</li>
-								<li><a href="#">마이페이지</a></li>
-
-							</c:otherwise>
-						</c:choose>
-					</c:if>
-				</ul>
-			</nav>
-		</header>
+		<%@ include file="../headerFooter/header.jsp"%>
 
 		<!-- Banner -->
 		<div class="col-sm-8">
@@ -327,14 +205,14 @@ table {
 							<c:set var="no" value="${pv.totalCount - (pv.currentPage-1)*pv.pageSize}"/>
 							<c:forEach var="vo" items="${pv.list }" varStatus="vs" >
 								<tr>
-									<td>
+									<td style="vertical-align: middle;">
 										${no }
 										<c:set var="no" value="${no-1}"/>
 									</td>
 									
-									<td>
+									<td style="padding-bottom: 60px;">
 
-										<form action='<c:url value='${pageContext.request.contextPath }/QnAView.do'/>' method="post" id="rView${vs.index }">
+										<form action='<c:url value='${pageContext.request.contextPath }/board/QnAView.do'/>' method="post" id="rView${vs.index }">
 				                    	     <sec:csrfInput/>
 					                           <input type="hidden" name="p" value="${pv.currentPage }"/>
 					                           <input type="hidden" name="s" value="${pv.pageSize }"/>
@@ -346,25 +224,25 @@ table {
 				                        </form>
 				                        <a href="#"   onclick="document.getElementById('rView${vs.index}').submit()"><c:out value="${vo.qna_title }"></c:out></a>
 									</td>
-									<td>
+									<td style="padding-top: 50px;">
 										${vo.qna_content }
 									</td>
-									<td>
+									<td style="vertical-align: middle;">
 										${vo.mb_nick }
 										</td>
 									
-									<td> 
+									<td style="vertical-align: middle;"> 
 										<fmt:formatDate value="${vo.qna_modiDate }" pattern="yy-MM-dd"/>
 									</td>					
 										<c:choose>
 											<c:when test="${vo.qna_read==0 }">
-												<td>미확인</td>
+												<td  style="vertical-align: middle;">미확인</td>
 											</c:when>
 											<c:when test="${vo.qna_read==1 }">
-												<td>확인중</td>
+												<td  style="vertical-align: middle;">확인중</td>
 											</c:when>
 											<c:when test="${vo.qna_read==2 }">
-												<td>답변완</td>
+												<td  style="vertical-align: middle;">답변완</td>
 											</c:when>
 										</c:choose>
 								</tr>
@@ -402,27 +280,7 @@ table {
 		</section>
 
 		<!-- Footer -->
-		<footer id="footer">
-			<ul class="icons">
-				<li><a href="https://twitter.com/?lang=ko"
-					class="icon brands alt fa-twitter" target="_blank"><span
-						class="label">Twitter</span></a></li>
-				<li><a href="https://www.facebook.com/"
-					class="icon brands alt fa-facebook-f" target="_blank"><span
-						class="label">Facebook</span></a></li>
-				<li><a href="https://www.instagram.com/"
-					class="icon brands alt fa-instagram" target="_blank"><span
-						class="label">Instagram</span></a></li>
-				<li><a href="mailto:Email@email.com"
-					class="icon solid alt fa-envelope"><span class="label">Email</span></a></li>
-			</ul>
-			<ul class="copyright">
-				<li>&copy; COPYRIGHT(C) 2022. Green Academy in Sungnam.</li>
-				<li>Made by 김가람, 강두오, 서해성</li>
-			</ul>
-		</footer>
-	</div>
-
+		<%@ include file="../headerFooter/footer.jsp"%>
 
 	<!-- Scripts -->
 	<script

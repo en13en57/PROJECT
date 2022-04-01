@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <link rel="shortcut icon" type="image/x-icon"
 	href="${pageContext.request.contextPath }/resources/assets/css/images/logo.png" />
-<title>비밀번호 찾기</title>
+<title>아이디 찾기</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
@@ -109,23 +109,34 @@ textarea {
 			</nav>
 		</header>
 		<!-- Banner -->
-		<section id="banner1">		
+		<section id="banner1">
+			<form action="${pageContext.request.contextPath}/userInfo/findPasswordOk.do" method="post" >
+			<%-- 로그인 실패시 에러메세지 출력 --%>
+				<c:if test="${not empty error }">
+					<div style="color: red;">${error }</div>
+				</c:if>
+		
 			<div class="row">
+				<div style="text-align: left; padding-left: 30%;">비밀번호 찾기</div>
 					<div class="col-md-8" style="padding-left: 30% ">
-						<form action="${pageContext.request.contextPath}/login.do" method="post" >
-							<br />
-							<div style="text-align: center;">이메일로 임시 비밀번호가 발급 됩니다.</div>
-					
-						<!-- 시큐리트에서 사용자가 지정한 폼을 사용하려면 반드시 아래의 코드를 첨부해줘야 한다.-->
-						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-					 
-						<div class="col-md-4">
-							<input type="submit" value="로그인 가기" style="height: 95px; float: left;"/>
-						</div>
-						
-						</form>
+						<input type="text" class="form-control" id="ID" name="mb_ID"placeholder="아이디 입력" required>
+						<input type="text" class="form-control" id="email" name="mb_email"placeholder="이메일 입력" required>
 					</div>
+					
+					<!-- 시큐리트에서 사용자가 지정한 폼을 사용하려면 반드시 아래의 코드를 첨부해줘야 한다.-->
+					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+				 
+					<div class="col-md-4">
+						<input type="submit" value="찾기" style="height: 95px; float: left;"/>
+					</div>
+					<div style="font:white;  font-size: 10px; text-align:left; padding-left: 71%;">
+						<a href="/userInfo/findUserId.do">아이디 찾기</a>
+						&nbsp; | &nbsp;
+						<a href="/insert.do">회원가입</a>
+						
+				</div>
 			</div>
+			</form>
 		</section>
 		
 

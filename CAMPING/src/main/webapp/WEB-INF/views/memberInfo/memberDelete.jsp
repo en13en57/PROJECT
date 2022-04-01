@@ -27,19 +27,6 @@
 	href="${pageContext.request.contextPath }/resources/assets/css/main.css" />
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath }/resources/assets/css/swiper.min.css">
-<script type="text/javascript">
-	
-function test(){
-	if (!$('#flexCheckDefault').is(":checked")) {
-		alert("약관에 동의해주세요.");
-		return false;
-	}
-
-
-
-
-
-</script>
 <style>
 
 .form-check {
@@ -82,7 +69,7 @@ textarea {
 
 		
 	<!-- header -->
-	<%@ include file="header_footer/header.jsp"%>
+	<%@ include file="../headerFooter/header.jsp"%>
 		
 
 	<!-- Banner -->
@@ -112,19 +99,13 @@ NG캠핑 회원 탈퇴 시 이용할 수 없는 정보입니다.
 </textarea>
 					</div>
 					<br>
-					<div class="form-check" id="check">
-						위 내용을 숙지 하였습니다. &nbsp;&nbsp;&nbsp;&nbsp; <input
-							class="form-check-input" type="checkbox" value=""
-							id="flexCheckDefault"> <label class="form-check-label"
-							for="flexCheckDefault"> 확인. </label>
-					</div>
-					<br>
+
 					<div class="mb-4">
-			<form action="/memberdeleteOk.do" method="post" onsubmit="return test();">
+			<form action="/memberDeleteOk.do" method="post" onsubmit="return test();">
 						<input type="hidden" name="mb_ID" value="${mvo.mb_ID }">
-							<div style="width: 50%;">
-										<div class="mb-4 row">
-									<label for="password" class="col-sm-4 col-form-label">비밀번호 입력</label>
+							<div style="width: 50%;" >
+										<div class="mb-4 row" style="padding-top: 30px;">
+									<label for="password" class="col-sm-4 col-form-label" style="padding-top: 10px;">비밀번호 입력</label>
 									<div class="col-sm-6">
 										<input type="password" class="form-control" id="password"
 											name="mb_password" placeholder="비밀번호를 입력해주세요." required
@@ -143,7 +124,7 @@ NG캠핑 회원 탈퇴 시 이용할 수 없는 정보입니다.
 		</section>
 
 	<!-- Footer -->
-	<%@ include file="header_footer/footer.jsp"%>
+	<%@ include file="../headerFooter/footer.jsp"%>
 
 
 	<!-- Scripts -->
@@ -163,9 +144,6 @@ NG캠핑 회원 탈퇴 시 이용할 수 없는 정보입니다.
 		src="${pageContext.request.contextPath }/resources/assets/js/util.js"></script>
 	<script
 		src="${pageContext.request.contextPath }/resources/assets/js/main.js"></script>
-	<div style="position: fixed; bottom: 10px; right: 10px; z-index: 100;">
-		<a href="#banner" style="text-decoration: underline;"><img
-			src="${pageContext.request.contextPath }/resources/assets/css/images/top.png"></a>
-	</div>
+
 </body>
 </html>

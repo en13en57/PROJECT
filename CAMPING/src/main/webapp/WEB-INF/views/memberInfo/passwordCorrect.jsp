@@ -35,7 +35,7 @@
 function ajaxTOsend(){
 	$.ajax({
 		type : "GET", 
-		url : "passwordcorrectOk.do", 
+		url : "passwordCorrectOk.do", 
 		data :$('#memberVOForm').serialize(), 
 		dataType : "text",
 		success : function(result) {
@@ -125,7 +125,7 @@ function formCheck() {
 <body class="is-preload landing">
 
 	<!-- header -->
-	<%@ include file="header_footer/header.jsp"%>
+	<%@ include file="../headerFooter/header.jsp"%>
 
 	<!-- Banner -->
 
@@ -133,8 +133,9 @@ function formCheck() {
 		<div id="content1">
 			<div id="member_position">
 				<div class="mb-4">
-					<form action="/passwordcorrectOk.do" method="get" name="memberVOForm" id="memberVOForm">
+					<form action="memberInfo/passwordCorrectOk.do" method="post" name="memberVOForm" id="memberVOForm">
 						<input type="hidden" name="mb_ID" value="${mvo.mb_ID }">
+						<sec:csrfInput/>
 						<div style="width: 50%;">
 							<div class="title">비밀번호 수정</div>
 							<br>
@@ -169,7 +170,7 @@ function formCheck() {
 
 
 	<!-- Footer -->
-	<%@ include file="header_footer/footer.jsp"%>
+	<%@ include file="../headerFooter/footer.jsp"%>
 
 	<!-- Scripts -->
 	<script

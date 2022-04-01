@@ -1,12 +1,12 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <link rel="shortcut icon" type="image/x-icon"
 	href="${pageContext.request.contextPath }/resources/assets/css/images/logo.png" />
-<title>캠핑은 NG캠핑!</title>
+<title>비밀번호 찾기</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
@@ -19,10 +19,6 @@
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<%-- 다음 우편번호 API --%>
-<script
-	src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
 	rel="stylesheet"
@@ -34,14 +30,41 @@
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath }/resources/assets/css/swiper.min.css">
 <script type="text/javascript">
-	
+
 </script>
 
 <style type="text/css">
+
 #banner1 {
-	padding: 100px 0;
-	top: 20px;
+	padding:200px;
+	padding-top: 300px;
+
 }
+
+
+#content1 {
+	text-align: left;
+}
+
+textarea {
+	height: 15em;
+	border: none;
+	resize: none;
+	background-color: white;
+	color: black;
+}
+
+#member_position {
+	padding-left: 27%;
+}
+
+#login {
+	padding-left: 27%;
+	width: 1000px;
+	height: 1000px;
+	
+}
+
 </style>
 
 <noscript>
@@ -52,7 +75,6 @@
 
 
 
-</head>
 </head>
 <body class="is-preload landing">
 	<div id="page-wrapper">
@@ -86,15 +108,25 @@
 				</ul>
 			</nav>
 		</header>
-		<section id="banner1">
-			<div
-				style="width: 50%; text-align: center; border: 1px solid white; padding: 10px; margin: 0 auto;">
-				정보수정이 완료 되었습니다.<br>
-				<button type="button" class="btn btn-primary"
-					onclick="location.href='/main.do'">메인화면</button>
+		<!-- Banner -->
+		<section id="banner1">		
+			<div class="row">
+					<div class="col-md-8" style="padding-left: 30%;">
+					<form action="${pageContext.request.contextPath}/login.do" method="post">
+						<br />
+						<div style="text-align: center;">임시번호가 이메일로 전송되었습니다.<br> 확인 후 로그인해주세요. </div>
+					
+					<!-- 시큐리트에서 사용자가 지정한 폼을 사용하려면 반드시 아래의 코드를 첨부해줘야 한다.-->
+					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+				 
+					<div class="col-md-4" style="padding-left: 100px;">
+						<input type="submit" value="로그인 가기" style="height: 95px;"/>
+					</div>
+					</form>
+				</div>
 			</div>
-
 		</section>
+		
 
 		<!-- Footer -->
 		<footer id="footer">
@@ -136,5 +168,9 @@
 		src="${pageContext.request.contextPath }/resources/assets/js/util.js"></script>
 	<script
 		src="${pageContext.request.contextPath }/resources/assets/js/main.js"></script>
+		
+	<!-- 네이버 로그인API  -->
+	<script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js" charset="utf-8"></script>
+	<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
 </body>
 </html>

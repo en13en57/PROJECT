@@ -39,7 +39,7 @@ function logoutSubmit() {
 }
 function certification() { // 인증안된 회원이 글쓰기 버튼을 눌렀을때
 	alert("메일인증이 필요합니다.");
-	location.href = "/review.do";
+	location.href = "/board/review.do";
 }
 
 function loginSubmit() { // 비회원이 글쓰기를 눌렀을때
@@ -48,7 +48,7 @@ function loginSubmit() { // 비회원이 글쓰기를 눌렀을때
 }
 
 function reviewInsert() { //관리자, 회원이 글쓰기를 눌렀을때
-	location.href = "/reviewInsert.do";
+	location.href = "/board/reviewInsert.do";
 }
 
 
@@ -140,128 +140,8 @@ table {
 
 
 </head>
-<body class="is-preload landing">
-	<div id="page-wrapper">
 
-
-		<!-- Header -->
-		<header id="header">
-			<h1 id="logo">
-				<a href="/main.do"><img
-					src="${pageContext.request.contextPath }/resources/assets/css/images/logo.png"
-					alt="" /> </a>
-			</h1>
-			<c:set value="${sessionScope.mvo.gr_role}" var="role" />
-			<c:set value="${sessionScope.mvo.mb_name}" var="name" />
-			<nav id="nav">
-				<ul>
-					<c:if test="${sessionScope.mvo eq null }">
-						<li><a href="/main.do">Home</a></li>
-						<li><a href="#">캠핑장</a>
-							<ul>
-								<li><a href="#">일반 야영장</a></li>
-								<li><a href="#">자동차 야영장</a></li>
-								<li><a href="#">카라반</a></li>
-								<li><a href="#">글램핑</a></li>
-							</ul></li>
-						<li><a href="#">캠핑톡</a>
-							<ul>
-								<li><a href="/notice.do">공지사항</a></li>
-								<li><a href="/review.do">캠핑후기</a></li>
-								<li><a href="/QnA.do">QnA</a></li>
-							</ul></li>
-						<li><a href="/insert.do">회원가입</a></li>
-						<li><a href="/login.do">로그인</a></li>
-
-
-					</c:if>
-					<c:if test="${sessionScope.mvo ne null }">
-						<c:choose>
-							<c:when test="${role eq 'ROLE_USER' }">
-								<li>"${name}" 님 환영합니다.</li>
-								<li><a href="/main.do">Home</a></li>
-								<li><a href="#">캠핑장</a>
-									<ul>
-										<li><a href="#">일반 야영장</a></li>
-										<li><a href="#">자동차 야영장</a></li>
-										<li><a href="#">카라반</a></li>
-										<li><a href="#">글램핑</a></li>
-									</ul></li>
-								<li><a href="#">캠핑톡</a>
-									<ul>
-										<li><a href="/notice.do">공지사항</a></li>
-										<li><a href="/review.do">캠핑후기</a></li>
-										<li><a href="/QnA.do">QnA</a></li>
-									</ul></li>
-
-								<c:url value="/logout" var="logoutURL" />
-								<li>
-									<form action="${logoutURL }" method="post" name="logout">
-										<input type="hidden" name="${_csrf.parameterName }"
-											value="${_csrf.token }"> <a href="#"
-											onclick="logoutSubmit()">로그아웃</a>
-									</form>
-								</li>
-								<li><a href="/login.do">마이페이지</a></li>
-							</c:when>
-							<c:when test="${role eq 'ROLE_ADMIN' }">
-								<li>"${name}" 님 환영합니다.</li>
-								<li><a href="/main.do">Home</a></li>
-								<li><a href="#">캠핑장</a>
-									<ul>
-										<li><a href="#">일반 야영장</a></li>
-										<li><a href="#">자동차 야영장</a></li>
-										<li><a href="#">카라반</a></li>
-										<li><a href="#">글램핑</a></li>
-									</ul></li>
-								<li><a href="#">캠핑톡</a>
-									<ul>
-										<li><a href="/notice.do">공지사항</a></li>
-										<li><a href="/review.do">캠핑후기</a></li>
-										<li><a href="/QnA.do">QnA</a></li>
-									</ul></li>
-								<c:url value="/logout" var="logoutURL" />
-								<li>
-									<form action="${logoutURL }" method="post" name="logout">
-										<input type="hidden" name="${_csrf.parameterName }"
-											value="${_csrf.token }"> <a href="#"
-											onclick="logoutSubmit()">로그아웃</a>
-									</form>
-								</li>
-								<li><a href="#">관리자페이지</a></li>
-							</c:when>
-							<c:otherwise>
-								<li>"${name}"님 메일인증을 해주시길바랍니다.</li>
-								<li><a href="/main.do">Home</a></li>
-								<li><a href="#">캠핑장</a>
-									<ul>
-										<li><a href="#">일반 야영장</a></li>
-										<li><a href="#">자동차 야영장</a></li>
-										<li><a href="#">카라반</a></li>
-										<li><a href="#">글램핑</a></li>
-									</ul></li>
-								<li><a href="#">캠핑톡</a>
-									<ul>
-										<li><a href="/notice.do">공지사항</a></li>
-										<li><a href="/review.do">캠핑후기</a></li>
-										<li><a href="/QnA.do">QnA</a></li>
-									</ul></li>
-								<c:url value="/logout" var="logoutURL" />
-								<li>
-									<form action="${logoutURL }" method="post" name="logout">
-										<input type="hidden" name="${_csrf.parameterName }"
-											value="${_csrf.token }"> <a href="#"
-											onclick="logoutSubmit()">로그아웃</a>
-									</form>
-								</li>
-								<li><a href="#">마이페이지</a></li>
-
-							</c:otherwise>
-						</c:choose>
-					</c:if>
-				</ul>
-			</nav>
-		</header>
+<%@ include file="../headerFooter/header.jsp"%>
 
 		<!-- Banner -->
 		<div class="col-sm-8">
@@ -277,9 +157,9 @@ table {
 			</div>
 			<div class="col-sm-2" style="float: left;">
 				<select name="list" id="list" onchange="window.open(value,'_self');">
-					<option value="/review.do" selected>캠핑후기</option>
-					<option value="/notice.do">공지사항</option>
-					<option value="/QnA.do">QnA</option>
+					<option value="/board/review.do" selected>캠핑후기</option>
+					<option value="/board/notice.do">공지사항</option>
+					<option value="/board/QnA.do">QnA</option>
 				</select>
 			</div>
 		</div>
@@ -329,14 +209,14 @@ table {
 							<c:forEach var="vo" items="${pv.list }" varStatus="vs" >
 								<c:if test="${vo.del == 1 }">
 								<tr>
-									<td>
+									<td style="vertical-align: middle;">
 										${no }
 										<c:set var="no" value="${no-1}"/>
 									</td>
 									
-									<td>
+									<td style="padding-bottom: 60px;">
 
-										<form action='<c:url value='${pageContext.request.contextPath }/reviewView.do'/>' method="post" id="rView${vs.index }">
+										<form action='<c:url value='${pageContext.request.contextPath }/board/reviewView.do'/>' method="post" id="rView${vs.index }">
 				                    	     <sec:csrfInput/>
 					                           <input type="hidden" name="p" value="${pv.currentPage }"/>
 					                           <input type="hidden" name="s" value="${pv.pageSize }"/>
@@ -350,17 +230,17 @@ table {
 				                        	<a href="#"   onclick="document.getElementById('rView${vs.index}').submit()"><c:out value="${vo.rv_title }"/></a><%-- <c:out value="${vo2.totalCount }"/> --%>
 										<%--  </c:forEach>  --%>
 									</td>
-									<td>
+									<td style="padding-top: 50px;">
 										${vo.rv_content }
 									</td>
-									<td>
+									<td style="vertical-align: middle;">
 										${vo.mb_nick }
 										</td>
 									
-									<td> 
+									<td style="vertical-align: middle;"> 
 										<fmt:formatDate value="${vo.rv_regDate }" pattern="yy-MM-dd"/>
 									</td>					
-									<td>
+									<td style="vertical-align: middle;">
 										${vo.rv_hit }
 									</td>
 								</tr>
@@ -398,26 +278,7 @@ table {
 		</section>
 
 		<!-- Footer -->
-		<footer id="footer">
-			<ul class="icons">
-				<li><a href="https://twitter.com/?lang=ko"
-					class="icon brands alt fa-twitter" target="_blank"><span
-						class="label">Twitter</span></a></li>
-				<li><a href="https://www.facebook.com/"
-					class="icon brands alt fa-facebook-f" target="_blank"><span
-						class="label">Facebook</span></a></li>
-				<li><a href="https://www.instagram.com/"
-					class="icon brands alt fa-instagram" target="_blank"><span
-						class="label">Instagram</span></a></li>
-				<li><a href="mailto:Email@email.com"
-					class="icon solid alt fa-envelope"><span class="label">Email</span></a></li>
-			</ul>
-			<ul class="copyright">
-				<li>&copy; COPYRIGHT(C) 2022. Green Academy in Sungnam.</li>
-				<li>Made by 김가람, 강두오, 서해성</li>
-			</ul>
-		</footer>
-	</div>
+	<%@ include file="../headerFooter/footer.jsp"%>
 
 
 	<!-- Scripts -->

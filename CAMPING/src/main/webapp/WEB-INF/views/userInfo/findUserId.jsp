@@ -110,19 +110,19 @@ textarea {
 		</header>
 		<!-- Banner -->
 		<section id="banner1">
-			<form action="${pageContext.request.contextPath}/findUserIdOk.do" method="post" >
+			<form action="${pageContext.request.contextPath}/userInfo/findUserIdOk.do" method="post" >
 			<%-- 로그인 실패시 에러메세지 출력 --%>
 				<c:if test="${not empty error }">
 					<div style="color: red;">${error }</div>
 				</c:if>
 		
-			<div class="row">
-				<div style="text-align: left; padding-left: 30%;">아이디 찾기</div>
+				<div class="row">
+					<div style="text-align: left; padding-left: 30%;">아이디 찾기</div>
 					<div class="col-md-8" style="padding-left: 30% ">
 						<input type="text" class="form-control" id="ID" name="mb_name"placeholder="이름 입력" required>
 						<input type="text" class="form-control" id="tel" name="mb_tel"placeholder="전화번호 입력" required>
 					</div>
-					
+						
 					<!-- 시큐리트에서 사용자가 지정한 폼을 사용하려면 반드시 아래의 코드를 첨부해줘야 한다.-->
 					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 				 
@@ -130,11 +130,12 @@ textarea {
 						<input type="submit" value="찾기" style="height: 95px; float: left;"/>
 					</div>
 					<div style="font:white;  font-size: 10px; text-align:left; padding-left: 70%;">
-						<a href="/findPassword.do">비밀번호 찾기</a>
+						<a href="/userInfo/findPassword.do">비밀번호 찾기</a>
 						&nbsp; | &nbsp;
 						<a href="/insert.do">회원가입</a>
 						
-			</div>
+					</div>
+				</div>
 			</form>
 		</section>
 	

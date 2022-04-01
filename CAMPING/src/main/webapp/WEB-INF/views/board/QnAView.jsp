@@ -103,15 +103,15 @@
 
 				document.sendData.submit();
 			},
-			error : function(XMLHttpRequest, textStatus, errorThrown) { // 비동기 통신이 실패할경우 error 콜백으로 들어옵니다.
+			error : function(XMLHttpRequest, textStatus, errorThㅋrown) { // 비동기 통신이 실패할경우 error 콜백으로 들어옵니다.
 			}
 		});
 	}
 	 
 	function sendUpdateParam() {
 		$.ajax({
-			type : "POST", // Post 방식으로 찾아야겠네 이거 ㅇㅇ 일단 영상은 있는데...
-			url : "answerInsertOk.do", // 컨트롤러에서 대기중인 URL 주소이다.
+			type : "POST", 
+			url : "answerUpdateOk.do", // 컨트롤러에서 대기중인 URL 주소이다.
 			data : $('#answerUpdate').serialize(),
 			dataType : "text",
 
@@ -160,7 +160,6 @@
 			});
 	}
 
-	alert("${qv.qna_idx}");
 	</script>
 
 
@@ -217,128 +216,9 @@ table th {
 
 </head>
 <body class="is-preload landing">
-	<div id="page-wrapper">
+	<%@ include file="../headerFooter/header.jsp"%>
 
-
-		<!-- Header -->
-		<header id="header">
-			<h1 id="logo">
-				<a href="/main.do"><img
-					src="${pageContext.request.contextPath }/resources/assets/css/images/logo.png"
-					alt="" /> </a>
-			</h1>
-			<c:set value="${sessionScope.mvo.gr_role}" var="role" />
-			<c:set value="${sessionScope.mvo.mb_name}" var="name" />
-			<nav id="nav">
-				<ul>
-					<c:if test="${sessionScope.mvo eq null }">
-						<li><a href="/main.do">Home</a></li>
-						<li><a href="#">캠핑장</a>
-							<ul>
-								<li><a href="#">일반 야영장</a></li>
-								<li><a href="#">자동차 야영장</a></li>
-								<li><a href="#">카라반</a></li>
-								<li><a href="#">글램핑</a></li>
-							</ul></li>
-						<li><a href="#">캠핑톡</a>
-							<ul>
-								<li><a href="/notice.do">공지사항</a></li>
-								<li><a href="/review.do">캠핑후기</a></li>
-								<li><a href="/QnA.do">QnA</a></li>
-							</ul></li>
-						<li><a href="/insert.do">회원가입</a></li>
-						<li><a href="/login.do">로그인</a></li>
-
-
-					</c:if>
-					<c:if test="${sessionScope.mvo ne null }">
-						<c:choose>
-							<c:when test="${role eq 'ROLE_USER' }">
-								<li>"${name}" 님 환영합니다.</li>
-								<li><a href="/main.do">Home</a></li>
-								<li><a href="#">캠핑장</a>
-									<ul>
-										<li><a href="#">일반 야영장</a></li>
-										<li><a href="#">자동차 야영장</a></li>
-										<li><a href="#">카라반</a></li>
-										<li><a href="#">글램핑</a></li>
-									</ul></li>
-								<li><a href="#">캠핑톡</a>
-									<ul>
-										<li><a href="/notice.do">공지사항</a></li>
-										<li><a href="/review.do">캠핑후기</a></li>
-										<li><a href="/QnA.do">QnA</a></li>
-									</ul></li>
-
-								<c:url value="/logout" var="logoutURL" />
-								<li>
-									<form action="${logoutURL }" method="post" name="logout">
-										<input type="hidden" name="${_csrf.parameterName }"
-											value="${_csrf.token }"> <a href="#"
-											onclick="logoutSubmit()">로그아웃</a>
-									</form>
-								</li>
-								<li><a href="/login.do">마이페이지</a></li>
-							</c:when>
-							<c:when test="${role eq 'ROLE_ADMIN' }">
-								<li>"${name}" 님 환영합니다.</li>
-								<li><a href="/main.do">Home</a></li>
-								<li><a href="#">캠핑장</a>
-									<ul>
-										<li><a href="#">일반 야영장</a></li>
-										<li><a href="#">자동차 야영장</a></li>
-										<li><a href="#">카라반</a></li>
-										<li><a href="#">글램핑</a></li>
-									</ul></li>
-								<li><a href="#">캠핑톡</a>
-									<ul>
-										<li><a href="/notice.do">공지사항</a></li>
-										<li><a href="/review.do">캠핑후기</a></li>
-										<li><a href="/QnA.do">QnA</a></li>
-									</ul></li>
-								<c:url value="/logout" var="logoutURL" />
-								<li>
-									<form action="${logoutURL }" method="post" name="logout">
-										<input type="hidden" name="${_csrf.parameterName }"
-											value="${_csrf.token }"> <a href="#"
-											onclick="logoutSubmit()">로그아웃</a>
-									</form>
-								</li>
-								<li><a href="#">관리자페이지</a></li>
-							</c:when>
-							<c:otherwise>
-								<li>"${name}"님 메일인증을 해주시길바랍니다.</li>
-								<li><a href="/main.do">Home</a></li>
-								<li><a href="#">캠핑장</a>
-									<ul>
-										<li><a href="#">일반 야영장</a></li>
-										<li><a href="#">자동차 야영장</a></li>
-										<li><a href="#">카라반</a></li>
-										<li><a href="#">글램핑</a></li>
-									</ul></li>
-								<li><a href="#">캠핑톡</a>
-									<ul>
-										<li><a href="/notice.do">공지사항</a></li>
-										<li><a href="/review.do">캠핑후기</a></li>
-										<li><a href="/QnA.do">QnA</a></li>
-									</ul></li>
-								<c:url value="/logout" var="logoutURL" />
-								<li>
-									<form action="${logoutURL }" method="post" name="logout">
-										<input type="hidden" name="${_csrf.parameterName }"
-											value="${_csrf.token }"> <a href="#"
-											onclick="logoutSubmit()">로그아웃</a>
-									</form>
-								</li>
-								<li><a href="#">마이페이지</a></li>
-
-							</c:otherwise>
-						</c:choose>
-					</c:if>
-				</ul>
-			</nav>
-		</header>
-
+		
 		<!-- Banner -->
 		<div class="col-sm-8">
 			<img src="">
@@ -353,9 +233,9 @@ table th {
 			</div>
 			<div class="col-sm-2" style="float: left;">
 				<select name="list" id="list" onchange="window.open(value,'_self');">
-					<option value="/notice.do">공지사항</option>
-					<option value="/review.do" >캠핑후기</option>
-					<option value="/QnA.do"selected>QnA</option>
+					<option value="board/notice.do">공지사항</option>
+					<option value="board/review.do" >캠핑후기</option>
+					<option value="board/QnA.do"selected>QnA</option>
 				</select>
 			</div>
 		</div>
@@ -369,7 +249,7 @@ table th {
 
 	<section style="padding-right: 10%; padding-left: 10%; margin: 0 auto;">
 		<form
-			action='<c:url value='${pageContext.request.contextPath }/QnAUpdate.do'/>'
+			action='<c:url value='${pageContext.request.contextPath }/board/QnAUpdate.do'/>'
 			method="post" id="ruView">
 			<sec:csrfInput />
 			<input type="hidden" name="p" value="${cv.currentPage }" /> 
@@ -385,14 +265,14 @@ table th {
 								 <input type="submit" class="btn btn-outline-secondary btn-sm" value="수정" /></a>
 							</c:if>
 							<c:if test="${qv.qna_read < 2}">
-								<input type="submit" formaction="/QnADeleteOk.do"
+								<input type="submit" formaction="/board/QnADeleteOk.do"
 									class="btn btn-outline-secondary btn-sm" value="삭제" />
 							</c:if>
-								<input type="button" onclick="location.href='/QnA.do'"
+								<input type="button" onclick="location.href='/board/QnA.do'"
 									class="btn btn-outline-secondary btn-sm" value="목록" />
 						</c:when>
 						<c:otherwise>
-								<input type="button" onclick="location.href='/QnA.do'"
+								<input type="button" onclick="location.href='/board/QnA.do'"
 									class="btn btn-outline-secondary btn-sm" value="목록" />
 						</c:otherwise>
 					</c:choose>
@@ -487,7 +367,7 @@ table th {
 		<div>
 			<p style="font-size: 20px; text-align: center; font-weight: bold;">관리자 답변</p>
 		</div>
-		<form action="${pageContext.request.contextPath}/answerInsertOk.do"
+		<form action="${pageContext.request.contextPath}/board/answerInsertOk.do"
 			 method="post" id="answerInsert">
 			<sec:csrfInput />
 			<input type="hidden" name="mb_idx" value="${mvo.mb_idx }" />
@@ -511,7 +391,7 @@ table th {
 					class="btn btn-outline-secondary btn-sm" style="margin: auto;"  onclick="update();"
 					value="수정하기">
 		</div>
-			<form id="answerUpdate" action="${pageContext.request.contextPath}/answerUpdateOk.do"
+			<form id="answerUpdate" action="${pageContext.request.contextPath}/board/answerUpdateOk.do"
 				 method="post" id="answerUpdate">
 				<sec:csrfInput />
 				<input type="hidden" name="mb_idx" value="${mvo.mb_idx }" />
@@ -531,7 +411,7 @@ table th {
 		</c:if>
 	</c:if>
 	<%-- 실제적으로 갈 jsp --%>
-	<form action="${pageContext.request.contextPath}/QnA.do"
+	<form action="${pageContext.request.contextPath}/board/QnA.do"
 		method="post" id="sendData" name="sendData">
 		<sec:csrfInput />
 		<input type="hidden" name="p" value="${cv.currentPage }" /> <input
@@ -542,26 +422,7 @@ table th {
 			<input type="hidden" name="mb_idx" value="${mvo.mb_idx }" />
 	</form>
 
-	<!-- Footer -->
-	<footer id="footer">
-		<ul class="icons">
-			<li><a href="https://twitter.com/?lang=ko"
-				class="icon brands alt fa-twitter" target="_blank"><span
-					class="label">Twitter</span></a></li>
-			<li><a href="https://www.facebook.com/"
-				class="icon brands alt fa-facebook-f" target="_blank"><span
-					class="label">Facebook</span></a></li>
-			<li><a href="https://www.instagram.com/"
-				class="icon brands alt fa-instagram" target="_blank"><span
-					class="label">Instagram</span></a></li>
-			<li><a href="mailto:Email@email.com"
-				class="icon solid alt fa-envelope"><span class="label">Email</span></a></li>
-		</ul>
-		<ul class="copyright">
-			<li>&copy; COPYRIGHT(C) 2022. Green Academy in Sungnam.</li>
-			<li>Made by 김가람, 강두오, 서해성</li>
-		</ul>
-	</footer>
+<%@ include file="../headerFooter/footer.jsp"%>
 
 
 	<!-- Scripts -->

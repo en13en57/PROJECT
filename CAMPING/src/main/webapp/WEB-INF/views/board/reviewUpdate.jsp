@@ -108,127 +108,188 @@ b {
 </style>
 </head>
 <body class="is-preload landing">
-   <div id="page-wrapper">
 
 
-      <!-- Header -->
-      <header id="header">
-         <h1 id="logo">
-            <a href="/main.do"><img
-               src="${pageContext.request.contextPath }/resources/assets/css/images/logo.png"
-               alt="" /> </a>
-         </h1>
-         <c:set value="${sessionScope.mvo.gr_role}" var="role" />
-         <c:set value="${sessionScope.mvo.mb_name}" var="name" />
-         <nav id="nav">
-            <ul>
-               <c:if test="${sessionScope.mvo eq null }">
-                  <li><a href="/main.do">Home</a></li>
-                  <li><a href="#">캠핑장</a>
-                     <ul>
-                        <li><a href="#">일반 야영장</a></li>
-                        <li><a href="#">자동차 야영장</a></li>
-                        <li><a href="#">카라반</a></li>
-                        <li><a href="#">글램핑</a></li>
-                     </ul></li>
-                  <li><a href="#">캠핑톡</a>
-                     <ul>
-                        <li><a href="/notice.do">공지사항</a></li>
-                        <li><a href="/review.do">캠핑후기</a></li>
-                        <li><a href="/QnA.do">QnA</a></li>
-                     </ul></li>
-                  <li><a href="/insert.do">회원가입</a></li>
-                  <li><a href="/login.do">로그인</a></li>
+
+		<!-- Header -->
+		<header id="header">
+			<h1 id="logo">
+				<a href="/main.do"><img
+					src="${pageContext.request.contextPath }/resources/assets/css/images/logo.png"
+					alt="" /> </a>
+			</h1>
+			<c:set value="${sessionScope.mvo.gr_role}" var="role" />
+			<c:set value="${sessionScope.mvo.mb_nick}" var="nick" />
+			<c:set value="${sessionScope.mvo.del}" var="del" />
+			<nav id="nav">
+				<ul>
+					<c:if test="${sessionScope.mvo eq null }">
+						<li><a href="/main.do">Home</a></li>
+						<li><a href="#">캠핑장</a>
+							<ul>
+								<li><a href="#">일반 야영장</a></li>
+								<li><a href="#">자동차 야영장</a></li>
+								<li><a href="#">카라반</a></li>
+								<li><a href="#">글램핑</a></li>
+							</ul></li>
+						<li><a href="#">캠핑톡</a>
+							<ul>
+								<li><a href="/board/notice.do">공지사항</a></li>
+								<li><a href="/board/review.do">캠핑후기</a></li>
+								<li><a href="/board/QnA.do">QnA</a></li>
+							</ul></li>
+						<li><a href="/insert.do">회원가입</a></li>
+						<li><a href="/login.do">로그인</a></li>
 
 
-               </c:if>
-               <c:if test="${sessionScope.mvo ne null }">
-                  <c:choose>
-                     <c:when test="${role eq 'ROLE_USER' }">
-                        <li>"${name}" 님 환영합니다.</li>
-                        <li><a href="/main.do">Home</a></li>
-                        <li><a href="#">캠핑장</a>
-                           <ul>
-                              <li><a href="#">일반 야영장</a></li>
-                              <li><a href="#">자동차 야영장</a></li>
-                              <li><a href="#">카라반</a></li>
-                              <li><a href="#">글램핑</a></li>
-                           </ul></li>
-                        <li><a href="#">캠핑톡</a>
-                           <ul>
-                              <li><a href="/notice.do">공지사항</a></li>
-                              <li><a href="/review.do">캠핑후기</a></li>
-                              <li><a href="/QnA.do">QnA</a></li>
-                           </ul></li>
+					</c:if>
+					<c:if test="${sessionScope.mvo ne null }">
+						<c:choose>
+							<c:when test="${role eq 'ROLE_USER'}">
+								<li>"${nick }" 님 환영합니다.</li>
+								<li><a href="/main.do">Home</a></li>
+								<li><a href="#">캠핑장</a>
+									<ul>
+										<li><a href="#">일반 야영장</a></li>
+										<li><a href="#">자동차 야영장</a></li>
+										<li><a href="#">카라반</a></li>
+										<li><a href="#">글램핑</a></li>
+									</ul></li>
+								<li><a href="#">캠핑톡</a>
+									<ul>
+										<li><a href="/board/notice.do">공지사항</a></li>
+										<li><a href="/board/review.do">캠핑후기</a></li>
+										<li><a href="/board/QnA.do">QnA</a></li>
+									</ul></li>
 
-                        <c:url value="/logout" var="logoutURL" />
-                        <li>
-                           <form action="${logoutURL }" method="post" name="logout">
-                              <input type="hidden" name="${_csrf.parameterName }"
-                                 value="${_csrf.token }"> <a href="#"
-                                 onclick="logoutSubmit()">로그아웃</a>
-                           </form>
-                        </li>
-                        <li><a href="/login.do">마이페이지</a></li>
-                     </c:when>
-                     <c:when test="${role eq 'ROLE_ADMIN' }">
-                        <li>"${name}" 님 환영합니다.</li>
-                        <li><a href="/main.do">Home</a></li>
-                        <li><a href="#">캠핑장</a>
-                           <ul>
-                              <li><a href="#">일반 야영장</a></li>
-                              <li><a href="#">자동차 야영장</a></li>
-                              <li><a href="#">카라반</a></li>
-                              <li><a href="#">글램핑</a></li>
-                           </ul></li>
-                        <li><a href="#">캠핑톡</a>
-                           <ul>
-                              <li><a href="/notice.do">공지사항</a></li>
-                              <li><a href="/review.do">캠핑후기</a></li>
-                              <li><a href="/QnA.do">QnA</a></li>
-                           </ul></li>
-                        <c:url value="/logout" var="logoutURL" />
-                        <li>
-                           <form action="${logoutURL }" method="post" name="logout">
-                              <input type="hidden" name="${_csrf.parameterName }"
-                                 value="${_csrf.token }"> <a href="#"
-                                 onclick="logoutSubmit()">로그아웃</a>
-                           </form>
-                        </li>
-                        <li><a href="#">관리자페이지</a></li>
-                     </c:when>
-                     <c:otherwise>
-                        <li>"${name}"님 메일인증을 해주시길바랍니다.</li>
-                        <li><a href="/main.do">Home</a></li>
-                        <li><a href="#">캠핑장</a>
-                           <ul>
-                              <li><a href="#">일반 야영장</a></li>
-                              <li><a href="#">자동차 야영장</a></li>
-                              <li><a href="#">카라반</a></li>
-                              <li><a href="#">글램핑</a></li>
-                           </ul></li>
-                        <li><a href="#">캠핑톡</a>
-                           <ul>
-                              <li><a href="/notice.do">공지사항</a></li>
-                              <li><a href="/review.do">캠핑후기</a></li>
-                              <li><a href="/QnA.do">QnA</a></li>
-                           </ul></li>
-                        <c:url value="/logout" var="logoutURL" />
-                        <li>
-                           <form action="${logoutURL }" method="post" name="logout">
-                              <input type="hidden" name="${_csrf.parameterName }"
-                                 value="${_csrf.token }"> <a href="#"
-                                 onclick="logoutSubmit()">로그아웃</a>
-                           </form>
-                        </li>
-                        <li><a href="#">마이페이지</a></li>
+								<c:url value="/logout" var="logoutURL" />
+								<li>
+									<form action="${logoutURL }" method="post" name="logout">
+										<input type="hidden" name="${_csrf.parameterName }"
+											value="${_csrf.token }"> <a href="#"
+											onclick="logoutSubmit()">로그아웃</a>
+									</form>
+								</li>
+								<li style="vertical-align: top;">
+									<form
+										action='${pageContext.request.contextPath } /memberInfo/memberPage.do'
+										method="POST" id="rView">
+										<sec:csrfInput />
+										<a href="#"
+											onclick="document.getElementById('rView').submit()">마이페이지</a>
+									</form>
+								</li>
+							</c:when>
+							<c:when test="${role eq 'ROLE_USER'}">
+								<li>"${nick}" 님 환영합니다.</li>
+								<li><a href="/main.do">Home</a></li>
+								<li><a href="#">캠핑장</a>
+									<ul>
+										<li><a href="#">일반 야영장</a></li>
+										<li><a href="#">자동차 야영장</a></li>
+										<li><a href="#">카라반</a></li>
+										<li><a href="#">글램핑</a></li>
+									</ul></li>
+								<li><a href="#">캠핑톡</a>
+									<ul>
+										<li><a href="/board/notice.do">공지사항</a></li>
+										<li><a href="/board/review.do">캠핑후기</a></li>
+										<li><a href="/board/QnA.do">QnA</a></li>
+									</ul></li>
+								<c:url value="/logout" var="logoutURL" />
+								<li>
+									<form action="${logoutURL }" method="post" name="logout">
+										<input type="hidden" name="${_csrf.parameterName }"
+											value="${_csrf.token }"> <a href="#"
+											onclick="logoutSubmit()">로그아웃</a>
+									</form>
+								</li>
+								<li style="vertical-align: top;">
+									<form
+										action='${pageContext.request.contextPath }/UserInfo/memberpageCorrect.do'
+										method="POST" id="rView">
+										<sec:csrfInput />
 
-                     </c:otherwise>
-                  </c:choose>
-               </c:if>
-            </ul>
-         </nav>
-      </header>
+
+										<a href="#"
+											onclick="document.getElementById('rView').submit()">마이페이지</a>
+									</form>
+								</li>
+							</c:when>
+
+							<c:when test="${role eq 'ROLE_ADMIN' }">
+								<li>"${nick}" 님 환영합니다.</li>
+								<li><a href="/main.do">Home</a></li>
+								<li><a href="#">캠핑장</a>
+									<ul>
+										<li><a href="#">일반 야영장</a></li>
+										<li><a href="#">자동차 야영장</a></li>
+										<li><a href="#">카라반</a></li>
+										<li><a href="#">글램핑</a></li>
+									</ul></li>
+								<li><a href="#">캠핑톡</a>
+									<ul>
+										<li><a href="/board/notice.do">공지사항</a></li>
+										<li><a href="/board/review.do">캠핑후기</a></li>
+										<li><a href="/board/QnA.do">QnA</a></li>
+									</ul></li>
+								<c:url value="/logout" var="logoutURL" />
+								<li>
+									<form action="${logoutURL }" method="post" name="logout">
+										<input type="hidden" name="${_csrf.parameterName }"
+											value="${_csrf.token }"> <a href="#"
+											onclick="logoutSubmit()">로그아웃</a>
+									</form>
+								</li>
+								<li><a href="#">관리자페이지</a>
+									<ul>
+										<li><a href="/admin/memberManage.do">회원관리</a></li>
+										<li><a href="#">캠핑톡 관리</a></li>
+										<li><a href="#">로그관리</a></li>
+									</ul></li>
+							</c:when>
+							<c:otherwise>
+								<li>"${nick}"님 메일인증을 해주시길바랍니다.</li>
+								<li><a href="/main.do">Home</a></li>
+								<li><a href="#">캠핑장</a>
+									<ul>
+										<li><a href="#">일반 야영장</a></li>
+										<li><a href="#">자동차 야영장</a></li>
+										<li><a href="#">카라반</a></li>
+										<li><a href="#">글램핑</a></li>
+									</ul></li>
+								<li><a href="#">캠핑톡</a>
+									<ul>
+										<li><a href="/board/notice.do">공지사항</a></li>
+										<li><a href="/board/review.do">캠핑후기</a></li>
+										<li><a href="/board/QnA.do">QnA</a></li>
+									</ul></li>
+								<c:url value="/logout" var="logoutURL" />
+								<li>
+									<form action="${logoutURL }" method="post" name="logout">
+										<input type="hidden" name="${_csrf.parameterName }"
+											value="${_csrf.token }"> <a href="#"
+											onclick="logoutSubmit()">로그아웃</a>
+									</form>
+								</li>
+								<li style="vertical-align: top;">
+									<form
+										action='${pageContext.request.contextPath }/UserInfo/memberpageCorrect.do'
+										method="POST" id="rView">
+										<sec:csrfInput />
+
+
+										<a href="#"
+											onclick="document.getElementById('rView').submit()">마이페이지</a>
+									</form>
+								</li>
+
+							</c:otherwise>
+						</c:choose>
+					</c:if>
+				</ul>
+			</nav>
+		</header>
 
       <!-- Banner -->
       <div class="col-sm-8">
@@ -266,11 +327,10 @@ b {
          <p
             style="font-size: 50px; padding-left: 12%; padding-top: 3%; font-weight: bold;">캠핑후기</p>
       </div>
-         </div>
       <br >
       <section style="padding-right: 10%; padding-left: 10%; margin: 0 auto;">
          
-         	<form action='<c:url value='${pageContext.request.contextPath }/reviewUpdateOk.do'/>' method="post" id="rView" name="rView">
+         	<form action='<c:url value='${pageContext.request.contextPath }/board/reviewUpdateOk.do'/>' method="post" id="rView" name="rView">
         	    <sec:csrfInput/>
                 <input type="hidden" name="p" value="${cv.currentPage }"/>
                 <input type="hidden" name="s" value="${cv.pageSize }"/>
@@ -287,8 +347,7 @@ b {
           <textarea id="content" name="rv_content" class="summernote" >${rv.rv_content }</textarea>
 
          </form>
-         
-           <div style="pad0ding-top: 1%; float: right;">
+           <div style="padding-top: 1%; float: right;">
             <input type="button" value="수정" onclick="sendUpdateParam();" class="btn btn-primary btn-sm" >
             
          </div>
@@ -296,7 +355,7 @@ b {
       </section>
       <br />
 	<%-- 실제적으로 갈 jsp --%>
-	<form action='<c:url value='${pageContext.request.contextPath }/reviewView.do'/>' method="post" id="sendData" name="sendData">
+	<form action='<c:url value='${pageContext.request.contextPath }/board/reviewView.do'/>' method="post" id="sendData" name="sendData">
        	    <sec:csrfInput/>
                <input type="hidden" name="p" value="${cv.currentPage }"/>
                <input type="hidden" name="s" value="${cv.pageSize }"/>

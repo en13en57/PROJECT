@@ -67,7 +67,7 @@
 		if (value != null && check.test(value)) {
 			$.ajax({
 				type : "GET", // Post 방식으로 찾아야겠네 이거 ㅇㅇ 일단 영상은 있는데...
-				url : "nickCheck.do", // 컨트롤러에서 대기중인 URL 주소이다.
+				url : "/nickCheck.do", // 컨트롤러에서 대기중인 URL 주소이다.
 				data : {
 					"nick" : value
 				},
@@ -127,7 +127,11 @@
 #member_position {
 	padding-left: 25%;
 }
+
+
 </style>
+
+
 
 <noscript>
 	<link rel="stylesheet"
@@ -138,14 +142,14 @@
 
 
 	<!-- header -->
-	<%@ include file="header_footer/header.jsp"%>
+	<%@ include file="../headerFooter/header.jsp"%>
 
 
 	<section id="banner1">
 		<div id="content1">
 			<div id="member_position">
 				<div class="mb-4">
-					<form action="/memberpageOk.do" method="get" name="memberVOForm"
+					<form action="/memberInfo/memberPageOk.do" method="get" name="memberVOForm"
 						id="memberVOForm">
 						<input type="hidden" name="mb_ID" value="${mvo.mb_ID}">
 						<div style="width: 70%;">
@@ -161,18 +165,18 @@
 
 								<tr>
 									<td class="td-1" style="">아이디</td>
-									<td class="td-2" colspan="2">${mvo.mb_ID }</td>
+									<td class="td-2" colspan="2" style="text-align: left;">${mvo.mb_ID }</td>
 								</tr>
 								<tr>
 									<td class="td-1">이름</td>
-									<td class="td-2" colspan="2">${mvo.mb_name }</td>
+									<td class="td-2" colspan="2" style="text-align: left;">${mvo.mb_name }</td>
 								</tr>
 
 								<tr>
 									<td class="td-1">닉네임</td>
 									<td class="td-2"><input type="text" class="form-control"
 										id="nick" name="mb_nick" style="width: 250px;" required
-										maxlength="10" value="${mvo.mb_nick }"></td>
+										maxlength="10" value="${mvo.mb_nick }" style="text-align: left;"></td>
 									<td class="td-2" style="text-align: center;"><input
 										type="button" id="nickcheck" value="중복확인"
 										onclick="FnNickcheck();" /></td>
@@ -180,12 +184,12 @@
 
 								<tr>
 									<td class="td-1">이메일</td>
-									<td class="td-2" colspan="2">${mvo.mb_email }</td>
+									<td class="td-2" colspan="2" style="text-align: left;">${mvo.mb_email }</td>
 								</tr>
 
 								<tr>
 									<td class="td-1" style="vertical-align: middle;">주소</td>
-									<td class="td-3" colspan="2">${mvo.mb_zipcode }
+									<td class="td-3" colspan="2" style="text-align: left;">${mvo.mb_zipcode }
 										${mvo.mb_address1 }${mvo.mb_address2 }</td>
 
 
@@ -193,15 +197,9 @@
 							</table>
 							<div style="float: right;">
 
-								<input type="button" id="pwdcorrect" value="비밀번호변경"
-									class="btn btn-primary"
-									" onclick="location.href='/passwordcorrect.do'"
-									style="color: white;"> <input type="submit"
-									id="memcorrect" value="수정하기" class="btn btn-success"
-									onclick="ajaxTOsend();"> <input type="button"
-									id="memdelete" value="탈퇴하기" class="btn btn-danger"
-									onclick="location.href='/memberdelete.do'"
-									style="color: white;">
+								<input type="button" id="pwdcorrect" value="비밀번호변경" class="btn btn-primary" onclick="location.href='/memberInfo/passwordCorrect.do'"style="color: white;"> 
+								<input type="button" id="memcorrect" value="수정하기" class="btn btn-success"onclick="ajaxTOsend();"> 
+								<input type="button" id="memdelete" value="탈퇴하기" class="btn btn-danger" onclick="location.href='/memberInfo/memberDelete.do'" style="color: white;">
 
 							</div>
 						</div>
@@ -212,7 +210,7 @@
 	</section>
 
 	<!-- Footer -->
-	<%@ include file="header_footer/footer.jsp"%>
+	<%@ include file="../headerFooter/footer.jsp"%>
 
 	<!-- Scripts -->
 	<script
