@@ -63,8 +63,11 @@ CREATE TABLE `camp_member` (
   `mb_address1` varchar(200) not NULL,
   `mb_address2` varchar(300) not NULL,
   `mb_use` int(11) default 0,
-  `authkey` varchar(200) not null
+  `authkey` varchar(200) not NULL,
+  del int DEFAULT 0
 );
+ALTER TABLE camp_member ADD del int DEFAULT 0;
+
 
 CREATE TABLE `member_role` (
   `gr_idx` int(11) NOT null AUTO_INCREMENT primary key,

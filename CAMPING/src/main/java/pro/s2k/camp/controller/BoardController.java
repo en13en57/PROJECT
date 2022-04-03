@@ -635,7 +635,7 @@ public class BoardController {
 		map.put("p",commVO.getCurrentPage() + "");
 		map.put("s",commVO.getPageSize() + "");
 		map.put("b",commVO.getBlockSize() + "");
-		map.put("qna_idx",commVO.getRv_idx() + "");
+		map.put("qna_idx",commVO.getQna_idx() + "");
 		redirectAttributes.addFlashAttribute("map", map);
 		return map;
 		}
@@ -657,7 +657,7 @@ public class BoardController {
 			map.put("p",commVO.getCurrentPage() + "");
 			map.put("s",commVO.getPageSize() + "");
 			map.put("b",commVO.getBlockSize() + "");
-			map.put("qna_idx",commVO.getRv_idx() + "");
+			map.put("qna_idx",commVO.getQna_idx() + "");
 			redirectAttributes.addFlashAttribute("map", map);
 			return map;
 		}
