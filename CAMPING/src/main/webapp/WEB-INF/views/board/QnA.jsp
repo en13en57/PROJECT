@@ -175,10 +175,11 @@ table {
 			</div>
 
 			<div class="col-sm-1.8" style="float: right;">
-				<select name="search" id="search" style="float: left;">
-					<option value="" selected>전체</option>
-					<option value="">제목</option>
-					<option value="">내용</option>
+				<select name="searchType" id="searchType" style="float: left;">
+					<option value="all" selected>전체</option>
+					<option value="title" >제목</option>
+					<option value="content">내용</option>
+					<option value="nick">닉네임</option>
 				</select>
 			</div>
 		</div>

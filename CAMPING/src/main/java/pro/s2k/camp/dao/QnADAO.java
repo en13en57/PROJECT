@@ -21,7 +21,7 @@ public interface QnADAO {
 	int selectMb_idx(int idx);
 	void updateAnswer(QnAVO qnaVO);
 	
-	
+	QnAVO selectSearchQnA(HashMap<String, Integer> map);
 	
 	
 }

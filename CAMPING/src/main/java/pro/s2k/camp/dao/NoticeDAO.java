@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import pro.s2k.camp.vo.NoticeVO;
+import pro.s2k.camp.vo.QnAVO;
 
 public interface NoticeDAO {
 	// <!-- 1. 개수얻기 -->
@@ -25,4 +26,6 @@ public interface NoticeDAO {
 	int incrementHits(int idx);
 	
 	String selectNick();
+	
+	NoticeVO selectSearchNotice(HashMap<String, Integer> map);
 }

@@ -33,6 +33,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
+import lombok.extern.slf4j.Slf4j;
 import pro.s2k.camp.service.CommentService;
 import pro.s2k.camp.service.NoticeService;
 import pro.s2k.camp.service.QnAService;
@@ -45,10 +46,9 @@ import pro.s2k.camp.vo.PagingVO;
 import pro.s2k.camp.vo.QnAVO;
 import pro.s2k.camp.vo.ReviewVO;
 
+@Slf4j
 @Controller
 public class BoardController {
-
-	private static final Logger log = LoggerFactory.getLogger(BoardController.class);
 
 	@Autowired
 	private NoticeService noticeService;

@@ -1,76 +1,56 @@
-    <%@ page import="java.net.URLEncoder" %>
-<%@ page import="java.security.SecureRandom" %>
-<%@ page import="java.math.BigInteger" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+  <meta charset="utf-8">
+  <title>네이버 로그인</title>
+  <!--  <script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js" charset="utf-8"></script>
+  <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script> -->
+	<!-- 네아로 SDK -->
+	
+<script type="text/javascript" src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.0.js" charset="utf-8"></script>
 </head>
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
-	rel="stylesheet">
-<script
-	src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-<script
-	src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
-<script
-	src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
-	rel="stylesheet">
 <body>
-<div class="container">
-    <h1>Naver Login API 사용하기</h1>
-    <div class="login-area">
-      <div id="message">
-        로그인 버튼을 눌러 로그인 해주세요.
-      </div>
-      <div id="button_area">
-        <div id="naverIdLogin" style="display: none;"></div>
-			<a id="naverLogin" href="#">
-			<img width="50" src="${pageContext.request.contextPath }/resources/images/naverLogin.png" />
-			</a>
-      </div>
-    </div>
-  </div>
-  <script src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js" charset="utf-8"></script>
-<!--   <script type="text/javascript">
-  
-  var clientId = "NfuiqEV4HltgQ4mfdiO6"
-	    var callbackUrl = "http://localhost:8080/naverCallback.do"
-  
-  
-  const naverLogin = new naver.LoginWithNaverId(
-   {
-    clientId: clientId,
-    callbackUrl: callbackUrl,
-    isPopup: false,
-    loginButton: {color: "green", type: 2, height: 40}
-    }
-   );
-
-    naverLogin.init();
-    
-	$(document).on("click", "#naverLogin", function(){ 
-		var btnNaverLogin = document.getElementById("naverIdLogin").firstChild;
-		btnNaverLogin.click();
-	});
-    
-
-
-  </script> -->
-    <script type="text/javascript">
-  	var naver_id_login = new naver_id_login("NfuiqEV4HltgQ4mfdiO6", "http://localhost:8080/naverCallback.do");
+  <!-- 네이버 로그인 버튼 노출 영역 -->
+  <div id="naver_id_login"></div>
+  <!-- //네이버 로그인 버튼 노출 영역 -->
+   
+   <script type="text/javascript">
+  	var naver_id_login = new naver_id_login("eT2NCIHgedo2uVebssZm", "http://localhost:8080/naverCallback.do");
   	var state = naver_id_login.getUniqState();
   	naver_id_login.setButton("white", 2,40);
-  	naver_id_login.setDomain("http://localhost:8080");
+  	naver_id_login.setDomain("http://localhost:8080/login.do");
   	naver_id_login.setState(state);
   	naver_id_login.setPopup();
   	naver_id_login.init_naver_id_login();
+  	
+    naver_id_login.get_naver_userprofile("naverSignInCallback()");
+    // 네이버 사용자 프로필 조회 이후 프로필 정보를 처리할 callback function
+    function naverSignInCallback() {
+      alert(naver_id_login.getProfileData('name'));
+      alert(naver_id_login.getProfileData('email'));
+      alert(naver_id_login.getProfileData('nickname'));
+      alert(naver_id_login.getProfileData('id'));
+      alert(naver_id_login.getProfileData('birthday'));
+    }
   </script>
+
+   
+<!--  <script type="text/javascript">
+	var naverLogin = new naver.LoginWithNaverId(
+		{
+			clientId: "eT2NCIHgedo2uVebssZm",
+  			// 본인의 Client ID로 수정, 띄어쓰기는 사용하지 마세요.
+			callbackUrl: "http://localhost:8080/naverCallback.do",
+  			// 본인의 callBack url로 수정하세요.
+			isPopup: false,
+			loginButton: {color: "white", type: 3, height: 60}
+  			// 네이버 로그인버튼 디자인 설정. 한번 바꿔보세요:D
+		}
+	);
+	naverLogin.init(); 
+</script> -->
+   
 </body>
 </html>

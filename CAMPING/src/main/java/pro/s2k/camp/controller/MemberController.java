@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import lombok.extern.slf4j.Slf4j;
 import pro.s2k.camp.service.MemberService;
 import pro.s2k.camp.vo.MemberVO;
+import pro.s2k.camp.vo.NaverVO;
 
 @Slf4j
 @Controller
@@ -34,6 +35,19 @@ public class MemberController {
 
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
+	
+//	@RequestMapping(value = "/naverLogin.do")
+//	public String naverLogin() {
+//		return "naverLogin";
+//	}
+//	@RequestMapping(value = "/naverCallback.do")
+//	public String naverCallback() {
+//		return "naverCallback";
+//	}
+//	
+	
+	
+	
 
 	@RequestMapping(value = "/insert.do", method = RequestMethod.GET)
 	public String insert() {
