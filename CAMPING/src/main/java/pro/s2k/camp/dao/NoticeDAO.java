@@ -4,8 +4,8 @@ package pro.s2k.camp.dao;
 import java.util.HashMap;
 import java.util.List;
 
+import pro.s2k.camp.vo.CommonVO;
 import pro.s2k.camp.vo.NoticeVO;
-import pro.s2k.camp.vo.QnAVO;
 
 public interface NoticeDAO {
 	// <!-- 1. 개수얻기 -->
@@ -27,5 +27,6 @@ public interface NoticeDAO {
 	
 	String selectNick();
 	
-	NoticeVO selectSearchNotice(HashMap<String, Integer> map);
+	List<NoticeVO> selectSearchList(HashMap<String, Object> map);
+	int selectSearchCount(CommonVO commVO);
 }

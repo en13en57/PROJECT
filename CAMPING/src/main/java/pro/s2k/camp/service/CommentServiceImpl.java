@@ -24,9 +24,12 @@ public class CommentServiceImpl implements CommentService {
 		try {
 			// 1개글에서 총 개수 구하기
 			int totalCount = commentDAO.selectCount(idx);
+			log.info(totalCount+"총개수");
 			pagingVO = new PagingVO<>(totalCount);
+			log.info(pagingVO+"pagingVO");
 //			 글을 읽어오기
 			List<CommentVO> list = commentDAO.selectList(idx);
+			log.info(list+"list");
 //			// 완성된 리스트를 페이징 객체에 넣는다.
 			pagingVO.setList(list);
 		}catch (Exception e) {

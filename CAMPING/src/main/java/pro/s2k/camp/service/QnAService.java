@@ -27,6 +27,6 @@ public interface QnAService {
 	
 	void updateAnswer(QnAVO qnaVO);
 	
-	
+	PagingVO<QnAVO> selectSearchList(CommonVO commVO);
 	
 }

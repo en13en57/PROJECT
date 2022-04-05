@@ -74,16 +74,8 @@ public class BoardController {
 
 // 공지사항 notice======================================================
 
-	   @SuppressWarnings("unchecked")
 	   @RequestMapping(value="/board/notice.do")
-	   public String noticeSelectList(@RequestParam Map<String, String> params, HttpServletRequest reuqest, @ModelAttribute CommonVO commonVO, Model model) {
-	      Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(reuqest);
-	      if(flashMap!=null) {
-	         params = (Map<String, String>) flashMap.get("map");
-	         commonVO.setP(Integer.parseInt(params.get("p")));
-	         commonVO.setS(Integer.parseInt(params.get("s")));
-	         commonVO.setB(Integer.parseInt(params.get("b")));
-	      }
+	   public String noticeSelectList(HttpServletRequest reuqest, @ModelAttribute CommonVO commonVO, Model model) {
 	      PagingVO<NoticeVO> pv = noticeService.selectList(commonVO);
 	      model.addAttribute("pv", pv);
 	      model.addAttribute("cv", commonVO);
@@ -95,20 +87,9 @@ public class BoardController {
 	      return "/board/noticeView";
 	   }
 	   
-	   @SuppressWarnings("unchecked")
 	   @RequestMapping(value="/board/noticeView.do", method = RequestMethod.POST)
-	   public String noticeView(@RequestParam Map<String, String> params, @ModelAttribute CommonVO commonVO, HttpServletRequest request, Model model) {
-	      log.debug("noticeView 호출 : " + "Map params(" + params +")" + "HttpServletRequest(" + request + ")" + "CommonVO(" + commonVO +")" + "Model(" + model+")");
-	      Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
-	      if(flashMap!=null) {
-	         params = (Map<String, String>) flashMap.get("map");
-	         commonVO.setP(Integer.parseInt(params.get("p")));
-	         commonVO.setS(Integer.parseInt(params.get("s")));
-	         commonVO.setB(Integer.parseInt(params.get("b")));
-	         commonVO.setNt_idx(Integer.parseInt(params.get("nt_idx")));
-	      }
-	      
-	      NoticeVO noticeVO = noticeService.selectByIdx(commonVO.getNt_idx());
+	   public String noticeView(@ModelAttribute CommonVO commonVO, NoticeVO noticeVO, HttpServletRequest request, Model model) {
+	      noticeVO = noticeService.selectByIdx(noticeVO.getNt_idx());
 	      model.addAttribute("nv", noticeVO);
 	      model.addAttribute("cv", commonVO);
 	      return "board/noticeView";
@@ -127,7 +108,6 @@ public class BoardController {
 	   
 	   @RequestMapping(value="/board/noticeInsertOk.do", method= RequestMethod.POST, headers = ("content-type=multipart/*"))
 	   public String noticeInsertOK(@ModelAttribute CommonVO commonVO, @ModelAttribute NoticeVO noticeVO, MultipartHttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
-	      
 	      noticeVO.setNt_ip(request.getRemoteAddr());
 	      List<FileUploadVO> fileList = new ArrayList<>();
 	      List<MultipartFile> multipartFiles = request.getFiles("uploadFile");
@@ -160,7 +140,6 @@ public class BoardController {
 	      }
 	      noticeVO.setFileList(fileList);
 	      noticeService.insert(noticeVO);
-	      
 	      Map<String, String> map = new HashMap<>();
 	      map.put("p", "1");
 	      map.put("s", commonVO.getPageSize() + "");
@@ -169,8 +148,8 @@ public class BoardController {
 	      return "redirect:/board/notice.do";
 	   }
 	   @RequestMapping(value="/board/noticeUpdate.do", method = RequestMethod.POST)
-	   public String noticeUpdate(@ModelAttribute CommonVO commonVO, Model model) {
-	      NoticeVO noticeVO = noticeService.selectByIdx(commonVO.getNt_idx());
+	   public String noticeUpdate(@ModelAttribute CommonVO commonVO,NoticeVO noticeVO, Model model) {
+	      noticeVO = noticeService.selectByIdx(noticeVO.getNt_idx());
 	      model.addAttribute("nv", noticeVO);
 	      model.addAttribute("cv",commonVO);
 	      return "/board/noticeUpdate";
@@ -243,22 +222,27 @@ public class BoardController {
 	      redirectAttributes.addFlashAttribute("map", map);
 	      return "redirect:/board/notice.do";
 	   }
+	   
+		@RequestMapping(value = "/selectSearchNotice.do")
+		public String selectSearchNotice (@RequestParam String searchType, @RequestParam String searchText,HttpServletRequest request,
+				@ModelAttribute CommonVO commVO, Model model) {
+			PagingVO<NoticeVO> pv = noticeService.selectSearchList(commVO);
+			pv.setSearchType(searchType);
+			pv.setSearchText(searchText);
+			model.addAttribute("pv", pv);
+			model.addAttribute("cv", commVO);
+
+			return "/board/notice";
+			
+		}
+	   
+	   
 
 //캠핑후기 ===============================================================================================
 
 	// 리뷰 목록보기
-	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/board/review.do")
-	public String review(@RequestParam Map<String, String> params, HttpServletRequest request,
-			@ModelAttribute CommonVO commVO, Model model) {
-		Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
-		if (flashMap != null) {
-			params = (Map<String, String>) flashMap.get("map");
-			commVO.setP(Integer.parseInt(params.get("p")));
-			commVO.setS(Integer.parseInt(params.get("s")));
-			commVO.setB(Integer.parseInt(params.get("b")));
-		}
-
+	public String review(HttpServletRequest request,@ModelAttribute CommonVO commVO, Model model) {
 		PagingVO<ReviewVO> pv = reviewService.selectList(commVO);
 		model.addAttribute("pv", pv);
 		model.addAttribute("cv", commVO);
@@ -267,29 +251,15 @@ public class BoardController {
 	}
 
 	// 내용보기 : 글 1개를 읽어서 보여준다
-	@SuppressWarnings({ "unchecked" })
 	@RequestMapping(value = "/board/reviewView.do", method = RequestMethod.POST)
-	public String reviewView(@RequestParam Map<String, String> params, HttpServletRequest request,
-			@ModelAttribute CommonVO commVO, Model model) {
-		log.info("{}의 view호출 : {}", this.getClass().getName(), commVO);
-		// POST전송된것을 받으려면 RequestContextUtils.getInputFlashMap(request)로 맵이 존재하는지 판단해서
-		// 있으면 POST처리를 하고 없으면 GET으로 받아서 처리를 한다.
-		Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
-		if (flashMap != null) {
-			params = (Map<String, String>) flashMap.get("map");
-			commVO.setP(Integer.parseInt(params.get("p")));
-			commVO.setS(Integer.parseInt(params.get("s")));
-			commVO.setB(Integer.parseInt(params.get("b")));
-			commVO.setRv_idx(Integer.parseInt(params.get("rv_idx")));
-		}
-		ReviewVO reviewVO = reviewService.selectByIdx(commVO.getRv_idx());
+	public String reviewView(HttpServletRequest request,@ModelAttribute CommonVO commVO, Model model, ReviewVO reviewVO, CommentVO commentVO) {
+		reviewVO = reviewService.selectByIdx(reviewVO.getRv_idx());
+		log.info(reviewService.selectByIdx(reviewVO.getRv_idx())+"!!!1");
 		model.addAttribute("rv", reviewVO);
 		model.addAttribute("cv", commVO);
-		CommentVO commentVO = commentService.selectByIdx(commVO.getRv_idx());
-		model.addAttribute("f", commentVO); // 이걸로 한개를 불러옴.
-		PagingVO<CommentVO> vo = commentService.selectList(commVO.getRv_idx());
+		PagingVO<CommentVO> vo = commentService.selectList(reviewVO.getRv_idx());
 		model.addAttribute("cm", vo);
-		int mbIdx = reviewService.selectMb_idx(commVO.getRv_idx());
+		int mbIdx = reviewService.selectMb_idx(reviewVO.getRv_idx());
 		model.addAttribute("mi", mbIdx);
 		return "/board/reviewView";
 	}
@@ -299,8 +269,6 @@ public class BoardController {
 	@ResponseBody
 	public Map<String, String> replyInsertOk(@ModelAttribute CommonVO commVO, @ModelAttribute CommentVO commentVO,
 			HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) { // redirect시 POST전송을 위해
-																								// RedirectAttributes 변수
-																								// 추가
 		// 일단 VO로 받고
 		commentVO.setCo_ip(request.getRemoteAddr()); // 아이피 추가로 넣어주고
 		commentService.insert(commentVO);
@@ -308,7 +276,7 @@ public class BoardController {
 		map.put("p", commVO.getCurrentPage() + "");
 		map.put("s", commVO.getPageSize() + "");
 		map.put("b", commVO.getBlockSize() + "");
-		map.put("rv_idx", commVO.getRv_idx() + "");
+		map.put("rv_idx",commentVO.getRv_idx() + "");
 		redirectAttributes.addFlashAttribute("map", map);
 		return map;
 	}
@@ -341,9 +309,7 @@ public class BoardController {
 	@RequestMapping(value = "/board/rereply.do", method = RequestMethod.POST, produces = "application/json; charset=UTF8")
 	@ResponseBody
 	public Map<String, String> rereply(@ModelAttribute CommonVO commVO, @ModelAttribute CommentVO commentVO,
-			HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) { // redirect시 POST전송을 위해
-																								// RedirectAttributes 변수
-																								// 추가
+			HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) { 
 		// 일단 VO로 받고
 		commentVO.setCo_ip(request.getRemoteAddr()); // 아이피 추가로 넣어주고
 		commentService.reply(commentVO);
@@ -351,7 +317,7 @@ public class BoardController {
 		map.put("p", commVO.getCurrentPage() + "");
 		map.put("s", commVO.getPageSize() + "");
 		map.put("b", commVO.getBlockSize() + "");
-		map.put("rv_idx", commVO.getRv_idx() + "");
+		map.put("rv_idx", commentVO.getRv_idx() + "");
 		redirectAttributes.addFlashAttribute("map", map);
 		return map;
 	}
@@ -368,19 +334,9 @@ public class BoardController {
 		return "redirect:/review.do";
 	}
 
-	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/board/reviewUpdate.do", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
-	public String updatePost(@RequestParam Map<String, String> params, HttpServletRequest request,
-			@ModelAttribute CommonVO commVO, Model model) {
-		Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
-		if (flashMap != null) {
-			params = (Map<String, String>) flashMap.get("map");
-			commVO.setP(Integer.parseInt(params.get("p")));
-			commVO.setS(Integer.parseInt(params.get("s")));
-			commVO.setB(Integer.parseInt(params.get("b")));
-			commVO.setRv_idx(Integer.parseInt(params.get("rv_idx")));
-		}
-		ReviewVO reviewVO = reviewService.selectByIdx(commVO.getRv_idx());
+	public String updatePost(HttpServletRequest request,@ModelAttribute CommonVO commVO, Model model,ReviewVO reviewVO ) {
+		reviewVO = reviewService.selectByIdx(reviewVO.getRv_idx());
 		model.addAttribute("rv", reviewVO);
 		model.addAttribute("cv", commVO);
 		return "/board/reviewUpdate";
@@ -390,23 +346,20 @@ public class BoardController {
 	@ResponseBody
 	public Map<String, String> updateOkPost(@ModelAttribute CommonVO commVO, @ModelAttribute ReviewVO reviewVO,
 			HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
-		// 일단 VO로 받고
 		reviewVO.setRv_ip(request.getRemoteAddr()); // 아이피 추가로 넣어주고
-		log.info("{}의 updateOKPost 호출 : {}", this.getClass().getName(), commVO + "\n" + reviewVO);
-
 		reviewService.update(reviewVO);
 		Map<String, String> map = new HashMap<>();
 		map.put("p", commVO.getCurrentPage() + "");
 		map.put("s", commVO.getPageSize() + "");
 		map.put("b", commVO.getBlockSize() + "");
-		map.put("rv_idx", commVO.getRv_idx() + "");
+		map.put("rv_idx", reviewVO.getRv_idx() + "");
 		redirectAttributes.addFlashAttribute("map", map);
 		return map;
 	}
 
 	@RequestMapping(value = "/board/reviewDelete.do", method = RequestMethod.POST)
-	public String deletePost(@ModelAttribute CommonVO commVO, Model model) {
-		ReviewVO reviewVO = reviewService.selectByIdx(commVO.getIdx());
+	public String deletePost(@ModelAttribute CommonVO commVO, Model model, ReviewVO reviewVO) {
+		reviewVO = reviewService.selectByIdx(reviewVO.getRv_idx());
 		model.addAttribute("fv", reviewVO);
 		model.addAttribute("cv", commVO);
 		return "reviewDelete";
@@ -422,17 +375,7 @@ public class BoardController {
 			@ModelAttribute ReviewVO reviewVO, 
 			HttpServletRequest request,
 			RedirectAttributes redirectAttributes) {
-		// 일단 VO로 받고
-		log.info("{}의 deleteOKPost 호출 : {}", this.getClass().getName(), commVO + "\n" + reviewVO);
-		// 서비스를 호출하여 삭제를 수행하고
-		
 		reviewService.delete(reviewVO);
-		log.info(reviewVO+"성공");
-		
-		// redirect시 GET전송 하기
-		// return "redirect:/board/list?p=1&s=" + commVO.getPageSize() + "&b=" + commVO.getBlockSize();
-		// redirect시 POST전송 하기
-		// Redirect시 POST전송 하려면 map에 넣어서 RedirectAttributes에 담아서 전송하면 된다.
 		Map<String, String> map = new HashMap<>();
 		map.put("p", commVO.getCurrentPage() + "");
 		map.put("s", commVO.getPageSize() + "");
@@ -442,32 +385,9 @@ public class BoardController {
 		return "redirect:/board/review.do";
 	}
 	
-//	
-//	@SuppressWarnings("unchecked")
-//	@RequestMapping(value = "/board/replyUpdate.do",method = RequestMethod.POST , produces = "text/plain;charset=UTF-8")
-//	public String replyUpdate(@RequestParam Map<String, String> params, HttpServletRequest request,@ModelAttribute CommonVO commVO,Model model) {
-//		Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
-//		if(flashMap!=null) {
-//			params = (Map<String, String>) flashMap.get("map");
-//			commVO.setP(Integer.parseInt(params.get("p")));
-//			commVO.setS(Integer.parseInt(params.get("s")));
-//			commVO.setB(Integer.parseInt(params.get("b")));
-//			commVO.setCo_idx(Integer.parseInt(params.get("co_idx")));
-//		}
-//		CommentVO commentVO = commentService.selectByIdx(commVO.getCo_idx());
-//		model.addAttribute("f", commentVO);
-//		model.addAttribute("cv", commVO);
-//		return "/board/reviewUpdate";
-//	}
-//	
-	
-	
-	
 	@RequestMapping(value = "/board/replyUpdateOk.do",method = RequestMethod.POST, produces = "application/json; charset=UTF8")
 	@ResponseBody
-	public Map<String, String> replyUpdateOk(@ModelAttribute CommonVO commVO,
-			@ModelAttribute CommentVO commentVO, 
-			HttpServletRequest request, Model model,
+	public Map<String, String> replyUpdateOk(@ModelAttribute CommonVO commVO,@ModelAttribute CommentVO commentVO, HttpServletRequest request, Model model,
 			RedirectAttributes redirectAttributes) {
 		// 일단 VO로 받고
 		commentVO.setCo_ip(request.getRemoteAddr()); // 아이피 추가로 넣어주고 
@@ -476,7 +396,7 @@ public class BoardController {
 		map.put("p", commVO.getCurrentPage() + "");
 		map.put("s", commVO.getPageSize() + "");
 		map.put("b",commVO.getBlockSize() + "");
-		map.put("rv_idx",commVO.getRv_idx() + "");
+		map.put("rv_idx",commentVO.getRv_idx() + "");
 		redirectAttributes.addFlashAttribute("map", map);
 		return map;
 	}
@@ -492,8 +412,6 @@ public class BoardController {
 			@ModelAttribute CommentVO commentVO, 
 			HttpServletRequest request,
 			RedirectAttributes redirectAttributes) {
-		// 일단 VO로 받고
-		log.info("{}의 deleteOKPost 호출 : {}", this.getClass().getName(), commVO + "\n" + commentVO);
 		// 실제 경로 구하고
 		String realPath = request.getSession().getServletContext().getRealPath("upload");
 		// 서비스를 호출하여 삭제를 수행하고
@@ -507,22 +425,31 @@ public class BoardController {
 		map.put("p", commVO.getCurrentPage() + "");
 		map.put("s", commVO.getPageSize() + "");
 		map.put("b",commVO.getBlockSize() + "");
-		map.put("rv_idx",commVO.getRv_idx() + "");
+		map.put("rv_idx",commentVO.getRv_idx() + "");
 		redirectAttributes.addFlashAttribute("map", map);
 		return map;
 	}
 	
+	@RequestMapping(value = "/selectSearchReview.do")
+	public String selectSearchReview (@RequestParam String searchType, @RequestParam String searchText,HttpServletRequest request,
+		@ModelAttribute CommonVO commVO, Model model) {
+		PagingVO<ReviewVO> pv = reviewService.selectSearchList(commVO);
+		pv.setSearchType(searchType);
+		pv.setSearchText(searchText);
+		model.addAttribute("pv", pv);
+		model.addAttribute("cv", commVO);
+
+		return "/board/review";
+		
+	}
+	
+	
+	
+	
+	
 	// QnA--------------------------------------------------------------------
-	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/board/QnA.do")
-	public String QnA(@RequestParam Map<String, String> params, HttpServletRequest request,@ModelAttribute CommonVO commVO, Model model) {
-		Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
-		if(flashMap!=null) {
-			params = (Map<String, String>) flashMap.get("map");
-			commVO.setP(Integer.parseInt(params.get("p")));
-			commVO.setS(Integer.parseInt(params.get("s")));
-			commVO.setB(Integer.parseInt(params.get("b")));
-		}
+	public String QnA(HttpServletRequest request,@ModelAttribute CommonVO commVO, Model model) {
 		PagingVO<QnAVO> qnaVO = qnaService.selectList(commVO);
 		model.addAttribute("pv", qnaVO); 
 		model.addAttribute("cv", commVO);
@@ -553,18 +480,9 @@ public class BoardController {
 		return "redirect:/board/QnA.do";
 		}
 		
-		@SuppressWarnings("unchecked")
 		@RequestMapping(value = "/board/QnAUpdate.do",method = RequestMethod.POST , produces = "text/plain;charset=UTF-8")
-		public String QnAUpdate(@RequestParam Map<String, String> params, HttpServletRequest request,@ModelAttribute CommonVO commVO,Model model) {
-			Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
-			if(flashMap!=null) {
-				params = (Map<String, String>) flashMap.get("map");
-				commVO.setP(Integer.parseInt(params.get("p")));
-				commVO.setS(Integer.parseInt(params.get("s")));
-				commVO.setB(Integer.parseInt(params.get("b")));
-				commVO.setQna_idx(Integer.parseInt(params.get("qna_idx")));
-			}
-			QnAVO qnaVO = qnaService.selectByIdx(commVO.getQna_idx());
+		public String QnAUpdate(HttpServletRequest request,@ModelAttribute CommonVO commVO,Model model, QnAVO qnaVO) {
+			qnaVO = qnaService.selectByIdx(qnaVO.getQna_idx());
 			model.addAttribute("qv", qnaVO);
 			model.addAttribute("cv", commVO);
 			return "/board/QnAUpdate";
@@ -580,36 +498,24 @@ public class BoardController {
 			map.put("p", commVO.getCurrentPage() + "");
 			map.put("s", commVO.getPageSize() + "");
 			map.put("b",commVO.getBlockSize() + "");
-			map.put("qna_idx",commVO.getQna_idx() + "");
+			map.put("qna_idx",qnaVO.getQna_idx() + "");
 			redirectAttributes.addFlashAttribute("map", map);
 			return map;
 		}
 	
 		
 		
-		@SuppressWarnings("unchecked")
 		@RequestMapping(value = "/board/QnAView.do") 
-		public String QnAView(@RequestParam Map<String, String> params, @RequestParam String role, HttpServletRequest request, Model model, 
-				@ModelAttribute CommonVO commVO ) {
-			Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
-			if(flashMap!=null) {
-				params = (Map<String, String>) flashMap.get("map");
-				commVO.setP(Integer.parseInt(params.get("p")));
-				commVO.setS(Integer.parseInt(params.get("s")));
-				commVO.setB(Integer.parseInt(params.get("b")));
-				commVO.setQna_idx(Integer.parseInt(params.get("qna_idx")));
-			}
+		public String QnAView(@RequestParam String role, HttpServletRequest request, Model model, @ModelAttribute CommonVO commVO, QnAVO qnaVO, QnAVO qnaVO2 ) {
 			PagingVO<QnAVO> pagingVO = qnaService.selectList(commVO);
 			model.addAttribute("pv", pagingVO);
-			QnAVO qnaVO = qnaService.selectByIdx(commVO.getQna_idx());
+			qnaVO = qnaService.selectByIdx(qnaVO.getQna_idx());
 			model.addAttribute("qv", qnaVO);
 			model.addAttribute("cv", commVO);
-			QnAVO qnaVO2 = qnaService.selectByIdxAnswer(commVO.getQna_idx());
-			log.info(commVO.getQna_idx()+"##############");
+			qnaVO2 = qnaService.selectByIdxAnswer(qnaVO2.getQna_idx());
 			model.addAttribute("qv2", qnaVO2);
-			int mbIdx = qnaService.selectMb_idx(commVO.getQna_idx());
+			int mbIdx = qnaService.selectMb_idx(qnaVO.getQna_idx());
 			model.addAttribute("mi", mbIdx);
-		
 			if(qnaVO.getQna_read()==0 && role.equals("ROLE_ADMIN")) {
 				qnaVO.setQna_read(qnaVO.getQna_read()+1);
 				qnaService.updateRead(qnaVO.getQna_idx());
@@ -635,7 +541,7 @@ public class BoardController {
 		map.put("p",commVO.getCurrentPage() + "");
 		map.put("s",commVO.getPageSize() + "");
 		map.put("b",commVO.getBlockSize() + "");
-		map.put("qna_idx",commVO.getQna_idx() + "");
+		map.put("qna_idx",qnaVO.getQna_idx() + "");
 		redirectAttributes.addFlashAttribute("map", map);
 		return map;
 		}
@@ -657,7 +563,7 @@ public class BoardController {
 			map.put("p",commVO.getCurrentPage() + "");
 			map.put("s",commVO.getPageSize() + "");
 			map.put("b",commVO.getBlockSize() + "");
-			map.put("qna_idx",commVO.getQna_idx() + "");
+			map.put("qna_idx",qnaVO.getQna_idx() + "");
 			redirectAttributes.addFlashAttribute("map", map);
 			return map;
 		}
@@ -686,6 +592,20 @@ public class BoardController {
 
 			return "QnA";
 		}
+		
+		@RequestMapping(value = "/selectSearchQnA.do")
+		public String selectSearchQnA (@RequestParam String searchType, @RequestParam String searchText,HttpServletRequest request,
+				@ModelAttribute CommonVO commVO, Model model) {
+			PagingVO<QnAVO> pv = qnaService.selectSearchList(commVO);
+			pv.setSearchType(searchType);
+			pv.setSearchText(searchText);
+			model.addAttribute("pv", pv);
+			model.addAttribute("cv", commVO);
+
+			return "/board/QnA";
+			
+		}
+		
 		
 // 다운로드 서머노트	=========================================
 			

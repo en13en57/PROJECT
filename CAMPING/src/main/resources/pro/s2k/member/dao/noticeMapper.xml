@@ -58,18 +58,29 @@
 		select a.mb_nick from camp_member a, camp_notice b  where a.mb_idx = b.mb_idx
 	</select>
 	
-	<select id="selectSearchNotice" parameterType="hashmap" resultType="noticeVO">
+	<select id="selectSearchList" parameterType="hashmap" resultType="noticeVO">
 		select a.nt_idx,a.nt_title,a.nt_content,a.nt_modiDate,a.nt_hit 
 		from camp_notice a 
 		where
 		<if test = "searchType == 'all'">
-		nt_title like concat('%','#{searchtext}','%') 
-		 or nt_content like concat ('%','#{searchtext}','%')
+		nt_title like concat('%',#{searchText},'%') 
+		 or nt_content like concat ('%',#{searchText},'%')
 		</if>
-		<if test = "searchType == 'title'">nt_title like concat('%','#{searchtext}','%') </if>
-		<if test = "searchType == 'content'"> nt_content like concat ('%','#{searchtext}','%') </if>
+		<if test = "searchType == 'title'">nt_title like concat('%',#{searchText},'%') </if>
+		<if test = "searchType == 'content'"> nt_content like concat ('%',#{searchText},'%') </if>
+		order by 
+			nt_idx desc limit #{startNo}, #{pageSize}
 	</select>
 	
-	
+	<select id="selectSearchCount"  parameterType="commonVO" resultType="int">
+		select count(nt_idx) from camp_notice
+		where	
+		<if test = "searchType == 'all'">
+		nt_title like concat('%',#{searchText},'%') 
+		 or nt_content like concat ('%',#{searchText},'%')
+		</if>
+		<if test = "searchType == 'title'">nt_title like concat('%',#{searchText},'%') </if>
+		<if test = "searchType == 'content'"> nt_content like concat ('%',#{searchText},'%') </if>
+	</select>
 	
 </mapper>

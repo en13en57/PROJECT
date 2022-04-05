@@ -173,21 +173,25 @@ table {
 			<p style="font-size: 50px; padding-left: 12%; padding-top: 5%; font-weight: bold;">공지사항</p>
 		</div>
 		<div style="padding-right: 10%; padding-bottom: 3%;">
-			<div class="col-sm-1" style="float: right;">
-				<input type="button" value="검색" onclick="search();">
-			</div>
-
-			<div class="col-sm-2" style="float: right;">
-				<input type="text" />
-			</div>
-
-			<div class="col-sm-1.8" style="float: right;">
-				<select name="search" id="search" style="float: left;">
-					<option value="" selected>전체</option>
-					<option value="">제목</option>
-					<option value="">내용</option>
-				</select>
-			</div>
+			<form action="/selectSearchNotice.do" method="post">
+				<sec:csrfInput/>
+				<div class="col-sm-1" style="float: right;">
+					<input type="submit" value="검색" >
+				</div>
+	
+				<div class="col-sm-2" style="float: right;">
+					<input type="text" name="searchText" value="${searchText }"/>
+				</div>
+	
+				<div class="col-sm-1.8" style="float: right;">
+					<select name="searchType" id="searchType" style="float: left;">
+						<option value="all" selected>전체</option>
+						<option value="title" ${searchType eq 'title' ? 'selected' : '' }>제목</option>
+						<option value="content" ${searchType eq 'content' ? 'selected' : '' }>내용</option>
+						<option value="nick" ${searchType eq 'nick' ? 'selected' : '' }>닉네임</option>
+					</select>
+				</div>
+			</form>
 		</div>
 		<section
 			style="padding-right: 10%; padding-left: 10%; padding-bottom:3%; margin: 0 auto;">
@@ -252,9 +256,16 @@ table {
 					</c:if>
 				</c:if>
 			</table>
-			<div style="border: none;text-align: center;">
-						${pv.pageList}
-			</div>
+			<c:if test="${pv.searchType==null }">
+				<div style="border: none;text-align: center;">
+					${pv.pageList}
+				</div>
+			</c:if>
+			<c:if test="${pv.searchType!=null }">
+				<div style="border: none;text-align: center;">
+					${pv.pageList2}
+				</div>
+			</c:if>
 	
 			<c:set value="${sessionScope.mvo.gr_role}" var="role" />
          <c:if test="${role eq 'ROLE_ADMIN' }">

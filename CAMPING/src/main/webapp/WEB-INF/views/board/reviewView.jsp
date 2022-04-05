@@ -306,11 +306,11 @@ table th {
 			</c:otherwise>
 		</c:choose>
 		</form>
-		<c:if test="${rv.del==0}">
+		<c:if test="${rv.del==1}">
 			<div onclick="return false;"
 				style="background-color: gray; height:80px; color: red; padding-left: 2%; margin-bottom: 5px;">삭제된 후기입니다. </div>
 		</c:if>
-		<c:if test="${rv.del==1}">
+		<c:if test="${rv.del==0}">
 			<br>
 			<table class="table" style="border: 1px solid white;">
 				<thead class="thead-dark">

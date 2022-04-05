@@ -13,4 +13,6 @@ public interface NoticeService {
 	void update(NoticeVO noticeVO, String path, String[] deleteFile);
 	
 	void delete(NoticeVO noticeVO, String path);
+	
+	PagingVO<NoticeVO> selectSearchList(CommonVO commVO);
 }

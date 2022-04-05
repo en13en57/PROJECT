@@ -3,7 +3,7 @@ package pro.s2k.camp.dao;
 import java.util.HashMap;
 import java.util.List;
 
-import pro.s2k.camp.vo.QnAVO;
+import pro.s2k.camp.vo.CommonVO;
 import pro.s2k.camp.vo.ReviewVO;
 
 
@@ -36,5 +36,6 @@ public interface ReviewDAO {
 	// 댓글 개수 세기
 	int selectCoCount(int idx);
 	
-	ReviewVO selectSearchReview(HashMap<String, Integer> map);
+	List<ReviewVO> selectSearchList(HashMap<String, Object> map);
+	int selectSearchCount(CommonVO commVO);
 }
