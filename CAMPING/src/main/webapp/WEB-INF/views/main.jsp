@@ -81,8 +81,12 @@ font-weight: bold;
 	left: 30%;
 }
 
-
-
+table {
+	table-layout: fixed;
+}
+#title{
+	white-space:nowrap; text-overflow:ellipsis; overflow:hidden;
+}
 
 </style>
 
@@ -413,8 +417,8 @@ font-weight: bold;
 							<c:if test="${not empty nv.list }">
 								<c:forEach var="vo" items="${nv.list }">
 									<tr>
-										<td colspan="2" style="text-align: left"><i
-											class="fa fa-angle-right" aria-hidden="true"></i><font
+										<td colspan="2" style="text-align: left" id="title"><i
+											class="fa fa-angle-right" aria-hidden="true" ></i><font
 												color="white">${vo.nt_title }</font></td>
 									</tr>
 								</c:forEach>
@@ -444,8 +448,8 @@ font-weight: bold;
 							<c:if test="${not empty qv.list }">
 								<c:forEach var="vo" items="${qv.list }">
 									<tr>
-										<td colspan="2" style="text-align: left"><i
-											class="fa fa-angle-right" aria-hidden="true"></i> <font
+										<td colspan="2" style="text-align: left" id="title"><i
+											class="fa fa-angle-right" aria-hidden="true" ></i> <font
 												color="white">${vo.qna_title }</font></td>
 									</tr>
 								</c:forEach>
@@ -476,8 +480,8 @@ font-weight: bold;
 							<c:if test="${not empty rv.list }">
 								<c:forEach var="vo" items="${rv.list }">
 									<tr>
-										<td colspan="2" style="text-align: left"><i
-											class="fa fa-angle-right" aria-hidden="true"></i> <font
+										<td colspan="2" style="text-align: left" id="title"><i
+											class="fa fa-angle-right" aria-hidden="true" ></i> <font
 												color="white">${vo.rv_title }</font></td>
 									</tr>
 								</c:forEach>

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
@@ -108,6 +109,7 @@ table td {
 
 table {
 	text-align: center;
+	table-layout: fixed;
 }
 
 .th-1 {
@@ -115,12 +117,12 @@ table {
 }
 
 .th-2 {
-	width: 80px;
-}
-
-.th-3 {
 	width: 150px;
 }
+/* 
+.th-3 {
+	width: 150px;
+} */
 
 .th-4 {
 	width: 90px;
@@ -133,6 +135,14 @@ table {
 .th-6 {
 	width: 40px;
 }
+.th-7 {
+	width: 30px;
+}
+
+#title{
+	white-space:nowrap; text-overflow:ellipsis; overflow:hidden;
+}
+
 </style>
 
 <noscript>
@@ -188,7 +198,6 @@ table {
 						<option value="all" selected>전체</option>
 						<option value="title" ${searchType eq 'title' ? 'selected' : '' }>제목</option>
 						<option value="content" ${searchType eq 'content' ? 'selected' : '' }>내용</option>
-						<option value="nick" ${searchType eq 'nick' ? 'selected' : '' }>닉네임</option>
 					</select>
 				</div>
 			</form>
@@ -202,10 +211,11 @@ table {
 				<tr>
 					<th class="th-1" scope="col">글번호</th>
 					<th class="th-2" scope="col">제목</th>
-					<th class="th-3" scope="col">내용</th>
+					<!-- <th class="th-3" scope="col">내용</th> -->
 					<th class="th-4" scope="col">닉네임</th>
 					<th class="th-5" scope="col">작성일</th>
 					<th class="th-6" scope="col">조회수</th>
+					<th class="th-7" scope="col">첨부파일</th>
 				</tr>
 				<tr>
 					<c:if test="${pv.totalCount==0 }">
@@ -221,7 +231,7 @@ table {
 									${no }
 									<c:set var="no" value="${no-1}"/>
 								</td>
-								<td style="padding-bottom: 60px;"> 
+								<td style="padding-bottom: 60px;" id="title"> 
 								<form action='<c:url value='${pageContext.request.contextPath }/board/noticeView.do'/>' method="post" id="nView${num.index }">
 									<sec:csrfInput/>
 									<input type="hidden" name="p" value="${pv.currentPage }"/>
@@ -236,12 +246,26 @@ table {
 								<c:if test="${day==reg }">
 									  <span style="color:red;">New</span>
 								</c:if>
-								<a style="cursor: pointer;" onclick="document.getElementById('nView${num.index }').submit()"><c:out value="${vo.nt_title }"></c:out></a>
-							
+									<c:set var="content" value="${vo.nt_content }"/>
+									<c:set var="title" value="${vo.nt_title }"/>
+										<c:choose>
+											<c:when test="${fn:length(title) >= 20 }">
+												<a style="cursor: pointer;" onclick="document.getElementById('nView${num.index }').submit()"><c:out value="${fn:substring(title,0,20) }" /></a>
+												<c:if test="${fn:contains(content,'img')}">
+				                        			<img style="width: 25px; height: 25px; vertical-align: middle;"	src="${pageContext.request.contextPath }/resources/images/image.png" alt="" />
+			                        			</c:if>
+											</c:when>
+											<c:otherwise>
+												<a style="cursor: pointer;" onclick="document.getElementById('nView${num.index }').submit()"><c:out value="${title}" /></a>
+												<c:if test="${fn:contains(content,'img')}">
+				                        			<img style="width: 25px; height: 25px; vertical-align: middle;"	src="${pageContext.request.contextPath }/resources/images/image.png" alt="" />
+			                        			</c:if>
+											</c:otherwise>
+										</c:choose>
 								</td>
-								<td style="padding-top: 50px;">
+							<%-- 	<td style="padding-top: 50px;" id="content">
 									${vo.nt_content }
-								</td>
+								</td> --%>
 								<td style="vertical-align: middle;">
 									${vo.mb_nick }
 								</td>
@@ -251,6 +275,10 @@ table {
 								<td style="vertical-align: middle;">
 									${vo.nt_hit }
 								</td>
+								<td style="vertical-align: middle;">
+									${vo.nt_hit }
+								</td>
+							
 							</tr>
 						</c:forEach>
 					</c:if>
@@ -284,7 +312,7 @@ table {
 	<script
 		src="${pageContext.request.contextPath }/resources/assets/js/jquery.min.js"></script>
 	<script
-		src="${pageContext.request.contextPath }/resources/assets/js/commons.js"></script>
+		src="${pageContext.request.contextPath }/resources/assets/js/common.js"></script>
 	<script
 		src="${pageContext.request.contextPath }/resources/assets/js/jquery.scrolly.min.js"></script>
 	<script

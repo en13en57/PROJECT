@@ -98,6 +98,7 @@ table th {
 
 table {
 	text-align: center;
+	table-layout: fixed;
 }
 
 .th-1 {
@@ -105,13 +106,13 @@ table {
 }
 
 .th-2 {
-	width: 80px;
-}
-
-.th-3 {
 	width: 150px;
 }
 
+/* .th-3 {
+	width: 150px;
+}
+ */
 .th-4 {
 	width: 90px;
 }
@@ -127,6 +128,12 @@ table {
 #writebutton {
 	padding-bottom: 2%;
 }
+
+/* #title{
+	white-space:nowrap; text-overflow:ellipsis; overflow:hidden;
+} */
+
+
 </style>
 
 <noscript>
@@ -197,7 +204,7 @@ table {
 					<tr>
 						<th class="th-1" scope="col">글번호</th>
 						<th class="th-2" scope="col">제목</th>
-						<th class="th-3" scope="col">내용</th>
+						<!-- <th class="th-3" scope="col">내용</th> -->
 						<th class="th-4" scope="col">닉네임</th>
 						<th class="th-5" scope="col">작성일</th>
 						<th class="th-6" scope="col">조회수</th>
@@ -218,25 +225,59 @@ table {
 										<c:set var="no" value="${no-1}"/>
 									</td>
 									
-									<td style="padding-bottom: 60px;">
-
-										<form action='<c:url value='${pageContext.request.contextPath }/board/reviewView.do'/>' method="post" id="rView${vs.index }">
-				                    	     <sec:csrfInput/>
-					                           <input type="hidden" name="p" value="${pv.currentPage }"/>
-					                           <input type="hidden" name="s" value="${pv.pageSize }"/>
-					                           <input type="hidden" name="b" value="${pv.blockSize }"/>
-					                           <input type="hidden" name="rv_idx" value="${vo.rv_idx }"/>
-					                           <input type="hidden" name="mode" value="1"/>
-					                           <input type="hidden" name="h" value="1"/>
-				                        
-				                        </form>
-				                        <%--  <c:forEach var="vo2" items="${pv2.list }">  --%>
-				                        	<a href="#"   onclick="document.getElementById('rView${vs.index}').submit()"><c:out value="${vo.rv_title }"/></a><%-- <c:out value="${vo2.totalCount }"/> --%>
-										<%--  </c:forEach>  --%>
+									<td style="padding-bottom: 60px; text-align: left; " id="title">
+											<form action='<c:url value='${pageContext.request.contextPath }/board/reviewView.do'/>' method="post" id="rView${vs.index }">
+					                    	     <sec:csrfInput/>
+						                           <input type="hidden" name="p" value="${pv.currentPage }"/>
+						                           <input type="hidden" name="s" value="${pv.pageSize }"/>
+						                           <input type="hidden" name="b" value="${pv.blockSize }"/>
+						                           <input type="hidden" name="rv_idx" value="${vo.rv_idx }"/>
+						                           <input type="hidden" name="mode" value="1"/>
+						                           <input type="hidden" name="h" value="1"/>
+					                        
+					                        </form>
+				                        <jsp:useBean id="today" scope="request" class="java.util.Date"></jsp:useBean>				
+										<fmt:formatDate value="${today }" pattern="yyyyMMdd" var="day"/> 
+										<fmt:formatDate value="${vo.rv_regDate }" pattern="yyyyMMdd" var="reg"/> 
+										<c:if test="${day==reg }">
+											  <span style="color:red;">New</span>
+										</c:if>
+											<c:set var="content" value="${vo.rv_content }"/>
+											<c:set var="title" value="${vo.rv_title }"/>
+										<c:choose>
+											<c:when test="${fn:length(title) >= 20 }">
+												<a href="#" onclick="document.getElementById('rView${vs.index}').submit()"><c:out value="${fn:substring(title,0,20) }" /></a>
+												<c:if test="${fn:contains(content,'img')}">
+				                        			<img style="width: 25px; height: 25px; vertical-align: middle;"	src="${pageContext.request.contextPath }/resources/images/image.png" alt="" />
+			                        			</c:if>
+											</c:when>
+											<c:otherwise>
+												<a href="#" onclick="document.getElementById('rView${vs.index}').submit()"><c:out value="${title}" /></a>
+												<c:if test="${fn:contains(content,'img')}">
+				                        			<img style="width: 25px; height: 25px; vertical-align: middle;"	src="${pageContext.request.contextPath }/resources/images/image.png" alt="" />
+			                        			</c:if>
+											</c:otherwise>
+										</c:choose>
 									</td>
-									<td style="padding-top: 50px;">
-										${vo.rv_content }
-									</td>
+										<%-- <td style="padding-top: 50px;" id="content" >
+													${vo.rv_content }
+													<!-- 여기에 글의 내용을 출력한다. -->
+													<c:set var="content" value="${vo.rv_content }"/>
+													이미지파일 확장자명 날리기
+													<c:set var="content" value="${fn:replace(content, '.png', '')}"/>
+													이미지파일 확장자명 날리기
+													<c:set var="content" value="${fn:replace(content, '.jpg', '')}"/>
+													이미지파일 확장자명 날리기
+													<c:set var="content" value="${fn:replace(content, '.img', '')}"/>
+													\n을 <br>로 변경
+													<c:set var="content" value="${fn:replace(content, newLine, br ) }"/>
+											<c:choose>
+												<c:when test="${fn:contains(content,'img')}">
+													이미지파일! ${content } 
+												</c:when>
+												<c:otherwise>${content }</c:otherwise>
+											</c:choose>
+										</td> --%>
 									<td style="vertical-align: middle;">
 										${vo.mb_nick }
 										</td>

@@ -38,16 +38,8 @@ public class HomeController {
 	@Autowired
 	private QnAService qnaService; 
 
-	@SuppressWarnings("unchecked")
 	@RequestMapping(value ={"/main.do" , "/mainOK.do","/main", "/"}, method = RequestMethod.GET)
-	public String home(@RequestParam Map<String, String> params, HttpServletRequest request,Locale locale, Model model, CommonVO commonVO) {
-		Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
-		if(flashMap!=null) {
-			params = (Map<String, String>) flashMap.get("map");
-			commonVO.setP(Integer.parseInt(params.get("p")));
-			commonVO.setS(Integer.parseInt(params.get("s")));
-			commonVO.setB(Integer.parseInt(params.get("b")));
-		}
+	public String home(HttpServletRequest request,Locale locale, Model model, CommonVO commonVO) {
 		 PagingVO<NoticeVO> nv = noticeService.selectList(commonVO);
 	     	model.addAttribute("nv", nv);
 	     PagingVO<QnAVO> qv = qnaService.selectList(commonVO);

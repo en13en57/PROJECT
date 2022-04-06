@@ -72,14 +72,15 @@ public class BoardController {
 		return "/403";
 	}
 
-// 공지사항 notice======================================================
+	// 공지사항 notice======================================================
 
 	   @RequestMapping(value="/board/notice.do")
-	   public String noticeSelectList(HttpServletRequest reuqest, @ModelAttribute CommonVO commonVO, Model model) {
-	      PagingVO<NoticeVO> pv = noticeService.selectList(commonVO);
-	      model.addAttribute("pv", pv);
-	      model.addAttribute("cv", commonVO);
-	      return "/board/notice";
+	   public String noticeSelectList(@ModelAttribute CommonVO commonVO, Model model) {
+	     
+	     PagingVO<NoticeVO> pv = noticeService.selectList(commonVO);
+	     model.addAttribute("pv", pv);
+	     model.addAttribute("cv", commonVO);
+	     return "/board/notice";
 	   }
 	   
 	   @RequestMapping(value="/board/noticeView.do", method = RequestMethod.GET)
@@ -88,8 +89,8 @@ public class BoardController {
 	   }
 	   
 	   @RequestMapping(value="/board/noticeView.do", method = RequestMethod.POST)
-	   public String noticeView(@ModelAttribute CommonVO commonVO, NoticeVO noticeVO, HttpServletRequest request, Model model) {
-	      noticeVO = noticeService.selectByIdx(noticeVO.getNt_idx());
+	   public String noticeView(@ModelAttribute CommonVO commonVO, NoticeVO noticeVO,Model model) {
+		  noticeVO = noticeService.selectByIdx(noticeVO.getNt_idx());
 	      model.addAttribute("nv", noticeVO);
 	      model.addAttribute("cv", commonVO);
 	      return "board/noticeView";
@@ -108,15 +109,19 @@ public class BoardController {
 	   
 	   @RequestMapping(value="/board/noticeInsertOk.do", method= RequestMethod.POST, headers = ("content-type=multipart/*"))
 	   public String noticeInsertOK(@ModelAttribute CommonVO commonVO, @ModelAttribute NoticeVO noticeVO, MultipartHttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
+	      
 	      noticeVO.setNt_ip(request.getRemoteAddr());
 	      List<FileUploadVO> fileList = new ArrayList<>();
 	      List<MultipartFile> multipartFiles = request.getFiles("uploadFile");
+	      log.info(request.getFiles("uploadFile")+"######$");
+	      log.info(multipartFiles+"##########1");
 	      if(multipartFiles!= null && multipartFiles.size()>0) {
 	         for(MultipartFile multipartFile: multipartFiles) {
 	            if(multipartFile!=null && multipartFile.getSize()>0) {
 	               FileUploadVO fileUploadVO = new FileUploadVO();               
 	               try {
 	                  String realPath = request.getSession().getServletContext().getRealPath("upload");
+	                  log.info(realPath+"realpath");
 	                  String saveName = UUID.randomUUID() + "_" + multipartFile.getOriginalFilename();
 	                  File target = new File(realPath, saveName);
 	                  File folder = new File(realPath);
@@ -140,6 +145,7 @@ public class BoardController {
 	      }
 	      noticeVO.setFileList(fileList);
 	      noticeService.insert(noticeVO);
+	      
 	      Map<String, String> map = new HashMap<>();
 	      map.put("p", "1");
 	      map.put("s", commonVO.getPageSize() + "");
@@ -148,7 +154,7 @@ public class BoardController {
 	      return "redirect:/board/notice.do";
 	   }
 	   @RequestMapping(value="/board/noticeUpdate.do", method = RequestMethod.POST)
-	   public String noticeUpdate(@ModelAttribute CommonVO commonVO,NoticeVO noticeVO, Model model) {
+	   public String noticeUpdate(@ModelAttribute CommonVO commonVO, NoticeVO noticeVO, Model model) {
 	      noticeVO = noticeService.selectByIdx(noticeVO.getNt_idx());
 	      model.addAttribute("nv", noticeVO);
 	      model.addAttribute("cv",commonVO);
@@ -222,6 +228,7 @@ public class BoardController {
 	      redirectAttributes.addFlashAttribute("map", map);
 	      return "redirect:/board/notice.do";
 	   }
+
 	   
 		@RequestMapping(value = "/selectSearchNotice.do")
 		public String selectSearchNotice (@RequestParam String searchType, @RequestParam String searchText,HttpServletRequest request,
@@ -246,7 +253,6 @@ public class BoardController {
 		PagingVO<ReviewVO> pv = reviewService.selectList(commVO);
 		model.addAttribute("pv", pv);
 		model.addAttribute("cv", commVO);
-
 		return "/board/review";
 	}
 
@@ -400,11 +406,6 @@ public class BoardController {
 		redirectAttributes.addFlashAttribute("map", map);
 		return map;
 	}
-	
-	
-	
-	
-	
 	
 	@RequestMapping(value = "/board/replyDeleteOk.do",method = RequestMethod.POST, produces = "application/json; charset=UTF8")
 	@ResponseBody

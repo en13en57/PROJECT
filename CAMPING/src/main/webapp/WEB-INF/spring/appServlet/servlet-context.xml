@@ -48,6 +48,5 @@
 	<!-- 다운로드 객체 등록 종료 -->
 	<!-- ********************************************************************************** -->
 	<beans:bean id="naverLoginBO" class="pro.s2k.camp.controller.NaverLoginBO" />
-	
 
 </beans:beans>

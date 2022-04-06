@@ -97,6 +97,7 @@ table th {
 
 table {
 	text-align: center;
+	table-layout: fixed;
 }
 
 .th-1 {
@@ -104,12 +105,12 @@ table {
 }
 
 .th-2 {
-	width: 80px;
-}
-
-.th-3 {
 	width: 150px;
 }
+
+/* .th-3 {
+	width: 150px;
+} */
 
 .th-4 {
 	width: 90px;
@@ -126,6 +127,12 @@ table {
 #writebutton {
 	padding-bottom: 2%;
 }
+
+#title{
+	white-space:nowrap; text-overflow:ellipsis; overflow:hidden;
+}
+
+
 </style>
 
 <noscript>
@@ -195,7 +202,7 @@ table {
 					<tr>
 						<th class="th-1" scope="col">글번호</th>
 						<th class="th-2" scope="col">제목</th>
-						<th class="th-3" scope="col">내용</th>
+					<!-- 	<th class="th-3" scope="col">내용</th> -->
 						<th class="th-4" scope="col">닉네임</th>
 						<th class="th-5" scope="col">작성일</th>
 						<th class="th-6" scope="col">관리자</th>
@@ -215,7 +222,7 @@ table {
 										<c:set var="no" value="${no-1}"/>
 									</td>
 									
-									<td style="padding-bottom: 60px;">
+									<td style="padding-bottom: 60px;" id="title">
 
 										<form action='<c:url value='${pageContext.request.contextPath }/board/QnAView.do'/>' method="post" id="rView${vs.index }">
 				                    	     <sec:csrfInput/>
@@ -227,11 +234,17 @@ table {
 					     
 				                        
 				                        </form>
+				                        <jsp:useBean id="today" scope="request" class="java.util.Date"></jsp:useBean>				
+										<fmt:formatDate value="${today }" pattern="yyyyMMdd" var="day"/> 
+										<fmt:formatDate value="${vo.qna_regDate }" pattern="yyyyMMdd" var="reg"/> 
+										<c:if test="${day==reg }">
+											  <span style="color:red;">New</span>
+										</c:if>
 				                        <a href="#"   onclick="document.getElementById('rView${vs.index}').submit()"><c:out value="${vo.qna_title }"></c:out></a>
 									</td>
-									<td style="padding-top: 50px;">
+									<%-- <td style="padding-top: 50px;" id="content">
 										${vo.qna_content }
-									</td>
+									</td> --%>
 									<td style="vertical-align: middle;">
 										${vo.mb_nick }
 										</td>

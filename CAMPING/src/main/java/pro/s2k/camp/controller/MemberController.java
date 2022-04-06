@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import lombok.extern.slf4j.Slf4j;
 import pro.s2k.camp.service.MemberService;
 import pro.s2k.camp.vo.MemberVO;
-import pro.s2k.camp.vo.NaverVO;
+
 
 @Slf4j
 @Controller
@@ -88,7 +88,7 @@ public class MemberController {
 		return count + "";
 	}
 
-	// 닉네임 체
+	// 닉네임 체크
 	@RequestMapping(value = "/nickCheck.do", produces = "text/plain;charset=UTF-8")
 	@ResponseBody
 	public String nickCheck(@RequestParam(required = false) String nick) {

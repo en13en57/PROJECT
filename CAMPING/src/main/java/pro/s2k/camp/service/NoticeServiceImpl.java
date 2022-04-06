@@ -85,6 +85,7 @@ public class NoticeServiceImpl implements NoticeService{
 			int ref = noticeDAO.selectSeq();
 			// 2. 첨부 파일의 정보도 저장해 주어야 한다.
 			List<FileUploadVO> list = noticeVO.getFileList();
+			log.info(list+"?");
 			if(list!=null && list.size()>0) {
 				for(FileUploadVO fileUploadVO : list) {
 					fileUploadVO.setUp_ref(ref); // 원본글번호
@@ -164,8 +165,8 @@ public class NoticeServiceImpl implements NoticeService{
 			HashMap<String, Object> map = new HashMap<String, Object>();
 			map.put("startNo", pagingVO.getStartNo());
 			map.put("pageSize", pagingVO.getPageSize());
-			map.put("searchText",pagingVO.getSearchText());
-			map.put("searchType",pagingVO.getSearchType());
+			map.put("searchText",commVO.getSearchText());
+			map.put("searchType",commVO.getSearchType());
 			List<NoticeVO> list = noticeDAO.selectSearchList(map);
 
 			// 완성된 리스트를 페이징 객체에 넣는다.
