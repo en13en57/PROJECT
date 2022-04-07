@@ -36,15 +36,20 @@ public class MemberController {
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	
-//	@RequestMapping(value = "/naverLogin.do")
-//	public String naverLogin() {
-//		return "naverLogin";
-//	}
-//	@RequestMapping(value = "/naverCallback.do")
-//	public String naverCallback() {
-//		return "naverCallback";
-//	}
-//	
+	@RequestMapping(value = "/naverCallback.do", produces = "application/json; charset=UTF8")
+	public String naverCallback(Model model) {
+		String naverInfo = memberService.naverMemberProfile();
+		model.addAttribute("ni", naverInfo);
+		return "naverCallback";
+	}
+	
+	@RequestMapping(value = "/naverInsert.do", produces = "application/json; charset=UTF8")
+	public String naverInsert(Model model) {
+		String naverInfo = memberService.naverMemberProfile();
+		model.addAttribute("ni", naverInfo);
+		return "naverInsert";
+	}
+	
 	
 	
 	

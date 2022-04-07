@@ -75,8 +75,7 @@ public class BoardController {
 	// 공지사항 notice======================================================
 
 	   @RequestMapping(value="/board/notice.do")
-	   public String noticeSelectList(@ModelAttribute CommonVO commonVO, Model model) {
-	     
+	   public String noticeSelectList(@ModelAttribute CommonVO commonVO,NoticeVO noticeVO, Model model) {
 	     PagingVO<NoticeVO> pv = noticeService.selectList(commonVO);
 	     model.addAttribute("pv", pv);
 	     model.addAttribute("cv", commonVO);

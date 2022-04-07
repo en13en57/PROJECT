@@ -246,7 +246,7 @@ table {
 											<c:set var="title" value="${vo.rv_title }"/>
 										<c:choose>
 											<c:when test="${fn:length(title) >= 20 }">
-												<a href="#" onclick="document.getElementById('rView${vs.index}').submit()"><c:out value="${fn:substring(title,0,20) }" /></a>
+												<a href="#" onclick="document.getElementById('rView${vs.index}').submit()"><c:out value="${fn:substring(title,0,20) }" />...</a>
 												<c:if test="${fn:contains(content,'img')}">
 				                        			<img style="width: 25px; height: 25px; vertical-align: middle;"	src="${pageContext.request.contextPath }/resources/images/image.png" alt="" />
 			                        			</c:if>

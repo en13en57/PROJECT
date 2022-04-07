@@ -61,8 +61,6 @@
 		location.href = "/board/noticeInsert.do";
 	}
 	
-	
-
 </script>
 
 <style type="text/css">
@@ -215,7 +213,7 @@ table {
 					<th class="th-4" scope="col">닉네임</th>
 					<th class="th-5" scope="col">작성일</th>
 					<th class="th-6" scope="col">조회수</th>
-					<th class="th-7" scope="col">첨부파일</th>
+					<th class="th-7" scope="col">파일</th>
 				</tr>
 				<tr>
 					<c:if test="${pv.totalCount==0 }">
@@ -250,7 +248,7 @@ table {
 									<c:set var="title" value="${vo.nt_title }"/>
 										<c:choose>
 											<c:when test="${fn:length(title) >= 20 }">
-												<a style="cursor: pointer;" onclick="document.getElementById('nView${num.index }').submit()"><c:out value="${fn:substring(title,0,20) }" /></a>
+												<a style="cursor: pointer;" onclick="document.getElementById('nView${num.index }').submit()"><c:out value="${fn:substring(title,0,20) }" />...</a>
 												<c:if test="${fn:contains(content,'img')}">
 				                        			<img style="width: 25px; height: 25px; vertical-align: middle;"	src="${pageContext.request.contextPath }/resources/images/image.png" alt="" />
 			                        			</c:if>
@@ -276,9 +274,11 @@ table {
 									${vo.nt_hit }
 								</td>
 								<td style="vertical-align: middle;">
-									${vo.nt_hit }
+									<%-- 첨부파일 표시 --%>
+									<c:if test="${not empty vo.fileList }">
+										<img style="width: 25px; height: 25px; vertical-align: middle;"	src="${pageContext.request.contextPath }/resources/images/fileImage.png" alt="" />
+									</c:if>
 								</td>
-							
 							</tr>
 						</c:forEach>
 					</c:if>

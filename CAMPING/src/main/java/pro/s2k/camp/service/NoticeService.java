@@ -1,5 +1,6 @@
 package pro.s2k.camp.service;
 import pro.s2k.camp.vo.CommonVO;
+import pro.s2k.camp.vo.FileUploadVO;
 import pro.s2k.camp.vo.NoticeVO;
 import pro.s2k.camp.vo.PagingVO;
 
@@ -15,4 +16,5 @@ public interface NoticeService {
 	void delete(NoticeVO noticeVO, String path);
 	
 	PagingVO<NoticeVO> selectSearchList(CommonVO commVO);
+	
 }

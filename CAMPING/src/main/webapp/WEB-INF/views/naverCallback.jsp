@@ -6,6 +6,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
   <head>
+  <script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <title>네이버로그인</title>
   </head>
   <body>
@@ -48,7 +50,13 @@
       }
     } catch (Exception e) {
       System.out.println(e);
-    }
+}
+    
   %>
   </body>
-</html>
+<!--  <script type="text/javascript">
+  $(document).ready(function(){
+	  location.href='/naverInsert.do';
+	});
+  </script> -->
+</html> 
