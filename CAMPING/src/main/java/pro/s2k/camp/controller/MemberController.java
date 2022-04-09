@@ -23,6 +23,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.security.web.csrf.CsrfToken;
+import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -52,7 +53,7 @@ public class MemberController {
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	
 	@RequestMapping(value = "/naverCallback.do", produces = "application/json; charset=UTF8")
-	public String naverCallback(@RequestParam String _csrf, HttpServletRequest request, HttpSession session, Model model) throws UnsupportedEncodingException {
+	public String naverCallback(HttpServletRequest request,HttpServletResponse response2, HttpSession session, Model model) throws IOException {
 		
 			
 			String clientId = "eT2NCIHgedo2uVebssZm";//애플리케이션 클라이언트 아이디값";
@@ -123,6 +124,7 @@ public class MemberController {
 		String socialTel = (String) response.get("mobile");		
 		String socialBirth = (String) response.get("birthyear") + "-" +  response.get("birthday");
 		
+		
 		model.addAttribute("socialName", socialName);
 		model.addAttribute("socialEmail", socialEmail);
 		model.addAttribute("socialTel", socialTel);
@@ -130,13 +132,19 @@ public class MemberController {
 		// 같은 이용자인지 확인용
 		model.addAttribute("socialID", socialID);
 		model.addAttribute("socialNumber", 1);
+		CsrfToken csrf = new HttpSessionCsrfTokenRepository().loadToken(request);
+		PrintWriter out = response2.getWriter();
+		log.info(csrf.getToken()+"$$$$$$$$$$");
 		if(socialID.equals(memberDAO.selectSocialID(socialID))) {
-			log.info(_csrf+"##########");
-			return "/login?_csrf=" + session.getAttribute("csrf");
+			out.println("<script>");
+			out.println("alert('됨');");
+			out.println(" location.href='/login.do';");
+			out.println("</script>");
+			log.info(csrf.getToken());
+			return "/login";
 		}else {
 			return "socialInsert";
 		}
-	 
 	}
 	
 //	@RequestMapping(value = "/naverInsert.do", produces = "application/json; charset=UTF8")

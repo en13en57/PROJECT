@@ -82,14 +82,13 @@ textarea {
 
 <script type="text/javascript">
 var csrf = '<c:out value='${_csrf.token}'/>';
- sessionStorage.setItem("csrf",csrf);
+ localStorage.setItem("csrf",csrf);
 </script>
 
 
 </head>
 <body class="is-preload landing">
 <%@ include file="headerFooter/header.jsp"%>
-
 
 <%
           String clientId = "eT2NCIHgedo2uVebssZm";//애플리케이션 클라이언트 아이디값";
