@@ -20,6 +20,7 @@ import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.security.web.csrf.CsrfToken;
@@ -132,10 +133,14 @@ public class MemberController {
 		// 같은 이용자인지 확인용
 		model.addAttribute("socialID", socialID);
 		model.addAttribute("socialNumber", 1);
+		
+		MemberVO socialLogin = memberDAO.selectSocialID(socialID);
+		model.addAttribute("social", socialLogin);
 		CsrfToken csrf = new HttpSessionCsrfTokenRepository().loadToken(request);
 		PrintWriter out = response2.getWriter();
+		UserDetails memberVO = cusd.loadUserByUser
 		log.info(csrf.getToken()+"$$$$$$$$$$");
-		if(socialID.equals(memberDAO.selectSocialID(socialID))) {
+		if(socialID.equals(socialLogin.getSocialID())) {
 			out.println("<script>");
 			out.println("alert('됨');");
 			out.println(" location.href='/login.do';");

@@ -114,10 +114,20 @@ var csrf = '<c:out value='${_csrf.token}'/>';
 				</c:if>
 			<div class="row">
 				<div style="text-align: left; padding-left: 30%;">아이디/비번 로그인</div>
-					<div class="col-md-8" style="padding-left: 30% ">
-						<input type="text" class="form-control" id="ID" name="mb_ID"placeholder="아이디입력" required>
-						<input type="password" class="form-control" id="password" name="mb_password"placeholder="비밀번호입력" required>
-					</div>
+					<c:choose>
+						<c:when test="${socialID == null }">
+							<div class="col-md-8" style="padding-left: 30% ">
+								<input type="text" class="form-control" id="ID" name="mb_ID"placeholder="아이디입력" required>
+								<input type="password" class="form-control" id="password" name="mb_password"placeholder="비밀번호입력" required>
+							</div>
+						</c:when>
+						<c:otherwise>
+							<div class="col-md-8" style="padding-left: 30% ">
+								<input type="text" class="form-control" id="ID" name="mb_ID"placeholder="아이디입력" required value="${social.mb_ID }">
+								<input type="password" class="form-control" id="password" name="mb_password"placeholder="비밀번호입력" required value="${social.mb_password }">
+							</div>
+						</c:otherwise>
+					</c:choose>
 					
 					<!-- 시큐리트에서 사용자가 지정한 폼을 사용하려면 반드시 아래의 코드를 첨부해줘야 한다.-->
 					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
