@@ -42,5 +42,5 @@ public interface MemberDAO {
 		
 		MemberVO selectSocialID(String socialID);
 		
-	
+		MemberVO socialIdChk(HashMap<String, Object> map);
 }

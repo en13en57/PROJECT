@@ -31,10 +31,9 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 	@Override
 	protected void handle(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
 			throws IOException {
-// 로그인 성공시 처리할 내용을 여기에 적는다.
-// 회원 정보를 세션에 저장
+		// 로그인 성공시 처리할 내용을 여기에 적는다.
 		String userid = "";
-// 인증정보에서 사용자 아이디를 받아온다.
+		// 인증정보에서 사용자 아이디를 받아온다.
 		Object principal = authentication.getPrincipal();
 		if (principal instanceof UserDetails) {
 			userid = ((UserDetails) principal).getUsername();

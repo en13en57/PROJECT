@@ -1,5 +1,7 @@
 package pro.s2k.camp.service;
 
+import java.util.HashMap;
+
 import pro.s2k.camp.vo.MemberVO;
 import pro.s2k.camp.vo.PagingVO;
 
@@ -42,6 +44,8 @@ public interface MemberService {
 	MemberVO selectByIdx(int mb_idx);
 	
 	String naverMemberProfile(String nT);
+	// 소셜로그인시 회원가입 여부 판단
+	MemberVO socialIdChk(String socialID, int socialNumber);
 	
 /*
 // 15. accessToken 얻기	

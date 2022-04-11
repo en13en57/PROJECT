@@ -123,8 +123,8 @@ var csrf = '<c:out value='${_csrf.token}'/>';
 						</c:when>
 						<c:otherwise>
 							<div class="col-md-8" style="padding-left: 30% ">
-								<input type="text" class="form-control" id="ID" name="mb_ID"placeholder="아이디입력" required value="${social.mb_ID }">
-								<input type="password" class="form-control" id="password" name="mb_password"placeholder="비밀번호입력" required value="${social.mb_password }">
+								<input type="text" class="form-control" id="ID" name="mb_ID"placeholder="아이디입력" required >
+								<input type="password" class="form-control" id="password" name="mb_password"placeholder="비밀번호입력" required>
 							</div>
 						</c:otherwise>
 					</c:choose>

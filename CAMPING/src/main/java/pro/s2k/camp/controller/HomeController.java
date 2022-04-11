@@ -40,12 +40,12 @@ public class HomeController {
 
 	@RequestMapping(value ={"/main.do" , "/mainOK.do","/main", "/"}, method = RequestMethod.GET)
 	public String home(HttpServletRequest request,Locale locale, Model model, CommonVO commonVO) {
-		 PagingVO<NoticeVO> nv = noticeService.selectList(commonVO);
-	     	model.addAttribute("nv", nv);
-	     PagingVO<QnAVO> qv = qnaService.selectList(commonVO);
-			model.addAttribute("qv", qv); 
-		 PagingVO<ReviewVO> rv = reviewService.selectList(commonVO);
-	     	model.addAttribute("rv", rv);
+//		 PagingVO<NoticeVO> nv = noticeService.selectList(commonVO);
+//	     	model.addAttribute("nv", nv);
+//	     PagingVO<QnAVO> qv = qnaService.selectList(commonVO);
+//			model.addAttribute("qv", qv); 
+//		 PagingVO<ReviewVO> rv = reviewService.selectList(commonVO);
+//	     	model.addAttribute("rv", rv);
 		return "main";
 	}
 

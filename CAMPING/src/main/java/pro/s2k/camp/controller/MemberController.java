@@ -18,10 +18,14 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.DefaultRedirectStrategy;
+import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
@@ -53,8 +57,11 @@ public class MemberController {
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	
+	@Autowired
+	private CustomSuccessHandler csh;
+	
 	@RequestMapping(value = "/naverCallback.do", produces = "application/json; charset=UTF8")
-	public String naverCallback(HttpServletRequest request,HttpServletResponse response2, HttpSession session, Model model) throws IOException {
+	public String naverCallback(HttpServletRequest request,HttpServletResponse httpServletResponse, HttpSession session, Model model) throws IOException {
 		
 			
 			String clientId = "eT2NCIHgedo2uVebssZm";//애플리케이션 클라이언트 아이디값";
@@ -124,42 +131,60 @@ public class MemberController {
 		String socialEmail = (String) response.get("email");		
 		String socialTel = (String) response.get("mobile");		
 		String socialBirth = (String) response.get("birthyear") + "-" +  response.get("birthday");
+		int socialNumber = 1;
 		
+		 MemberVO memberVO = new MemberVO();
+	        
+	        memberVO.setSocialID(socialID);
+	        memberVO.setMb_name(socialName);
+	        memberVO.setMb_email(socialEmail);
+	        memberVO.setMb_tel(socialTel);
+	        memberVO.setMb_birth(socialBirth);
+	        memberVO.setSocialNumber(socialNumber);
 		
-		model.addAttribute("socialName", socialName);
-		model.addAttribute("socialEmail", socialEmail);
-		model.addAttribute("socialTel", socialTel);
-		model.addAttribute("socialBirth", socialBirth);
-		// 같은 이용자인지 확인용
-		model.addAttribute("socialID", socialID);
-		model.addAttribute("socialNumber", 1);
+		MemberVO naverIdChk = memberService.socialIdChk(socialID, socialNumber);
 		
-		MemberVO socialLogin = memberDAO.selectSocialID(socialID);
-		model.addAttribute("social", socialLogin);
-		CsrfToken csrf = new HttpSessionCsrfTokenRepository().loadToken(request);
-		PrintWriter out = response2.getWriter();
-		UserDetails memberVO = cusd.loadUserByUser
-		log.info(csrf.getToken()+"$$$$$$$$$$");
-		if(socialID.equals(socialLogin.getSocialID())) {
-			out.println("<script>");
-			out.println("alert('됨');");
-			out.println(" location.href='/login.do';");
-			out.println("</script>");
-			log.info(csrf.getToken());
-			return "/login";
-		}else {
-			return "socialInsert";
-		}
-	}
-	
-//	@RequestMapping(value = "/naverInsert.do", produces = "application/json; charset=UTF8")
-//	public String naverInsert(Model model) {
-//		String naverInfo = memberService.naverMemberProfile();
-//		model.addAttribute("ni", naverInfo);
-//		return "naverInsert";
-//	}
-	
-	
+		 if(naverIdChk == null) {
+	           model.addAttribute("memberVO", memberVO);
+	           return "socialInsert";
+	        }else {
+	           Authentication authentication = new UsernamePasswordAuthenticationToken(memberService.socialIdChk(socialID, socialNumber).getMb_ID(), memberService.socialIdChk(socialID, socialNumber).getMb_password());
+	           Object principal = authentication.getPrincipal();
+	           String userid = "";
+	          if (principal instanceof UserDetails) {
+	             userid = ((UserDetails) principal).getUsername();
+	          } else {
+	             userid = principal.toString();
+	          }
+	          httpServletResponse.setCharacterEncoding("UTF-8"); 
+	          httpServletResponse.setContentType("text/html; charset=UTF-8");
+	          PrintWriter out = httpServletResponse.getWriter();
+	          MemberVO mvo = memberDAO.selectUserId(userid);
+	          if (mvo.getDel() == 0) {
+	             // System.out.println(authentication.getPrincipal());
+	             // System.out.println(userid);
+	             // System.out.println(memberVO);
+	             // 얻어온 회원 정보를 세션에 저장하고 홈으로 이동한다.
+	             HttpSession httpSession = request.getSession();
+	             httpSession.setAttribute("mvo", mvo);
+	             redirectStrategy.sendRedirect(request, httpServletResponse, "/main.do");
+	             log.info(request+"#############");
+	               log.info(httpServletResponse+"#############");
+	               log.info(authentication+"#############");
+	          } else {
+	             out.println("<script language='javascript'>");
+	             out.println("alert('탈퇴한 회원입니다.');");
+	             out.println("location.href='/main.do';");
+	             out.println("</script>");
+	             out.close();
+	          }
+//              csh.handle(request, httpServletResponse, authentication);
+	        }
+	        
+	        return null;
+	   }
+	   private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
+
 	
 	
 

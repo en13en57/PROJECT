@@ -31,7 +31,7 @@
 		var logout = document.logout;
 		logout.submit();
 	}
-	
+	alert("${sessionScope.mvo}");
 </script>
 <style>
 .swiper-container {

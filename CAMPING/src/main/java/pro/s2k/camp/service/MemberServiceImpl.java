@@ -469,5 +469,15 @@ public class MemberServiceImpl implements MemberService {
             throw new RuntimeException("API 응답을 읽는데 실패했습니다.", e);
         }
     }
+
+    @Override
+    public MemberVO socialIdChk(String socialID, int socialNumber) {
+       HashMap<String, Object> map = new HashMap<String, Object>();
+       map.put("socialID", socialID);
+       map.put("socialNumber", socialNumber);
+       
+       return memberDAO.socialIdChk(map);
+    }
 }
+
 // 네이버-------------------------------------------------------------------------------------------------------------------------------------------------------
