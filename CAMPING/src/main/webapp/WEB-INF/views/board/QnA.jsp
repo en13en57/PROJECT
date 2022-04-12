@@ -265,7 +265,7 @@ table {
 										</td>
 									
 									<td style="vertical-align: middle;"> 
-										<fmt:formatDate value="${vo.qna_modiDate }" pattern="yy-MM-dd"/>
+										<fmt:formatDate value="${vo.qna_modiDate }" pattern="yy-MM-dd HH:mm:ss"/>
 									</td>					
 										<c:choose>
 											<c:when test="${vo.qna_read==0 }">

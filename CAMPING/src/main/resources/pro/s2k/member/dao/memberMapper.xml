@@ -173,31 +173,30 @@
 		<if test="searchType == 'role'">(select gr_role from member_role where mb_ID = a.mb_ID) like concat('%','#{searchtext}','%') </if>
 	</select>
    <!-- 소셜 로그인 -->
-   <select id="selectSocialID" parameterType="string" resultType="memberVO">
-   		select socialID, mb_ID, mb_password from camp_member where socialID = #{socialID}
-   </select>
-   <select id="socialIdChk" parameterType="hashmap" resultType="memberVO">
-	   select a.mb_idx,
-	      a.mb_ID,
-	      a.mb_password,
-	      a.mb_name,
-	      a.mb_nick,
-	      a.mb_email,
-	      a.mb_tel,
-	      a.mb_birth,
-	      a.mb_zipcode,
-	      a.mb_address1,
-	      a.mb_address2,
-	      a.mb_use,
-	      a.authkey,
-	      a.del,
-	      mr.gr_idx,
-	      mr.gr_role
-	      
-	   from
-	      camp_member a
-	      join member_role mr on a.mb_ID = mr.mb_ID 
-	   where socialID=#{socialID} and socialNumber=#{socialNumber}
+   <select id="socialIdChk" parameterType="String" resultType="memberVO">
+      select
+      a.mb_idx,
+      a.mb_ID,
+      a.mb_password,
+      a.mb_name,
+      a.mb_nick,
+      a.mb_email,
+      a.mb_tel,
+      a.mb_birth,
+      a.mb_zipcode,
+      a.mb_address1,
+      a.mb_address2,
+      a.mb_use,
+      a.authkey,
+      a.del,
+      a.socialID,
+      a.socialNumber,
+      mr.gr_idx,
+      mr.gr_role
+      from
+      camp_member a
+      join member_role mr on a.mb_ID = mr.mb_ID 
+      where socialID=#{socialID}
    </select>
    
 </mapper>

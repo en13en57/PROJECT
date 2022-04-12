@@ -56,10 +56,7 @@ public class MemberController {
 	
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
-	
-	@Autowired
-	private CustomSuccessHandler csh;
-	
+	// 네이버 ----------------------------------------------------------------------------------
 	@RequestMapping(value = "/naverCallback.do", produces = "application/json; charset=UTF8")
 	public String naverCallback(HttpServletRequest request,HttpServletResponse httpServletResponse, HttpSession session, Model model) throws IOException {
 		
@@ -85,7 +82,7 @@ public class MemberController {
 		      con.setRequestMethod("GET");
 		      int responseCode = con.getResponseCode();
 		      BufferedReader br;
-		      System.out.print("responseCode="+responseCode);
+		      log.info("responseCode="+responseCode);
 		      if(responseCode==200) { // 정상 호출
 		        br = new BufferedReader(new InputStreamReader(con.getInputStream()));
 		      } else {  // 에러 발생
@@ -142,13 +139,13 @@ public class MemberController {
 	        memberVO.setMb_birth(socialBirth);
 	        memberVO.setSocialNumber(socialNumber);
 		
-		MemberVO naverIdChk = memberService.socialIdChk(socialID, socialNumber);
+		MemberVO kakaoIdChk = memberService.socialIdChk(socialID);
 		
-		 if(naverIdChk == null) {
+		 if(kakaoIdChk == null) {
 	           model.addAttribute("memberVO", memberVO);
 	           return "socialInsert";
 	        }else {
-	           Authentication authentication = new UsernamePasswordAuthenticationToken(memberService.socialIdChk(socialID, socialNumber).getMb_ID(), memberService.socialIdChk(socialID, socialNumber).getMb_password());
+	           Authentication authentication = new UsernamePasswordAuthenticationToken(memberService.socialIdChk(socialID).getMb_ID(), memberService.socialIdChk(socialID).getMb_password());
 	           Object principal = authentication.getPrincipal();
 	           String userid = "";
 	          if (principal instanceof UserDetails) {
@@ -178,16 +175,148 @@ public class MemberController {
 	             out.println("</script>");
 	             out.close();
 	          }
-//              csh.handle(request, httpServletResponse, authentication);
 	        }
 	        
 	        return null;
 	   }
 	   private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
-
+		// 네이버 ----------------------------------------------------------------------------------
+	   
+	    // 카카오 ----------------------------------------------------------------------------------
+	   @RequestMapping(value = "/kakaoCallback.do", produces = "application/json; charset=UTF8")
+	   public String kakaoCallback(@RequestParam String code, HttpServletRequest request,HttpServletResponse httpServletResponse, HttpSession session, Model model) throws IOException {
+		   
+		   
+		   String clientId = "ef83fa2c4e841e935b1971d525cb0e1b";//애플리케이션 클라이언트 아이디값";
+		   String clientSecret = "CCHf7unzK3JLDx8648Hpbqux4L7N22gl";
+		   String redirectURI = URLEncoder.encode("http://localhost:8080/kakaoCallback.do", "UTF-8");
+		   String apiURL;
+		   apiURL = "https://kauth.kakao.com/oauth/token?grant_type=authorization_code";
+		   apiURL += "&client_id=" + clientId;
+		   apiURL += "&client_secret=" + clientSecret;
+		   apiURL += "&redirect_uri=" + redirectURI;
+		   apiURL += "&code=" + code;
+		   log.info(code+"############");
+		   String access_token = "";
+		   String refresh_token = "";
+		   StringBuffer res = new StringBuffer();
+		   try {
+			   URL url = new URL(apiURL);
+			   HttpURLConnection con = (HttpURLConnection)url.openConnection();
+			   log.info(con+"url");
+			   con.setRequestMethod("GET");
+			   int responseCode = con.getResponseCode();
+			   BufferedReader br;
+			   log.info(responseCode+"!@#");
+			   if(responseCode==200) { // 정상 호출
+				   br = new BufferedReader(new InputStreamReader(con.getInputStream()));
+			   } else {  // 에러 발생
+				   br = new BufferedReader(new InputStreamReader(con.getErrorStream()));
+			   }
+			   String inputLine;
+			   
+			   while ((inputLine = br.readLine()) != null) {
+				   res.append(inputLine);
+			   }
+			   br.close();
+			   if(responseCode==200) {
+				log.info(res.toString()+"!!!!!!!!!");   
+			   }
+		   } catch (Exception e) {
+			   System.out.println(e);
+		   }
+		   
+		   JSONParser jsonParser = new JSONParser();
+		   String token = res.toString();
+		   Object afterToken = null;
+		   try {
+			   afterToken=jsonParser.parse(token);
+		   }catch (ParseException e) {
+			   e.printStackTrace();
+		   }
+		   JSONObject jsonToken = (JSONObject) afterToken;
+		   log.info(jsonToken+"$$$$$$$$$$3");
+		   
+		   // 토큰값 받아서 회원 명세 받아 찍기(회원가입용)
+		   String kT = (String) jsonToken.get("access_token");
+		   log.info(kT+"$$$$$$$$$$2");
+		   String responseBody = memberService.kakaoMemberProfile(kT);
+		   log.info(responseBody+"$$$$$$$$$$1");
+		   Object obj = null;
+		   try {
+			   obj=jsonParser.parse(responseBody);
+		   }catch (ParseException e) {
+			   e.printStackTrace();
+		   }
+		   JSONObject response = (JSONObject) obj;
+		   JSONObject response2 = (JSONObject) response.get("properties");
+		   JSONObject response3 = (JSONObject) response.get("kakao_account");
+		   log.info(response+"$$$$$$$$$$");
+		   String socialID = (String) response.get("id").toString();		
+		   log.info(socialID+"$$$$$$$$$$");
+		   String socialName = (String) response2.get("nickname");		
+		   log.info(socialName+"$$$$$$$$$$");
+		   String socialEmail = (String) response3.get("email");		
+		   log.info(socialEmail+"$$$$$$$$$$");
+		   int socialNumber = 2;
+		   
+		   MemberVO memberVO = new MemberVO();
+		   
+		   memberVO.setSocialID(socialID);
+		   memberVO.setMb_name(socialName);
+		   memberVO.setMb_email(socialEmail);
+		   memberVO.setSocialNumber(socialNumber);
+		   log.info(socialID+"############");
+		   log.info(socialNumber+"############");
+		   MemberVO naverIdChk = memberService.socialIdChk(socialID);
+		   
+		   if(naverIdChk == null) {
+			   model.addAttribute("memberVO", memberVO);
+			   return "socialInsert";
+		   }else {
+			   Authentication authentication = new UsernamePasswordAuthenticationToken(memberService.socialIdChk(socialID).getMb_ID(), memberService.socialIdChk(socialID).getMb_password());
+			   Object principal = authentication.getPrincipal();
+			   String userid = "";
+			   if (principal instanceof UserDetails) {
+				   userid = ((UserDetails) principal).getUsername();
+			   } else {
+				   userid = principal.toString();
+			   }
+			   httpServletResponse.setCharacterEncoding("UTF-8"); 
+			   httpServletResponse.setContentType("text/html; charset=UTF-8");
+			   PrintWriter out = httpServletResponse.getWriter();
+			   MemberVO mvo = memberDAO.selectUserId(userid);
+			   if (mvo.getDel() == 0) {
+				   // System.out.println(authentication.getPrincipal());
+				   // System.out.println(userid);
+				   // System.out.println(memberVO);
+				   // 얻어온 회원 정보를 세션에 저장하고 홈으로 이동한다.
+				   HttpSession httpSession = request.getSession();
+				   httpSession.setAttribute("mvo", mvo);
+				   redirectStrategy.sendRedirect(request, httpServletResponse, "/main.do");
+				   log.info(request+"#############");
+				   log.info(httpServletResponse+"#############");
+				   log.info(authentication+"#############");
+			   } else {
+				   out.println("<script language='javascript'>");
+				   out.println("alert('탈퇴한 회원입니다.');");
+				   out.println("location.href='/main.do';");
+				   out.println("</script>");
+				   out.close();
+			   }
+		   }
+		   
+		   return null;
+	   }
+	    // 카카 ----------------------------------------------------------------------------------
 	
 	
 
+	   @RequestMapping(value = "/kakao.do", method = RequestMethod.GET)
+	   public String kakao() {
+		   return "kakaoLogin";
+	   }
+	   
 	@RequestMapping(value = "/insert.do", method = RequestMethod.GET)
 	public String insert() {
 		return "insert";

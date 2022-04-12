@@ -406,19 +406,7 @@ public class MemberServiceImpl implements MemberService {
 		return memberDAO.updateNick(map);
 	}
 
-// 네이버-------------------------------------------------------------------------------------------------------------------------------------------------------
-	@Override
-	public String naverMemberProfile(String nT) {
-		String token = nT; // 네이버 로그인 접근 토큰;
-        String header = "Bearer " + token; // Bearer 다음에 공백 추가
-
-        String apiURL = "https://openapi.naver.com/v1/nid/me";
-
-        Map<String, String> requestHeaders = new HashMap<>();
-        requestHeaders.put("Authorization", header);
-        String responseBody = get(apiURL,requestHeaders);
-        return responseBody;
-	}
+// 소셜 로그인 -------------------------------------------------------------------------------------------------------------------------------------------------------
 	
 	private static String get(String apiUrl, Map<String, String> requestHeaders){
         HttpURLConnection con = connect(apiUrl);
@@ -471,13 +459,33 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public MemberVO socialIdChk(String socialID, int socialNumber) {
-       HashMap<String, Object> map = new HashMap<String, Object>();
-       map.put("socialID", socialID);
-       map.put("socialNumber", socialNumber);
-       
-       return memberDAO.socialIdChk(map);
+    public MemberVO socialIdChk(String socialID) {
+       return memberDAO.socialIdChk(socialID);
     }
-}
 
-// 네이버-------------------------------------------------------------------------------------------------------------------------------------------------------
+// 소셜 로그인 -------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	@Override
+	public String naverMemberProfile(String nT) {
+		String token = nT; // 네이버 로그인 접근 토큰;
+        String header = "Bearer " + token; // Bearer 다음에 공백 추가
+
+        String apiURL = "https://openapi.naver.com/v1/nid/me";
+
+        Map<String, String> requestHeaders = new HashMap<>();
+        requestHeaders.put("Authorization", header);
+        String responseBody = get(apiURL,requestHeaders);
+        return responseBody;
+	}
+	@Override
+	   public String kakaoMemberProfile(String accessToken) {
+	      String token = accessToken; // 네이버
+	      String header = "Bearer " + token; // Bearer 다음에 공백 추가
+	      String apiURL = "https://kapi.kakao.com/v2/user/me";
+	      
+	      Map<String, String> requestHeaders = new HashMap<>();
+	      requestHeaders.put("Authorization", header);
+	      String responseBody = get(apiURL, requestHeaders);
+	      return responseBody;
+	   }
+	}

@@ -239,8 +239,8 @@ table {
 									<%--오늘 저장한 글이면 new  --%>
 								</form>
 								<jsp:useBean id="today" scope="request" class="java.util.Date"></jsp:useBean>				
-								<fmt:formatDate value="${today }" pattern="yyyyMMdd" var="day"/> 
-								<fmt:formatDate value="${vo.nt_regDate }" pattern="yyyyMMdd" var="reg"/> 
+								<fmt:formatDate value="${today }" pattern="yyyyMMdd hh.mm.s" var="day"/> 
+								<fmt:formatDate value="${vo.nt_regDate }" pattern="yyyyMMdd hh.mm.s" var="reg"/> 
 								<c:if test="${day==reg }">
 									  <span style="color:red;">New</span>
 								</c:if>

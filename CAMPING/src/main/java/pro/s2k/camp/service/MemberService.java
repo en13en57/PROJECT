@@ -44,8 +44,9 @@ public interface MemberService {
 	MemberVO selectByIdx(int mb_idx);
 	
 	String naverMemberProfile(String nT);
+	String kakaoMemberProfile(String kT);
 	// 소셜로그인시 회원가입 여부 판단
-	MemberVO socialIdChk(String socialID, int socialNumber);
+	MemberVO socialIdChk(String socialID);
 	
 /*
 // 15. accessToken 얻기	

@@ -101,6 +101,13 @@ var csrf = '<c:out value='${_csrf.token}'/>';
           apiURL += "&state=" + state;
           session.setAttribute("state", state);
 %>
+<%
+          String clientIdk = "ef83fa2c4e841e935b1971d525cb0e1b";//애플리케이션 클라이언트 아이디값";
+          String redirectURIk = URLEncoder.encode("http://localhost:8080/kakaoCallback.do", "UTF-8");
+          String apiURLk = "https://kauth.kakao.com/oauth/authorize?response_type=code";
+          apiURLk += "&client_id=" + clientIdk;
+          apiURLk += "&redirect_uri=" + redirectURIk;
+%>
 		<!-- Banner -->
 		<section id="banner1">
 			<form action="${pageContext.request.contextPath}/login" method="post" >
@@ -114,21 +121,10 @@ var csrf = '<c:out value='${_csrf.token}'/>';
 				</c:if>
 			<div class="row">
 				<div style="text-align: left; padding-left: 30%;">아이디/비번 로그인</div>
-					<c:choose>
-						<c:when test="${socialID == null }">
-							<div class="col-md-8" style="padding-left: 30% ">
-								<input type="text" class="form-control" id="ID" name="mb_ID"placeholder="아이디입력" required>
-								<input type="password" class="form-control" id="password" name="mb_password"placeholder="비밀번호입력" required>
-							</div>
-						</c:when>
-						<c:otherwise>
 							<div class="col-md-8" style="padding-left: 30% ">
 								<input type="text" class="form-control" id="ID" name="mb_ID"placeholder="아이디입력" required >
 								<input type="password" class="form-control" id="password" name="mb_password"placeholder="비밀번호입력" required>
 							</div>
-						</c:otherwise>
-					</c:choose>
-					
 					<!-- 시큐리트에서 사용자가 지정한 폼을 사용하려면 반드시 아래의 코드를 첨부해줘야 한다.-->
 					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 				 
@@ -153,16 +149,14 @@ var csrf = '<c:out value='${_csrf.token}'/>';
 	
 		</div> 
 		</form>
-		<form action="<%=apiURL %>" method="post" id="gogo">
-			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 			<div class="row" style="width: 300px; height: 300px; margin: 0 auto; padding-right:3;" >
 				<div class="col-md-4">
-			  		<a style="cursor: pointer;" onclick="document.getElementById('gogo').submit()"><span id="naver"><img style="width: 50px; height: 50px;"
+			  		<a href="<%=apiURL %>" ><span id="naver"><img style="width: 50px; height: 50px;"
 						src="${pageContext.request.contextPath }/resources/images/naverLogin.png"
 						alt="" /></span></a>
 					</div>
 					<div class="col-md-4">
-					<a href="/kakaoLogin.do"><span class="col-md-4" id="kakao"><img style="width: 50px; height: 50px;"
+					<a href="<%=apiURLk %>"><span class="col-md-4" id="kakao"><img style="width: 50px; height: 50px;"
 						src="${pageContext.request.contextPath }/resources/images/kakaoLogin.png"
 						alt="" /></span></a>
 					</div>
@@ -172,7 +166,6 @@ var csrf = '<c:out value='${_csrf.token}'/>';
 						alt="" /></span></a>
 				</div>
 			</div>
-		</form>
 		</section>
 		
 
