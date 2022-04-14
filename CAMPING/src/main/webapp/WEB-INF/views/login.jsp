@@ -31,9 +31,7 @@
 	href="${pageContext.request.contextPath }/resources/assets/css/main.css" />
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath }/resources/assets/css/swiper.min.css">
-<script type="text/javascript">
 
-</script>
 
 <style type="text/css">
 
@@ -91,23 +89,45 @@ var csrf = '<c:out value='${_csrf.token}'/>';
 <%@ include file="headerFooter/header.jsp"%>
 
 <%
-          String clientId = "eT2NCIHgedo2uVebssZm";//애플리케이션 클라이언트 아이디값";
-          String redirectURI = URLEncoder.encode("http://localhost:8080/naverCallback.do", "UTF-8");
-          SecureRandom random = new SecureRandom();
-          String state = new BigInteger(130, random).toString();
-          String apiURL = "https://nid.naver.com/oauth2.0/authorize?response_type=code";
-          apiURL += "&client_id=" + clientId;
-          apiURL += "&redirect_uri=" + redirectURI;
-          apiURL += "&state=" + state;
-          session.setAttribute("state", state);
+       String redirectURI = URLEncoder.encode("http://localhost:8080/", "UTF-8");
+       String naverRedirectURI = redirectURI+"naverCallback.do";
+       SecureRandom random = new SecureRandom();
+       String state = new BigInteger(130, random).toString();
+       String naverURL = "https://nid.naver.com/oauth2.0/authorize?response_type=code";
+       naverURL += "&client_id=" + "eT2NCIHgedo2uVebssZm";
+       naverURL += "&redirect_uri=" + naverRedirectURI;
+       naverURL += "&state=" + state;
+       session.setAttribute("state", state);
+       
+       //--------------------------------------------------------------------------------------------
+       
+       String kakaoRedirectURI = redirectURI+"kakaoCallback.do";
+       String kakaoURL = "https://kauth.kakao.com/oauth/authorize?response_type=code";
+       kakaoURL += "&client_id=ef83fa2c4e841e935b1971d525cb0e1b";
+       kakaoURL += "&redirect_uri=" + kakaoRedirectURI;
+       
+       //--------------------------------------------------------------------------------------------
+       
+       String googleRedirectURI = redirectURI+"googleCallback.do";
+       String googleURL = "https://accounts.google.com/o/oauth2/v2/auth?response_type=code";
+       googleURL += "&client_id=669969361769-cud6nrlaur9thknq75b3hp91tp0i5hcg.apps.googleusercontent.com";
+       googleURL += "&redirect_uri=" + googleRedirectURI;
+       googleURL += "&scope=email%20profile";
 %>
-<%
-          String clientIdk = "ef83fa2c4e841e935b1971d525cb0e1b";//애플리케이션 클라이언트 아이디값";
-          String redirectURIk = URLEncoder.encode("http://localhost:8080/kakaoCallback.do", "UTF-8");
-          String apiURLk = "https://kauth.kakao.com/oauth/authorize?response_type=code";
-          apiURLk += "&client_id=" + clientIdk;
-          apiURLk += "&redirect_uri=" + redirectURIk;
-%>
+<script type="text/javascript">
+	function naverLogin() {
+		location.href="<%=naverURL%>";
+		document.getElementById('naverLogin').submit();
+	}
+	function kakaoLogin() {
+		location.href="<%=kakaoURL%>";
+		document.getElementById('kakaoLogin').submit();
+	}
+	function googleLogin() {
+		location.href="<%=googleURL%>";
+		document.getElementById('googleLogin').submit();
+	}
+</script>
 		<!-- Banner -->
 		<section id="banner1">
 			<form action="${pageContext.request.contextPath}/login" method="post" >
@@ -147,25 +167,25 @@ var csrf = '<c:out value='${_csrf.token}'/>';
 	
 	
 	
-		</div> 
-		</form>
-			<div class="row" style="width: 300px; height: 300px; margin: 0 auto; padding-right:3;" >
-				<div class="col-md-4">
-			  		<a href="<%=apiURL %>" ><span id="naver"><img style="width: 50px; height: 50px;"
-						src="${pageContext.request.contextPath }/resources/images/naverLogin.png"
-						alt="" /></span></a>
-					</div>
+			</div> 
+				<div class="row" style="width: 300px; height: 300px; margin: 0 auto; padding-right:3;" >
 					<div class="col-md-4">
-					<a href="<%=apiURLk %>"><span class="col-md-4" id="kakao"><img style="width: 50px; height: 50px;"
-						src="${pageContext.request.contextPath }/resources/images/kakaoLogin.png"
-						alt="" /></span></a>
+				  		<a onclick="naverLogin();" id="naverLogin"> <span id="naver"><img style="width: 50px; height: 50px;"
+							src="${pageContext.request.contextPath }/resources/images/naverLogin.png"
+							alt="" /></span></a>
+						</div>
+						<div class="col-md-4">
+						<a onclick="kakaoLogin();" id="kakaoLogin"> <span class="col-md-4" id="kakao"><img style="width: 50px; height: 50px;"
+							src="${pageContext.request.contextPath }/resources/images/kakaoLogin.png"
+							alt="" /></span></a>
+						</div>
+						<div class="col-md-4">
+						<a onclick="googleLogin();" id="googleLogin"><span class="col-md-4" id="google"><img style="width: 50px; height: 50px;"
+							src="${pageContext.request.contextPath }/resources/images/googleLogin.png"
+							alt="" /></span></a>
 					</div>
-					<div class="col-md-4">
-					<a href="googleLogin.do"><span class="col-md-4" id="google"><img style="width: 50px; height: 50px;"
-						src="${pageContext.request.contextPath }/resources/images/googleLogin.png"
-						alt="" /></span></a>
 				</div>
-			</div>
+			</form>
 		</section>
 		
 

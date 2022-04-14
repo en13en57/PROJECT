@@ -30,6 +30,7 @@ import com.google.gson.JsonParser;
 import lombok.extern.slf4j.Slf4j;
 import pro.s2k.camp.dao.MemberDAO;
 import pro.s2k.camp.dao.RoleDAO;
+import pro.s2k.camp.vo.CommonVO;
 import pro.s2k.camp.vo.MemberVO;
 import pro.s2k.camp.vo.PagingVO;
 
@@ -71,26 +72,6 @@ public class MemberServiceImpl implements MemberService {
 	}
 	
 	
-	public PagingVO<MemberVO> selectList() {
-		PagingVO<MemberVO> vo = null;
-		try {
-			int totalCount = memberDAO.selectCount();
-			vo = new PagingVO<>(totalCount);
-			List<MemberVO> list = memberDAO.selectList();
-			if(list!=null && list.size()>0) {
-				vo.setList(list);
-			}
-		}catch(Exception e) {
-			e.printStackTrace();
-		}
-		return vo;
-	}
-	
-	public MemberVO selectByIdx(int idx) {
-		MemberVO memberVO = memberDAO.selectByIdx(idx);
-		return memberVO;
-	}
-
 	@Override
 	public void insert(MemberVO memberVO) {
 		// DB에 저장한다.
@@ -466,8 +447,8 @@ public class MemberServiceImpl implements MemberService {
 // 소셜 로그인 -------------------------------------------------------------------------------------------------------------------------------------------------------
 
 	@Override
-	public String naverMemberProfile(String nT) {
-		String token = nT; // 네이버 로그인 접근 토큰;
+	public String naverMemberProfile(String access_token) {
+		String token = access_token; // 네이버 로그인 접근 토큰;
         String header = "Bearer " + token; // Bearer 다음에 공백 추가
 
         String apiURL = "https://openapi.naver.com/v1/nid/me";
@@ -478,8 +459,8 @@ public class MemberServiceImpl implements MemberService {
         return responseBody;
 	}
 	@Override
-	   public String kakaoMemberProfile(String accessToken) {
-	      String token = accessToken; // 네이버
+	   public String kakaoMemberProfile(String access_token) {
+	      String token = access_token; 
 	      String header = "Bearer " + token; // Bearer 다음에 공백 추가
 	      String apiURL = "https://kapi.kakao.com/v2/user/me";
 	      
@@ -488,4 +469,61 @@ public class MemberServiceImpl implements MemberService {
 	      String responseBody = get(apiURL, requestHeaders);
 	      return responseBody;
 	   }
+	@Override
+	public String googleMemberProfile(String access_token) {
+		  String token = access_token; 
+	      String header = "Bearer " + token; // Bearer 다음에 공백 추가
+	      String apiURL = "https://www.googleapis.com/oauth2/v2/userinfo";
+	      
+	      Map<String, String> requestHeaders = new HashMap<>();
+	      requestHeaders.put("Authorization", header);
+	      String responseBody = get(apiURL, requestHeaders);
+	      return responseBody;
+	   }
+
+
+	public PagingVO<MemberVO> selectList() {
+		PagingVO<MemberVO> vo = null;
+		try {
+			int totalCount = memberDAO.selectCount();
+			vo = new PagingVO<>(totalCount);
+			List<MemberVO> list = memberDAO.selectList();
+			if(list!=null && list.size()>0) {
+				vo.setList(list);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return vo;
 	}
+	
+	public MemberVO selectByIdx(int idx) {
+		MemberVO memberVO = memberDAO.selectByIdx(idx);
+		return memberVO;
+	}
+	
+	@Override
+	public PagingVO<MemberVO> selectSearchMember(CommonVO commVO) {
+		PagingVO<MemberVO> pagingVO = null;
+		try {
+			// 전체갯수 구하기
+			int totalCount = memberDAO.selectSearchCount(commVO);
+			// 페이지 계산
+			pagingVO = new PagingVO<>(commVO.getCurrentPage(), commVO.getPageSize(), commVO.getBlockSize(), totalCount);
+			// 글 읽어오기
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			map.put("startNo", pagingVO.getStartNo());
+			map.put("pageSize", pagingVO.getPageSize());
+			map.put("searchText",commVO.getSearchText());
+			map.put("searchType",commVO.getSearchType());
+			List<MemberVO> list = memberDAO.selectSearchMember(map);
+			
+			pagingVO.setList(list);
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return pagingVO;
+	}
+
+	
+}

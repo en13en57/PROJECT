@@ -4,6 +4,7 @@ package pro.s2k.camp.dao;
 import java.util.HashMap;
 import java.util.List;
 
+import pro.s2k.camp.vo.CommonVO;
 import pro.s2k.camp.vo.MemberVO;
 
 public interface MemberDAO {
@@ -39,6 +40,9 @@ public interface MemberDAO {
 		void updateAddress(HashMap<String, String> map);
 		// 15. 닉네임 변경하기
 		int updateNick(HashMap<String, String> map);
-		
+		// 16. 검색하기
+		List<MemberVO> selectSearchMember(HashMap<String, Object> map);
+		int selectSearchCount(CommonVO commVO);
+		// 17. 소셜 로그인
 		MemberVO socialIdChk(String socialId);
 }

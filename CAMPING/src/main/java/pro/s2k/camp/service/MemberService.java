@@ -1,7 +1,6 @@
 package pro.s2k.camp.service;
 
-import java.util.HashMap;
-
+import pro.s2k.camp.vo.CommonVO;
 import pro.s2k.camp.vo.MemberVO;
 import pro.s2k.camp.vo.PagingVO;
 
@@ -39,19 +38,16 @@ public interface MemberService {
 // 15. 닉네임 수정
 	int updateNick(MemberVO memberVO);
 	
-	PagingVO<MemberVO> selectList();
+	// 16. 아이디로 리스트 찾기
+	PagingVO<MemberVO> selectList(); 
+    MemberVO selectByIdx(int mb_idx);
+		
+	PagingVO<MemberVO> selectSearchMember(CommonVO commVO);
 	
-	MemberVO selectByIdx(int mb_idx);
-	
-	String naverMemberProfile(String nT);
-	String kakaoMemberProfile(String kT);
+	String naverMemberProfile(String access_token);
+	String kakaoMemberProfile(String access_token);
+	String googleMemberProfile(String access_token);
 	// 소셜로그인시 회원가입 여부 판단
 	MemberVO socialIdChk(String socialID);
-	
-/*
-// 15. accessToken 얻기	
-	String getAccessToken(String code);
-// 16. 사용자 정보 가져오기
-	KakaoVO getUserInfo(String access_Token);
-*/
-}
+}	
+

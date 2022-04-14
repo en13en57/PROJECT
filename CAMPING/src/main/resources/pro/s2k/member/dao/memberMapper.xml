@@ -30,11 +30,10 @@
 		)
 	</insert>
 
-	<!-- 2. 1개 얻기 -->
-	<select id="selectByIdx" parameterType="int"
-		resultType="MemberVO">
-		select * from camp_member where mb_idx=#{mb_idx}
-	</select>
+<!-- 2. 1개 얻기 -->
+	<select id="selectByIdx" parameterType="int" resultType="MemberVO">
+      select cm.*, mr.gr_role from camp_member cm, member_role mr where cm.mb_ID = mr.mb_ID and cm.mb_idx=#{mb_idx}
+   </select>
 	<!-- 3. 수정하기 -->
 	<update id="update" parameterType="MemberVO">
 		update member set
@@ -62,11 +61,16 @@
 		mb_idx = #{mb_idx}
 
 	</update>
-	<!-- 5. 모두보기(관리자만 사용) -->
-	<select id="selectList" resultType="MemberVO">
-		select * from camp_member
-		order by mb_idx desc
-	</select>
+		<!-- 5. 모두보기(관리자만 사용) -->
+   <select id="selectList" resultType="MemberVO">
+      select 
+         cm.*, mr.gr_role 
+      from 
+         camp_member cm inner join member_role mr
+      on
+         cm.mb_ID = mr.mb_ID
+      order by mb_idx
+   </select>
 	
 	
 	
@@ -150,27 +154,37 @@
       where mb_ID= #{mb_ID}
    </update>
    
-   <!-- 맴버 검색기능 -->
-	<select id="selectSearchMember" parameterType="hashmap"
-		resultType="MemberVO">
-		select
-		a.mb_idx,a.mb_ID,a.mb_name,a.mb_nick,a.mb_email,a.mb_tel,a.mb_birth,a.mb_zipcode,a.mb_address1,a.mb_address2,
-		(select gr_role from member_role where mb_ID = a.mb_ID) as gr_role
-		from camp_member a
-		where
-
-
-		<if test="searchType == 'all'">
-			mb_ID like concat('%','#{searchtext}','%')
-			or mb_nick like concat ('%','#{searchtext}','%')
-			or mb_name like concat ('%','#{searchtext}','%')
-			or (select gr_role from member_role where mb_ID = a.mb_ID) like concat('%','#{searchtext}','%')
+  <!-- 맴버 검색기능 -->
+	<select id="selectSearchMember" parameterType="hashmap" resultType="MemberVO">
+			select a.*,(select gr_role from member_role where mb_ID =a.mb_ID)as gr_role from camp_member a where
+<if test="searchType == 'all'">
+			a.mb_ID like concat('%',#{searchText},'%')
+			or a.mb_nick like concat ('%',#{searchText},'%')
+			or a.mb_name like concat ('%',#{searchText},'%')
+			or (select gr_role from member_role where mb_ID = a.mb_ID) like concat('%',#{searchText},'%')
 		</if>
 
-		<if test="searchType == 'ID'">mb_ID like concat('%','#{searchtext}','%') </if>
-		<if test="searchType == 'nick'"> mb_nick like concat ('%','#{searchtext}','%') </if>
-		<if test="searchType == 'name'">mb_name like concat ('%','#{searchtext}','%')</if>
-		<if test="searchType == 'role'">(select gr_role from member_role where mb_ID = a.mb_ID) like concat('%','#{searchtext}','%') </if>
+		<if test="searchType == 'id'">a.mb_ID like concat('%',#{searchText},'%') </if>
+		<if test="searchType == 'nick'">a.mb_nick like concat ('%',#{searchText},'%') </if>
+		<if test="searchType == 'name'">a.mb_name like concat ('%',#{searchText},'%')</if>
+		 <if test="searchType == 'role'">(select gr_role from member_role where mb_ID = a.mb_ID) like concat('%',#{searchText},'%') </if> 
+	</select>
+	
+
+ 	<select id="selectSearchCount"  parameterType="commonVO" resultType="int">
+		select count(mb_ID) from camp_member a
+		where	
+	<if test="searchType == 'all'">
+			mb_ID like concat('%',#{searchText},'%')
+			or mb_nick like concat ('%',#{searchText},'%')
+			or mb_name like concat ('%',#{searchText},'%')
+			or (select gr_role from member_role where mb_ID = a.mb_ID) like concat('%',#{searchText},'%') 
+		</if>
+
+		<if test="searchType == 'id'">mb_ID like concat('%',#{searchText},'%') </if>
+		<if test="searchType == 'nick'">mb_nick like concat ('%',#{searchText},'%') </if>
+		<if test="searchType == 'name'">mb_name like concat ('%',#{searchText},'%')</if>
+		<if test="searchType == 'role'">(select gr_role  from member_role  where mb_ID = a.mb_ID) like concat('%',#{searchText},'%') </if> 
 	</select>
    <!-- 소셜 로그인 -->
    <select id="socialIdChk" parameterType="String" resultType="memberVO">
