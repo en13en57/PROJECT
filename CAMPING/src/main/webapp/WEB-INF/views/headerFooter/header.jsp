@@ -44,13 +44,11 @@
 <body class="is-preload landing">
 
 
-	<div id="page-wrapper">
-
 		<!-- Header -->
 		<header id="header">
 			<h1 id="logo">
 				<a href="/main.do"><img
-					src="${pageContext.request.contextPath }/resources/assets/css/images/logo.png"
+					src="${pageContext.request.contextPath }/resources/assets/css/images/logo.png" style="height: 60px; width: 80px;"
 					alt="" /> </a>
 			</h1>
 			<c:set value="${sessionScope.mvo.gr_role}" var="role" />
@@ -62,16 +60,16 @@
 						<li><a href="/main.do">Home</a></li>
 						<li><a href="#">캠핑장</a>
 							<ul>
-								<li><a href="#">일반 야영장</a></li>
-								<li><a href="#">자동차 야영장</a></li>
-								<li><a href="#">카라반</a></li>
-								<li><a href="#">글램핑</a></li>
+								<li><a href="../camp/campsite.do">일반 야영장</a></li>
+								<li><a href="../camp/carCampground.do">자동차 야영장</a></li>
+								<li><a href="../camp/caravan.do">카라반</a></li>
+								<li><a href="../camp/glamping.do">글램핑</a></li>
 							</ul></li>
 						<li><a href="#">캠핑톡</a>
 							<ul>
-								<li><a href="/board/notice.do">공지사항</a></li>
-								<li><a href="/board/review.do">캠핑후기</a></li>
-								<li><a href="/board/QnA.do">QnA</a></li>
+								<li><a href="../board/notice.do">공지사항</a></li>
+								<li><a href="../board/review.do">캠핑후기</a></li>
+								<li><a href="../board/QnA.do">QnA</a></li>
 							</ul></li>
 						<li><a href="/insert.do">회원가입</a></li>
 						<li><a href="/login.do">로그인</a></li>
@@ -85,16 +83,16 @@
 								<li><a href="/main.do">Home</a></li>
 								<li><a href="#">캠핑장</a>
 									<ul>
-										<li><a href="#">일반 야영장</a></li>
-										<li><a href="#">자동차 야영장</a></li>
-										<li><a href="#">카라반</a></li>
-										<li><a href="#">글램핑</a></li>
+										<li><a href="../camp/campsite.do">일반 야영장</a></li>
+										<li><a href="../camp/carCampground.do">자동차 야영장</a></li>
+										<li><a href="../camp/caravan.do">카라반</a></li>
+										<li><a href="../camp/glamping.do">글램핑</a></li>
 									</ul></li>
 								<li><a href="#">캠핑톡</a>
 									<ul>
-										<li><a href="/board/notice.do">공지사항</a></li>
-										<li><a href="/board/review.do">캠핑후기</a></li>
-										<li><a href="/board/QnA.do">QnA</a></li>
+										<li><a href="../board/notice.do">공지사항</a></li>
+										<li><a href="../board/review.do">캠핑후기</a></li>
+										<li><a href="../board/QnA.do">QnA</a></li>
 									</ul></li>
 
 								<c:url value="/logout" var="logoutURL" />
@@ -120,16 +118,16 @@
 								<li><a href="/main.do">Home</a></li>
 								<li><a href="#">캠핑장</a>
 									<ul>
-										<li><a href="#">일반 야영장</a></li>
-										<li><a href="#">자동차 야영장</a></li>
-										<li><a href="#">카라반</a></li>
-										<li><a href="#">글램핑</a></li>
+										<li><a href="../camp/campsite.do">일반 야영장</a></li>
+										<li><a href="../camp/carCampground.do">자동차 야영장</a></li>
+										<li><a href="../camp/caravan.do">카라반</a></li>
+										<li><a href="../camp/glamping.do">글램핑</a></li>
 									</ul></li>
 								<li><a href="#">캠핑톡</a>
 									<ul>
-										<li><a href="/board/notice.do">공지사항</a></li>
-										<li><a href="/board/review.do">캠핑후기</a></li>
-										<li><a href="/board/QnA.do">QnA</a></li>
+										<li><a href="../board/notice.do">공지사항</a></li>
+										<li><a href="../board/review.do">캠핑후기</a></li>
+										<li><a href="../board/QnA.do">QnA</a></li>
 									</ul></li>
 								<c:url value="/logout" var="logoutURL" />
 								<li>
@@ -157,16 +155,16 @@
 								<li><a href="/main.do">Home</a></li>
 								<li><a href="#">캠핑장</a>
 									<ul>
-										<li><a href="#">일반 야영장</a></li>
-										<li><a href="#">자동차 야영장</a></li>
-										<li><a href="#">카라반</a></li>
-										<li><a href="#">글램핑</a></li>
+									<li><a href="../camp/campsite.do">일반 야영장</a></li>
+										<li><a href="../camp/carCampground.do">자동차 야영장</a></li>
+										<li><a href="../camp/caravan.do">카라반</a></li>
+										<li><a href="../camp/glamping.do">글램핑</a></li>
 									</ul></li>
 								<li><a href="#">캠핑톡</a>
 									<ul>
-										<li><a href="/board/notice.do">공지사항</a></li>
-										<li><a href="/board/review.do">캠핑후기</a></li>
-										<li><a href="/board/QnA.do">QnA</a></li>
+										<li><a href="../board/notice.do">공지사항</a></li>
+										<li><a href="../board/review.do">캠핑후기</a></li>
+										<li><a href="../board/QnA.do">QnA</a></li>
 									</ul></li>
 								<c:url value="/logout" var="logoutURL" />
 								<li>
@@ -178,9 +176,7 @@
 								</li>
 								<li><a href="#">관리자페이지</a>
 									<ul>
-										<li><a href="/admin/memberManage.do">회원관리</a></li>
-										<li><a href="#">캠핑톡 관리</a></li>
-										<li><a href="#">로그관리</a></li>
+										<li><a href="../admin/memberManage.do">회원관리</a></li>
 									</ul></li>
 							</c:when>
 							<c:otherwise>
@@ -188,16 +184,16 @@
 								<li><a href="/main.do">Home</a></li>
 								<li><a href="#">캠핑장</a>
 									<ul>
-										<li><a href="#">일반 야영장</a></li>
-										<li><a href="#">자동차 야영장</a></li>
-										<li><a href="#">카라반</a></li>
-										<li><a href="#">글램핑</a></li>
+											<li><a href="../camp/campsite.do">일반 야영장</a></li>
+										<li><a href="../camp/carCampground.do">자동차 야영장</a></li>
+										<li><a href="../camp/caravan.do">카라반</a></li>
+										<li><a href="../camp/glamping.do">글램핑</a></li>
 									</ul></li>
 								<li><a href="#">캠핑톡</a>
 									<ul>
-										<li><a href="/board/notice.do">공지사항</a></li>
-										<li><a href="/board/review.do">캠핑후기</a></li>
-										<li><a href="/board/QnA.do">QnA</a></li>
+										<li><a href="../board/notice.do">공지사항</a></li>
+										<li><a href="../board/review.do">캠핑후기</a></li>
+										<li><a href="../board/QnA.do">QnA</a></li>
 									</ul></li>
 								<c:url value="/logout" var="logoutURL" />
 								<li>
@@ -236,6 +232,6 @@
 			src="${pageContext.request.contextPath }/resources/assets/js/util.js"></script>
 		<script
 			src="${pageContext.request.contextPath }/resources/assets/js/main.js"></script>
-	</div>
+
 </body>
 </html>

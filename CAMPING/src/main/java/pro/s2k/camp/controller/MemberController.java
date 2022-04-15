@@ -309,152 +309,139 @@ public class MemberController {
 
 	// 카카오 ----------------------------------------------------------------------------------
 	
-	// 구글 ----------------------------------------------------------------------------------
-		@RequestMapping(value = "/googleCallback.do", produces = "application/json; charset=UTF-8")
-		public String googleCallback(HttpSession session, HttpServletRequest request, Model model,
-				HttpServletResponse httpServletResponse) throws IOException {
-			String clientId = "669969361769-cud6nrlaur9thknq75b3hp91tp0i5hcg";// 애플리케이션 클라이언트 아이디값";
-			String clientSecret = "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";// 애플리케이션 클라이언트 시크릿값";
-			String code = request.getParameter("code");
+	// 구글 ------------------------------------------------------------------------------------
+	@RequestMapping(value = "/googleCallback.do", produces = "application/json; charset=UTF-8")
+	public String googleCallback(HttpSession session, HttpServletRequest request, Model model,
+			HttpServletResponse httpServletResponse) throws IOException {
+		String clientId = "669969361769-cud6nrlaur9thknq75b3hp91tp0i5hcg";// 애플리케이션 클라이언트 아이디값";
+		String clientSecret = "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";// 애플리케이션 클라이언트 시크릿값";
+		String code = request.getParameter("code");
 //			code = code.replace("4/", "4%2F");
-			System.out.println("code=" + code);
-			String redirectURI = "http://localhost:8080/googleCallback.do";
-			String apiURL;
-			apiURL = "https://www.googleapis.com/oauth2/v4/token?grant_type=authorization_code&";
-			apiURL += "client_id=" + clientId;
-			apiURL += "&client_secret=" + clientSecret;
-			apiURL += "&redirect_uri=" + redirectURI;
-			apiURL += "&code=" + code;
-//			apiURL = "https://www.googleapis.com/oauth2/v2/userinfo?";
-//			apiURL += "access_token=" + access_token;
-			String access_token = "";
+		System.out.println("code=" + code);
+		String redirectURI = "http://localhost:8080/googleCallback.do";
+		String apiURL;
+		apiURL = "https://www.googleapis.com/oauth2/v4/token?grant_type=authorization_code&";
+		apiURL += "client_id=" + clientId;
+		apiURL += "&client_secret=" + clientSecret;
+		apiURL += "&redirect_uri=" + redirectURI;
+		apiURL += "&code=" + code;
+		String access_token = "";
 //			String refresh_token = "";
+		
+		System.out.println("apiURL=" + apiURL);
+		String token = "";
+		try {
+			URL url = new URL(apiURL);
+			HttpURLConnection con = (HttpURLConnection) url.openConnection();
+			con.setRequestMethod("GET");
+			con.setDoOutput(true);
+			BufferedOutputStream bous = new BufferedOutputStream(con.getOutputStream());
+		      bous.write(apiURL.getBytes());
+		      bous.flush();
+		      bous.close();
 			
-			System.out.println("apiURL=" + apiURL);
-			String token = "";
-			try {
-				URL url = new URL(apiURL);
-				HttpURLConnection con = (HttpURLConnection) url.openConnection();
-				con.setRequestMethod("GET");
-				con.setDoOutput(true);
-				BufferedOutputStream bous = new BufferedOutputStream(con.getOutputStream());
-			      bous.write(apiURL.getBytes());
-			      bous.flush();
-			      bous.close();
-				
-		      int responseCode = con.getResponseCode();
-				BufferedReader br;
-				if (responseCode == 200) { // 정상 호출
-					br = new BufferedReader(new InputStreamReader(con.getInputStream()));
-				} else { // 에러 발생
-					br = new BufferedReader(new InputStreamReader(con.getErrorStream()));
-				}
-				String inputLine;
-				StringBuffer res = new StringBuffer();
-				
-				while ((inputLine = br.readLine()) != null) {
-					res.append(inputLine);
-				}
-				br.close();
-				if (responseCode == 200) {
-					token = res.toString();
-					log.info("왜안돼!");
-				}
-			} catch (Exception e) {
-				System.out.println(e);
+	      int responseCode = con.getResponseCode();
+			BufferedReader br;
+			if (responseCode == 200) { // 정상 호출
+				br = new BufferedReader(new InputStreamReader(con.getInputStream()));
+			} else { // 에러 발생
+				br = new BufferedReader(new InputStreamReader(con.getErrorStream()));
 			}
-			JSONParser jsonParser = new JSONParser();
-			Object afterToken = null;
-			try {
-				afterToken = jsonParser.parse(token);
-				log.info("token =" + token);
-			} catch (ParseException e) {
-				e.printStackTrace();
+			String inputLine;
+			StringBuffer res = new StringBuffer();
+			
+			while ((inputLine = br.readLine()) != null) {
+				res.append(inputLine);
 			}
+			br.close();
+			if (responseCode == 200) {
+				token = res.toString();
+				log.info("왜안돼!");
+			}
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		JSONParser jsonParser = new JSONParser();
+		Object afterToken = null;
+		try {
+			afterToken = jsonParser.parse(token);
+			log.info("token =" + token);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 
-			JSONObject jsonToken = (JSONObject) afterToken;
-			access_token = (String) jsonToken.get("access_token");
+		JSONObject jsonToken = (JSONObject) afterToken;
+		access_token = (String) jsonToken.get("access_token");
 //			refresh_token = (String) jsonToken.get("refresh_token");
-			String responseBody = memberService.googleMemberProfile(access_token);
-			log.info(responseBody+"##########");
+		String responseBody = memberService.googleMemberProfile(access_token);
+		log.info(responseBody+"##########");
+		
+		Object obj = null;
+		try {
+			obj = jsonParser.parse(responseBody);
+			log.info(obj+"^^^^^");
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		JSONObject response = (JSONObject) obj;
+		String socialID = (String) (response.get("id")+"");
+		log.info(socialID+"ggggg");
+		String socialName = (String) (response.get("name"));
+		String socialEmail = (String) (response.get("email"));
+		int socialNumber = 3;
+		httpServletResponse.setCharacterEncoding("UTF-8");
+		httpServletResponse.setContentType("text/html; charset=UTF-8");
+		PrintWriter out = httpServletResponse.getWriter();
+		
+		MemberVO memberVO = new MemberVO();
+		memberVO.setSocialID(socialID);
+		if(socialName != null) {
+			memberVO.setMb_name(socialName);
+		}
+		memberVO.setMb_email(socialEmail);
+		memberVO.setSocialNumber(socialNumber);
+		MemberVO googleIdChk = memberService.socialIdChk(socialID);
+		
+		if (googleIdChk == null) {
+			model.addAttribute("memberVO", memberVO);
+			return "socialInsert";
+		} else if(memberService.socialIdChk(socialID).getSocialNumber() != 3){
+			out.println("<script language='javascript'>");
+			out.println("alert('구글 아이디가 아닙니다.');");
+			out.println("location.href='/login.do';");
+			out.println("</script>");
+			out.close();
+		}else {
 			
-			Object obj = null;
-			try {
-				obj = jsonParser.parse(responseBody);
-				log.info(obj+"^^^^^");
-			} catch (ParseException e) {
-				e.printStackTrace();
+			Authentication authentication = new UsernamePasswordAuthenticationToken(
+					memberService.socialIdChk(socialID).getMb_ID(),
+					memberService.socialIdChk(socialID).getMb_password());
+			Object principal = authentication.getPrincipal();
+			String userid = "";
+			if (principal instanceof UserDetails) {
+				userid = ((UserDetails) principal).getUsername();
+			}else {
+				userid = principal.toString();
 			}
-			JSONObject response = (JSONObject) obj;
-//			JSONObject kakao_account = (JSONObject) response.get("kakao_account");
-//			JSONObject profile = (JSONObject) kakao_account.get("profile");
-			String socialID = (String) (response.get("id")+"");
-			log.info(socialID+"ggggg");
-			String socialName = (String) (response.get("name"));
-			String socialEmail = (String) (response.get("email"));
-			int socialNumber = 3;
-			httpServletResponse.setCharacterEncoding("UTF-8");
-			httpServletResponse.setContentType("text/html; charset=UTF-8");
-			PrintWriter out = httpServletResponse.getWriter();
-			MemberVO memberVO = new MemberVO();
 			
-			memberVO.setSocialID(socialID);
-			if(socialName != null) {
-				memberVO.setMb_name(socialName);
-			}
-			memberVO.setMb_email(socialEmail);
-			memberVO.setSocialNumber(socialNumber);
-//			
-			MemberVO googleIdChk = memberService.socialIdChk(socialID);
-//			
-			if (googleIdChk == null) {
-				model.addAttribute("memberVO", memberVO);
-				return "socialInsert";
-			} else if(memberService.socialIdChk(socialID).getSocialNumber() != 3){
+			MemberVO mvo = memberDAO.selectUserId(userid);
+			if (mvo.getDel() == 0) {
+				// 얻어온 회원 정보를 세션에 저장하고 홈으로 이동한다.
+				HttpSession httpSession = request.getSession();
+				httpSession.setAttribute("mvo", mvo);
+				redirectStrategy.sendRedirect(request, httpServletResponse, "/main.do");
+			}else {
 				out.println("<script language='javascript'>");
-				out.println("alert('구글 아이디가 아닙니다.');");
-				out.println("location.href='/login.do';");
+				out.println("alert('탈퇴한 회원입니다.');");
+				out.println("location.href='/main.do';");
 				out.println("</script>");
 				out.close();
-			}else {
-				
-				Authentication authentication = new UsernamePasswordAuthenticationToken(
-						memberService.socialIdChk(socialID).getMb_ID(),
-						memberService.socialIdChk(socialID).getMb_password());
-				Object principal = authentication.getPrincipal();
-				String userid = "";
-				if (principal instanceof UserDetails) {
-					userid = ((UserDetails) principal).getUsername();
-				}else {
-					userid = principal.toString();
-				}
-				
-				MemberVO mvo = memberDAO.selectUserId(userid);
-				if (mvo.getDel() == 0) {
-					// 얻어온 회원 정보를 세션에 저장하고 홈으로 이동한다.
-					HttpSession httpSession = request.getSession();
-					httpSession.setAttribute("mvo", mvo);
-					redirectStrategy.sendRedirect(request, httpServletResponse, "/main.do");
-				}else {
-					out.println("<script language='javascript'>");
-					out.println("alert('탈퇴한 회원입니다.');");
-					out.println("location.href='/main.do';");
-					out.println("</script>");
-					out.close();
-				}
 			}
-			return null;
 		}
-		
-
+		return null;
+	}
+	// 구글 ------------------------------------------------------------------------------------
 	
-	
-
-	   @RequestMapping(value = "/kakao.do", method = RequestMethod.GET)
-	   public String kakao() {
-		   return "kakaoLogin";
-	   }
-	   
 	@RequestMapping(value = "/insert.do", method = RequestMethod.GET)
 	public String insert() {
 		return "insert";

@@ -13,9 +13,12 @@ public class CommonVO {
 	private int currentPage;
 	private int pageSize;
 	private int blockSize;
+	private String mode;
 	
 	private String searchText;
 	private String searchType;
+	private String searchType2;
+	private String animalCheck;
 
 	
 	public String getSearchType() {
@@ -25,17 +28,31 @@ public class CommonVO {
 	public void setSearchType(String searchType) {
 		this.searchType = searchType;
 	}
-
+	
+	public String getSearchType2() {
+		return searchType2;
+	}
+	
+	public void setSearchType2(String searchType2) {
+		this.searchType2 = searchType2;
+	}
+	
 	public String getSearchText() {
 		return searchText;
 	}
-
+	
 	public void setSearchText(String searchText) {
 		this.searchText = searchText;
 	}
-
-	private String mode;
 	
+	public String getAnimalCheck() {
+		return animalCheck;
+	}
+
+	public void setAnimalCheck(String animalCheck) {
+		this.animalCheck = animalCheck;
+	}
+
 	public CommonVO() {
 		paramCheck();
 	}
@@ -123,10 +140,8 @@ public class CommonVO {
 	@Override
 	public String toString() {
 		return "CommonVO [p=" + p + ", s=" + s + ", b=" + b + ", currentPage=" + currentPage + ", pageSize=" + pageSize
-				+ ", blockSize=" + blockSize + ", searchText=" + searchText + ", searchType=" + searchType + ", mode="
-				+ mode + "]";
+				+ ", blockSize=" + blockSize + ", mode=" + mode + ", searchText=" + searchText + ", searchType="
+				+ searchType + ", searchType2=" + searchType2 + ", animalCheck=" + animalCheck + "]";
 	}
-
-
 
 }

@@ -3,6 +3,7 @@ package pro.s2k.camp.vo;
 // 모든 리스트의 페이징 방법은 동일하므로 제네릭으로 만들자.
 
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -25,8 +26,10 @@ public class PagingVO<T> {
 	private int startPage;		// 시작 페이지 번호
 	private int endPage;		// 끝 페이지 번호 
  
-	private String searchType; 
 	private String searchText; 
+	private String searchType; 
+	private String searchType2; 
+	private String animalCheck; 
 	
 	public String getSearchType() {
 		return searchType;
@@ -35,11 +38,25 @@ public class PagingVO<T> {
 	public void setSearchType(String searchType) {
 		this.searchType = searchType;
 	}
+	public String getSearchType2() {
+		return searchType2;
+	}
+	
+	public void setSearchType2(String searchType2) {
+		this.searchType2 = searchType2;
+	}
 
 	public String getSearchText() {
 		return searchText;
 	}
 
+	public void setAnimalCheck(String animalCheck) {
+		this.animalCheck = animalCheck;
+	}
+	public String getAnimalCheck() {
+		return animalCheck;
+	}
+	
 	public void setSearchText(String searchText) {
 		this.searchText = searchText;
 	}
@@ -220,9 +237,6 @@ public class PagingVO<T> {
 		   return message;
 	   }
 
-
-
-
 	
 	//------------------------------------------------------------------------------------
 
@@ -230,9 +244,12 @@ public class PagingVO<T> {
 	   public String toString() {
 		   return "PagingVO [list=" + list + ", currentPage=" + currentPage + ", pageSize=" + pageSize + ", blockSize="
 				   + blockSize + ", totalCount=" + totalCount + ", totalPage=" + totalPage + ", startNo=" + startNo
-				   + ", endNo=" + endNo + ", startPage=" + startPage + ", endPage=" + endPage + ", searchType="
-				   + searchType + ", searchText=" + searchText + "]";
+				   + ", endNo=" + endNo + ", startPage=" + startPage + ", endPage=" + endPage + ", searchText="
+				   + searchText + ", searchType=" + searchType + ", searchType2=" + searchType2 + ", animalCheck="
+				   + animalCheck + "]";
 	   }
-	  
+	   
+	
+
 
 }

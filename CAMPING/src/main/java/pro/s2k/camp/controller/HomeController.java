@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
+import pro.s2k.camp.dao.CampDAO;
 import pro.s2k.camp.service.NoticeService;
 import pro.s2k.camp.service.QnAService;
 import pro.s2k.camp.service.ReviewService;
@@ -37,6 +38,9 @@ public class HomeController {
 	
 	@Autowired
 	private QnAService qnaService; 
+	
+	@Autowired
+	private CampDAO campDAO; 
 
 	@RequestMapping(value ={"/main.do" , "/mainOK.do","/main", "/"}, method = RequestMethod.GET)
 	public String home(HttpServletRequest request,Locale locale, Model model, CommonVO commonVO) {
@@ -46,6 +50,14 @@ public class HomeController {
 //			model.addAttribute("qv", qv); 
 //		 PagingVO<ReviewVO> rv = reviewService.selectList(commonVO);
 //	     	model.addAttribute("rv", rv);
+		int total = campDAO.selectCountTotal();
+			model.addAttribute("total", total);
+		int campSite = campDAO.selectCountCampsitel();
+			model.addAttribute("campSite", campSite);
+		int carCamp = campDAO.selectCountCar();
+			model.addAttribute("carCamp", carCamp);
+		int glamping = campDAO.selectCountGlamping();
+			model.addAttribute("glamping", glamping);
 		return "main";
 	}
 

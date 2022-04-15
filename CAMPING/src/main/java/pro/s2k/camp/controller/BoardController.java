@@ -108,7 +108,6 @@ public class BoardController {
 	   
 	   @RequestMapping(value="/board/noticeInsertOk.do", method= RequestMethod.POST, headers = ("content-type=multipart/*"))
 	   public String noticeInsertOK(@ModelAttribute CommonVO commonVO, @ModelAttribute NoticeVO noticeVO, MultipartHttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
-	      
 	      noticeVO.setNt_ip(request.getRemoteAddr());
 	      List<FileUploadVO> fileList = new ArrayList<>();
 	      List<MultipartFile> multipartFiles = request.getFiles("uploadFile");
@@ -167,7 +166,6 @@ public class BoardController {
 	   
 	   @RequestMapping(value="/board/noticeUpdateOk.do", method= RequestMethod.POST, headers = ("content-type=multipart/*"))
 	   public String noticeUpdateOk(@ModelAttribute CommonVO commonVO, @ModelAttribute NoticeVO noticeVO, MultipartHttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
-	      
 	      noticeVO.setNt_ip(request.getRemoteAddr());
 	      List<FileUploadVO> fileList = new ArrayList<>();
 	      List<MultipartFile> multipartFiles = request.getFiles("uploadFile");
@@ -239,7 +237,6 @@ public class BoardController {
 			model.addAttribute("cv", commVO);
 
 			return "/board/notice";
-			
 		}
 	   
 	   
@@ -289,14 +286,9 @@ public class BoardController {
 	@RequestMapping(value = "/board/reviewInsertOk.do", method = RequestMethod.POST)
 	public String reviewInserOkPOST(@ModelAttribute CommonVO commVO, @ModelAttribute ReviewVO reviewVO,
 			HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) { // redirect시 POST전송을 위해
-																								// RedirectAttributes 변수
-																								// 추가
 		// 일단 VO로 받고
 		reviewVO.setRv_ip(request.getRemoteAddr()); // 아이피 추가로 넣어주고
-		log.info("{}의 insertOkPost 호출 : {}", this.getClass().getName(), commVO + "\n" + reviewVO);
-
 		reviewService.insert(reviewVO);
-
 		// redirect시 GET전송 하기
 		// return "redirect:/board/list?p=1&s=" + commVO.getPageSize() + "&b=" +
 		// commVO.getBlockSize();
@@ -315,7 +307,6 @@ public class BoardController {
 	@ResponseBody
 	public Map<String, String> rereply(@ModelAttribute CommonVO commVO, @ModelAttribute CommentVO commentVO,
 			HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) { 
-		// 일단 VO로 받고
 		commentVO.setCo_ip(request.getRemoteAddr()); // 아이피 추가로 넣어주고
 		commentService.reply(commentVO);
 		Map<String, String> map = new HashMap<>();

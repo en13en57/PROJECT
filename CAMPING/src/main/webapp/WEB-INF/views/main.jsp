@@ -273,7 +273,7 @@ table {
 				사람들이 거의 찾지 않는 지역에서 낭만을<br> 즐기고 싶은 당신! 그런당신을 위해 준비했습니다.
 			</p>
 			<ul class="actions">
-				<li><a href="#" class="button">더보기</a></li>
+				<li><a href="/camp/campsite.do" class="button">더보기</a></li>
 			</ul>
 		</div>
 	</section>
@@ -296,7 +296,7 @@ table {
 				차박캠핑을 좋아하는 당신, 당신을위해 <br> 자동차 야영장을 추천합니다!
 			</p>
 			<ul class="actions">
-				<li><a href="#" class="button">더보기</a></li>
+				<li><a href="/camp/carCampground.do" class="button">더보기</a></li>
 			</ul>
 		</div>
 	</section>
@@ -319,7 +319,7 @@ table {
 				차박과는 다른 느낌을 내고싶다고요? <br>그렇다면 카라반을 추천합니다!
 			</p>
 			<ul class="actions">
-				<li><a href="#" class="button">더보기</a></li>
+				<li><a href="/camp/caravan.do" class="button">더보기</a></li>
 			</ul>
 		</div>
 	</section>
@@ -342,7 +342,7 @@ table {
 				가족 또는 연인, 친구들과 함께 재미있는 <br>캠핑 분위기를 즐기고싶다면 <br>글램핑을 추천합니다!
 			</p>
 			<ul class="actions">
-				<li><a href="#" class="button">더보기</a></li>
+				<li><a href="/camp/glamping.do" class="button">더보기</a></li>
 			</ul>
 		</div>
 	</section>
@@ -355,7 +355,7 @@ table {
 		<div class="container">
 			<header class="major">
 				<h2>현재 저희 NG캠핑의 캠핑장 갯수입니다.</h2>
-				<p>저희 NG캠핑은 총 0개의 캠핑장의 정보를 가지고 있습니다.</p>
+				<p>저희 NG캠핑은 총 ${total }개의 캠핑장의 정보를 가지고 있습니다.</p>
 			</header>
 			<div class="box alt">
 				<div class="row gtr-uniform">
@@ -363,21 +363,21 @@ table {
 						<span class="icon solid alt major"> <span
 							class="icon solid alt major fas fa-mountain"></span>
 						</span>
-						<h3>000개</h3>
+						<h3>${campSite }개</h3>
 						<h3>일반야영장</h3>
 						<p>일반야영장 테마의 캠핑장 갯수입니다.</p>
 					</section>
 
 					<section class="col-4 col-6-medium col-12-xsmall">
 						<span class="icon solid alt major fas fa-car"></span>
-						<h3>000개</h3>
+						<h3>${carCamp }개</h3>
 						<h3>지동차야영장</h3>
 						<p>자동차야영장 테마의 캠핑장 갯수입니다.</p>
 					</section>
 
 					<section class="col-4 col-6-medium col-12-xsmall">
 						<span class="icon solid alt major fas fa-campground"></span>
-						<h3>000개</h3>
+						<h3>${glamping }개</h3>
 						<h3>글램핑/카라반</h3>
 						<p>글램핑/카라반 테마의 캠핑장 갯수입니다.</p>
 					</section>
