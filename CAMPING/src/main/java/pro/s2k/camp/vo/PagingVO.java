@@ -236,6 +236,38 @@ public class PagingVO<T> {
 		   message += "</nav>";
 		   return message;
 	   }
+	   
+	   public String getPageList3() {
+		   String message = "<nav>";
+		   message += "<ul class='pagination pagination-sm justify-content-center'>";
+		   // <%-- 이전 : 시작 페이지가 1보다 크다면 이전이 있다 --%>
+		   if(startPage>1) {
+			   message += "<li class='page-item'>";
+			   message += "<a class='page-link' style='cursor: pointer;' onclick='SendPost(\"?\",{\"p\":\""+ (startPage-1) +"\",\"s\":\""+pageSize+"\",\"b\":\""+blockSize+"\"})' aria-label='Previous'>";
+			   message += "<span aria-hidden='true'>&laquo;</span>";
+			   message += "</a>";
+			   message += "</li>";
+		   }
+		   //  <%-- 페이지 : 시작페이지 번호부터 끝페이지 번호까지 페이지 번호 출력 --%>
+		   for(int i=startPage;i<=endPage;i++) {
+			   if(i==currentPage) {
+				   message += "<li class='page-item active' aria-current='page'><span class='page-link'>" + i + "</span></li>";
+			   }else {
+				   message += "<li class='page-item'><a class='page-link' style='cursor: pointer;' onclick='SendPost(\"?\",{\"p\":\""+ (i) +"\",\"s\":\""+pageSize+"\",\"b\":\""+blockSize+"\",\"searchType\":\""+searchType+"\",\"searchType2\":\""+searchType2+"\",\"animalCheck\":\""+animalCheck+"\",\"searchText\":\""+searchText+"\"})'>" + i + "</a></li>";
+			   }
+		   }
+		   // <%-- 다음 : 마지막 페이지가 전체페이지보다 적다면 다음이 있다 --%>
+		   if(endPage<totalPage) {
+			   message += "<li class='page-item'>";
+			   message += "<a class='page-link' style='cursor: pointer;' onclick='SendPost(\"?\",{\"p\":\""+ (endPage+1) +"\",\"s\":\""+pageSize+"\",\"b\":\""+blockSize+"\"})' aria-label='Next'>";
+			   message += "<span aria-hidden='true'>&raquo;</span>";
+			   message += "</a>";
+			   message += "</li>";
+		   }
+		   message += "</ul>";
+		   message += "</nav>";
+		   return message;
+	   }
 
 	
 	//------------------------------------------------------------------------------------

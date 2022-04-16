@@ -28,7 +28,7 @@
 	 	homepage,
 	 	animalCmgCl
 	 from camp_info where induty like '%일반야영장%' 
-	 limit 1, 10;
+	 limit 1, 10
 	 </select>
 	
 	 <!-- idx 조회  -->
@@ -163,7 +163,7 @@
 		 <if test = "searchType != '-선택-'">or doNm like concat('%',#{searchType},'%')</if>
 		 <if test = "searchType2 != '-선택-'">or sigunguNm like concat('%',#{searchType2},'%')</if>
 		 <if test = "animalCheck != '불가능'">or animalCmgCl like concat('%',#{animalCheck},'%')</if>
-		 limit #{startNo}, #{pageSize}
+		 order by idx desc limit #{startNo}, #{pageSize}
 	 </select>
 	 <!-- 캠핑장 검색별 개수 -->
 	 <select id="selectSearchCount" parameterType="hashmap" resultType="int">

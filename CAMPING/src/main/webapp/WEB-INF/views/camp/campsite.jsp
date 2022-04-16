@@ -3,8 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<%@ taglib prefix="sec"
-	uri="http://www.springframework.org/security/tags"%>
+<%@ taglib prefix="sec"	uri="http://www.springframework.org/security/tags"%>
 
 <!DOCTYPE html>
 <html>
@@ -145,30 +144,28 @@
 		var name = cat2_name[key];
 		var val = cat2_num[key];
 
-		for (i = sel.length - 1; i >= 0; i--)
+		for (i = sel.length - 1; i >= 0; i--){}
 			sel.options[i] = null;
 		sel.options[0] = new Option('-선택-', '', '', 'true');
 		for (i = 0; i < name.length; i++) {
 			sel.options[i + 1] = new Option(name[i], val[i]);
 		}
 	}
-	var csrf_token = "${_csrf.token}";
 
-	function submit() {
+
+	function send() {
 		var selectOption = document.getElementById("h_area1");
 			selectOption = selectOption.options[selectOption.selectedIndex].text;
-			alert(selectOption+"##########");
 		
 		var selectOption2 = document.getElementById("h_area2");
 			selectOption2 = selectOption2.options[selectOption2.selectedIndex].text;
  
 		document.getElementById("searchType").value = selectOption;
 		document.getElementById("searchType2").value = selectOption2; 
-
-	 	alert(document.getElementById("searchType").value);
-		document.getElementById("formAction").submit();
-	
+	    document.getElementById("formAction").submit();
 	}
+	/* 	if(selectOption != null){
+			infoSubmit();	 */
 	
 /* 	function selectInfo(index){
 		var infoIdx = document.getElementById('mb_idx');
@@ -336,7 +333,7 @@ select option[value=""][disabled] {
 					이름 </label>
 				<div class="col-sm-5" style="padding-left: 0px;">
 					<input type="text" class="form-control" id="searchText"
-						name="searchText" required>
+						name="searchText">
 				</div>
 			</div>
 
@@ -364,11 +361,14 @@ select option[value=""][disabled] {
 						<option value='16'>충북</option>
 					</select>
 				</div>
+				<input type="hidden" name="p" value="${pv.currentPage }"/>
+                <input type="hidden" name="s" value="${pv.pageSize }"/>
+                <input type="hidden" name="b" value="${pv.blockSize }"/>
 				<input type="hidden" id="searchType" name="searchType" value="" /> <input
 					type="hidden" id="searchType2" name="searchType2" value="" />
 				
 				<div class="col-sm-3" style="padding-left: 0px;">
-					<select id="h_area2">
+					<select id="h_area2" onChange="cat2_change(this.value)">
 						<option>-선택-</option>
 					</select>
 				</div>
@@ -381,8 +381,8 @@ select option[value=""][disabled] {
 			
 			</div>
 			<div style="text-align: center;">
-				<input type="button" id="button" onclick="submit();" class="btn btn-primary"
-					style="width: 200px; height: 40px;" value="검색">
+				<button  onclick="send();" class="btn btn-primary"
+					style="width: 200px; height: 40px;" value="검색">검색</button>
 			</div>
 		</form>
 		<div style="padding-top: 60px;"></div>
@@ -399,14 +399,16 @@ select option[value=""][disabled] {
 				<th class="th-1" style="padding-top: 5px;">사진</th>
 				<th class="th-2" style="padding-top: 5px;">내용</th>
 			</tr>
-			<%-- <c:if test="${pv.totalCount==0 }">
+			<c:if test="${pv.totalCount==0 }">
 				<td colspan="2">등록된 글이 없습니다.</td>
 			</c:if>
 			<c:if test="${pv.totalCount>0 }">
 				<c:if test="${not empty pv.list }">
 					<c:forEach var="vo" items="${pv.list }" varStatus="vs">
 						<tr>
-							<td style="border: 1px solid gray;">${vo.firstImageUrl }</td>
+							<td>
+								<img style="width: 100px; height: 100px; vertical-align: middle;"	src="${vo.firstImageUrl }" alt="" />
+							</td>
 							<td><div style="font-weight: bold; text-align: left;">${vo.facltNm }</div>
 								<div style="padding-top: 20px;">${vo.lineIntro }</div>
 								<div style="color: gray; text-align: left; font-weight: bold;">${vo.addr1 }</div>
@@ -414,8 +416,18 @@ select option[value=""][disabled] {
 						</tr>
 					</c:forEach>	
 				</c:if>	
-			</c:if> --%>
+			</c:if>
 		</table>
+	<%-- 		<c:if test="${pv.searchType==null }">
+				<div style="border: none;text-align: center;">
+					${pv.pageList}
+				</div>
+			</c:if>
+			<c:if test="${pv.searchType!=null }">
+				<div style="border: none;text-align: center;">
+					${pv.pageList3}
+				</div>
+			</c:if> --%>
 	</div>
 	<div id="map" style="width: 50%; height: 800px; margin-left: 10px;"></div>
 
@@ -463,6 +475,7 @@ select option[value=""][disabled] {
 		var mappingData = {};
 		var positions = new Array();
 		var overlaies = new Array();
+		var csrf_token = "${_csrf.token}";
 		function test() {
 			$.ajax({
 				type : "post",

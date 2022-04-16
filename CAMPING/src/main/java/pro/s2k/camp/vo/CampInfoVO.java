@@ -56,10 +56,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class CampInfoVO {
 	private int idx; // 고유넘버링
-	private String firstImageURL; // 썸네일
+	private String firstImageUrl; // 썸네일
 	private String zipcode; // 우편번호
-	private String add1; // 주소1 
-	private String add2; // 주소2
+	private String addr1; // 주소1 
+	private String addr2; // 주소2
 	private String facltNm; // 캠핑장이름
 	private String lineIntro; // 한줄 설명
 	private String intro; // 설명
