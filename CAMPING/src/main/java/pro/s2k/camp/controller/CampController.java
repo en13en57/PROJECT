@@ -103,9 +103,7 @@ public class CampController {
 		pv.setSearchType(searchType);
 		pv.setSearchType2(searchType2);
 		String animalCheck = request.getParameter("animalCheck");
-		log.info("!!!!!!!!"+animalCheck);
 		pv.setAnimalCheck(animalCheck);
-		log.info(pv.getAnimalCheck()+"#######");
 		model.addAttribute("pv", pv);
 		model.addAttribute("cv", commVO);
 

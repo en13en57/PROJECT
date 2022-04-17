@@ -64,8 +64,6 @@ public class CampServiceImpl implements CampService {
 			map.put("searchType2",commVO.getSearchType2());
 			map.put("animalCheck",commVO.getAnimalCheck());
 			List<CampInfoVO> list = campDAO.selectSearchList(map);
-			log.info(commVO.getSearchType()+"@@@@@@");
-			log.info(commVO.getAnimalCheck()+"@@@@@@");
 			// 완성된 리스트를 페이징 객체에 넣는다.
 			pagingVO.setList(list);
 		}catch (Exception e) {

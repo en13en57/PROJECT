@@ -283,6 +283,10 @@ table {
 						</c:if>
 					</c:if>
 					</table>
+					<c:if test="${pv.totalCount==0 }">
+			           <div style="border: none; text-align: center;"></div>
+			        </c:if>
+        			<c:if test="${pv.totalCount!=0 }">
 						<c:if test="${pv.searchType==null }">
 							<div style="border: none;text-align: center;">
 								${pv.pageList}
@@ -293,7 +297,7 @@ table {
 								${pv.pageList2}
 							</div>
 						</c:if>
-
+					</c:if>
 					
 
 				<c:set value="${sessionScope.mvo.gr_role}" var="role" />

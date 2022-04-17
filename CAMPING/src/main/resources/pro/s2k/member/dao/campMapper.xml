@@ -162,8 +162,14 @@
 		 where facltNm like concat('%',#{searchText},'%')
 		 <if test = "searchType != '-선택-'">and doNm like concat('%',#{searchType},'%')</if> 
 		 <if test = "searchType2 != '-선택-'">and sigunguNm like concat('%',#{searchType2},'%')</if>
-		 <if test = "animalCheck == '가능'">and animalCmgCl like concat(#{animalCheck},'%')</if> 
-		 <if test = "animalCheck == null">and animalCmgCl like '불가능'</if> 
+		 <choose>
+		 	<when test="animalCheck == '가능'">
+		 		and animalCmgCl like concat(#{animalCheck},'%')
+		 	</when>
+		 	<otherwise>
+		 		and animalCmgCl like '불가능'
+		 	</otherwise>
+		 </choose>
 		 limit #{startNo}, #{pageSize}
 	 </select>
 	 <!-- 캠핑장 검색별 개수 -->
@@ -174,7 +180,14 @@
 		 where facltNm like concat('%',#{searchText},'%')
 		 <if test = "searchType != '-선택-'">and doNm like concat('%',#{searchType},'%')</if>
 		 <if test = "searchType2 != '-선택-'">and sigunguNm like concat('%',#{searchType2},'%')</if>
-		 <if test = "animalCheck != '불가능'">and animalCmgCl like concat(#{animalCheck},'%')</if>
+		 <choose>
+		 	<when test="animalCheck == '가능'">
+		 		and animalCmgCl like concat(#{animalCheck},'%')
+		 	</when>
+		 	<otherwise>
+		 		and animalCmgCl like '불가능'
+		 	</otherwise>
+		 </choose>
 	 </select>
 	 
 	

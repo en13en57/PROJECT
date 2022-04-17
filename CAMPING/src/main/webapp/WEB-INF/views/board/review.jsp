@@ -259,25 +259,6 @@ table {
 											</c:otherwise>
 										</c:choose>
 									</td>
-										<%-- <td style="padding-top: 50px;" id="content" >
-													${vo.rv_content }
-													<!-- 여기에 글의 내용을 출력한다. -->
-													<c:set var="content" value="${vo.rv_content }"/>
-													이미지파일 확장자명 날리기
-													<c:set var="content" value="${fn:replace(content, '.png', '')}"/>
-													이미지파일 확장자명 날리기
-													<c:set var="content" value="${fn:replace(content, '.jpg', '')}"/>
-													이미지파일 확장자명 날리기
-													<c:set var="content" value="${fn:replace(content, '.img', '')}"/>
-													\n을 <br>로 변경
-													<c:set var="content" value="${fn:replace(content, newLine, br ) }"/>
-											<c:choose>
-												<c:when test="${fn:contains(content,'img')}">
-													이미지파일! ${content } 
-												</c:when>
-												<c:otherwise>${content }</c:otherwise>
-											</c:choose>
-										</td> --%>
 									<td style="vertical-align: middle;">
 										${vo.mb_nick }
 										</td>
@@ -294,6 +275,10 @@ table {
 						</c:if>
 						</c:if>
 					</table>
+					<c:if test="${pv.totalCount==0 }">
+			        	<div style="border: none; text-align: center;"></div>
+			        </c:if>
+			        <c:if test="${pv.totalCount!=0 }">
 						<c:if test="${pv.searchType==null }">
 							<div style="border: none;text-align: center;">
 								${pv.pageList}
@@ -304,7 +289,7 @@ table {
 								${pv.pageList2}
 							</div>
 						</c:if>
-
+					</c:if>
 
 				<c:set value="${sessionScope.mvo.gr_role}" var="role" />
 			<c:choose>

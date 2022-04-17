@@ -394,42 +394,44 @@ select option[value=""][disabled] {
 				<option value=''>거리 순</option>
 			</select> <br>
 		</div>
-		<table>
-			<tr>
-				<th class="th-1" style="padding-top: 5px;">사진</th>
-				<th class="th-2" style="padding-top: 5px;">내용</th>
-			</tr>
-			<c:if test="${pv.totalCount==0 }">
-				<td colspan="2">등록된 글이 없습니다.</td>
-			</c:if>
-			<c:if test="${pv.totalCount>0 }">
-				<c:if test="${not empty pv.list }">
-					<c:forEach var="vo" items="${pv.list }" varStatus="vs">
-						<tr>
-							<td>
-								<img style="width: 100px; height: 100px; vertical-align: middle;"	src="${vo.firstImageUrl }" alt="" />
-							</td>
-							<td><div style="font-weight: bold; text-align: left;">${vo.facltNm }</div>
-								<div style="padding-top: 20px;">${vo.lineIntro }</div>
-								<div style="color: gray; text-align: left; font-weight: bold;">${vo.addr1 }</div>
-							</td>
-						</tr>
-					</c:forEach>	
-				</c:if>	
-			</c:if>
-		</table>
-		<c:if test="${pv.searchType==null }">
-			<div style="border: none;text-align: center;">
-				${pv.pageList}
-			</div>
-		</c:if>
-		<c:if test="${pv.searchType!=null }">
-			<div style="border: none;text-align: center;">
-				${pv.pageList3}
-			</div>
-		</c:if> 
+		<div style="width:100%; height:324px; overflow:auto">
+			<table>
+				<tr>
+					<th class="th-1" style="padding-top: 5px;">사진</th>
+					<th class="th-2" style="padding-top: 5px;">내용</th>
+				</tr>
+				<c:if test="${pv.totalCount==0 }">
+					<td colspan="2">등록된 글이 없습니다.</td>
+				</c:if>
+				<c:if test="${pv.totalCount>0 }">
+					<c:if test="${not empty pv.list }">
+						<c:forEach var="vo" items="${pv.list }" varStatus="vs">
+							<tr>
+								<td style="border: 1px solid gray;">
+									<img style="width: 100px; height: 100px; vertical-align: middle;"	src="${vo.firstImageUrl }" onerror="this.style.display='none'" />
+								</td>
+								<td><div style="font-weight: bold; text-align: left;">${vo.facltNm }</div>
+									<div style="padding-top: 20px;">${vo.lineIntro }</div>
+									<div style="color: gray; text-align: left; font-weight: bold;">${vo.addr1 }</div>
+								</td>
+							</tr>
+						</c:forEach>	
+					</c:if>	
+				</c:if>
+			</table>
+		</div>
+		<c:if test="${pv.totalCount==0 }">
+            <div style="border: none; text-align: center;"></div>
+         </c:if>
+         <c:if test="${pv.totalCount!=0 }">
+			<c:if test="${pv.searchType!=null }">
+				<div style="border: none;text-align: center;">
+					${pv.pageList3}
+				</div>
+			</c:if> 
+         </c:if>
 	</div>
-	<div id="map" style="width: 50%; height: 800px; margin-left: 10px;"></div>
+	<div id="map" style="width: 50%; height: 900px; margin-left: 10px;"></div>
 
 	<br>
 
@@ -631,8 +633,8 @@ select option[value=""][disabled] {
 		src="${pageContext.request.contextPath }/resources/assets/js/util.js"></script>
 	<script
 		src="${pageContext.request.contextPath }/resources/assets/js/main.js"></script>
-	<%-- 	<script
-		src="${pageContext.request.contextPath}/resources/assets/js/common.js"></script> --%>
+ 	<script
+		src="${pageContext.request.contextPath}/resources/assets/js/common.js"></script>
 
 
 
