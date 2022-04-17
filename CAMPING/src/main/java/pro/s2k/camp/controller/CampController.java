@@ -95,15 +95,17 @@ public class CampController {
 	}
 	
 	@RequestMapping(value = "/selectSearchCamp.do")
-	public String selectSearchNotice (@RequestParam String searchType, @RequestParam String searchType2, @RequestParam String animalCheck,
+	public String selectSearchNotice (@RequestParam String searchType, @RequestParam String searchType2,
 			@RequestParam String searchText, HttpServletRequest request, @ModelAttribute CommonVO commVO, Model model) {
 		log.info("searchType"+searchType);
 		PagingVO<CampInfoVO> pv = campService.selectSearchList(commVO);
 		pv.setSearchText(searchText);
 		pv.setSearchType(searchType);
 		pv.setSearchType2(searchType2);
+		String animalCheck = request.getParameter("animalCheck");
+		log.info("!!!!!!!!"+animalCheck);
 		pv.setAnimalCheck(animalCheck);
-		log.info(pv+"#################");
+		log.info(pv.getAnimalCheck()+"#######");
 		model.addAttribute("pv", pv);
 		model.addAttribute("cv", commVO);
 

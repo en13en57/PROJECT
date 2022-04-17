@@ -159,7 +159,7 @@
 		
 		var selectOption2 = document.getElementById("h_area2");
 			selectOption2 = selectOption2.options[selectOption2.selectedIndex].text;
- 
+		
 		document.getElementById("searchType").value = selectOption;
 		document.getElementById("searchType2").value = selectOption2; 
 	    document.getElementById("formAction").submit();
@@ -361,9 +361,9 @@ select option[value=""][disabled] {
 						<option value='16'>충북</option>
 					</select>
 				</div>
-				<input type="hidden" name="p" value="${pv.currentPage }"/>
+				<%-- <input type="hidden" name="p" value="${pv.currentPage }"/>
                 <input type="hidden" name="s" value="${pv.pageSize }"/>
-                <input type="hidden" name="b" value="${pv.blockSize }"/>
+                <input type="hidden" name="b" value="${pv.blockSize }"/> --%>
 				<input type="hidden" id="searchType" name="searchType" value="" /> <input
 					type="hidden" id="searchType2" name="searchType2" value="" />
 				
@@ -375,7 +375,7 @@ select option[value=""][disabled] {
 			</div>
 			<div style="text-align: left;">
 				
-				<input type="checkbox" value="가능" id="animalCheck"
+				<input type="checkbox" id="animalCheck" value="가능"
 					name="animalCheck"> <label class="form-check-label"
 					for="animalCheck"> 반려동물 동반여부 </label> <br>
 			
@@ -418,16 +418,16 @@ select option[value=""][disabled] {
 				</c:if>	
 			</c:if>
 		</table>
-	<%-- 		<c:if test="${pv.searchType==null }">
-				<div style="border: none;text-align: center;">
-					${pv.pageList}
-				</div>
-			</c:if>
-			<c:if test="${pv.searchType!=null }">
-				<div style="border: none;text-align: center;">
-					${pv.pageList3}
-				</div>
-			</c:if> --%>
+		<c:if test="${pv.searchType==null }">
+			<div style="border: none;text-align: center;">
+				${pv.pageList}
+			</div>
+		</c:if>
+		<c:if test="${pv.searchType!=null }">
+			<div style="border: none;text-align: center;">
+				${pv.pageList3}
+			</div>
+		</c:if> 
 	</div>
 	<div id="map" style="width: 50%; height: 800px; margin-left: 10px;"></div>
 

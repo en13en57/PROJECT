@@ -160,10 +160,11 @@
 		 	animalCmgCl
 		 from camp_info
 		 where facltNm like concat('%',#{searchText},'%')
-		 <if test = "searchType != '-선택-'">or doNm like concat('%',#{searchType},'%')</if>
-		 <if test = "searchType2 != '-선택-'">or sigunguNm like concat('%',#{searchType2},'%')</if>
-		 <if test = "animalCheck != '불가능'">or animalCmgCl like concat('%',#{animalCheck},'%')</if>
-		 order by idx desc limit #{startNo}, #{pageSize}
+		 <if test = "searchType != '-선택-'">and doNm like concat('%',#{searchType},'%')</if> 
+		 <if test = "searchType2 != '-선택-'">and sigunguNm like concat('%',#{searchType2},'%')</if>
+		 <if test = "animalCheck == '가능'">and animalCmgCl like concat(#{animalCheck},'%')</if> 
+		 <if test = "animalCheck == null">and animalCmgCl like '불가능'</if> 
+		 limit #{startNo}, #{pageSize}
 	 </select>
 	 <!-- 캠핑장 검색별 개수 -->
 	 <select id="selectSearchCount" parameterType="hashmap" resultType="int">
@@ -171,9 +172,9 @@
 		 	count(idx)
 		 from camp_info
 		 where facltNm like concat('%',#{searchText},'%')
-		 <if test = "searchType != '-선택-'">or doNm like concat('%',#{searchType},'%')</if>
-		 <if test = "searchType2 != '-선택-'">or sigunguNm like concat('%',#{searchType2},'%')</if>
-		 <if test = "animalCheck != '불가능'">or animalCmgCl like concat('%',#{animalCheck},'%')</if>
+		 <if test = "searchType != '-선택-'">and doNm like concat('%',#{searchType},'%')</if>
+		 <if test = "searchType2 != '-선택-'">and sigunguNm like concat('%',#{searchType2},'%')</if>
+		 <if test = "animalCheck != '불가능'">and animalCmgCl like concat(#{animalCheck},'%')</if>
 	 </select>
 	 
 	
