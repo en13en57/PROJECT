@@ -4,7 +4,7 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="pro.s2k.camp.dao.CampDAO">
 	<!-- 1. 일반야영장 불러오기 -->
-	<select id="selectCampsitel" resultType="map">
+	<select id="selectCampSitel" parameterType="hashmap" resultType="campInfoVO">
 	 select  
 	 	idx,
 	 	lineIntro,
@@ -26,10 +26,18 @@
 	 	mapX,
 	 	mapY,
 	 	homepage,
-	 	animalCmgCl
-	 from camp_info where induty like '%일반야영장%' 
-	 limit 1, 10
+	 	animalCmgCl,
+	 	(abs(#{lon}-mapX)+abs(#{lat}-mapY)) as distance
+	 from camp_info 
+	 where induty like '%일반야영장%' 
+	 order by
+	 	distance 
+	 limit #{startNo}, #{pageSize}
 	 </select>
+	 
+	 <select id="selectCountSite" resultType="int">
+ 		select count(*) from camp_info where induty like '%일반야영장%'
+ 	</select>
 	
 	 <!-- idx 조회  -->
 	 <select id="selectCamplInfo" resultType="map" >
@@ -157,37 +165,27 @@
 		 	mapX,
 		 	mapY,
 		 	homepage,
-		 	animalCmgCl
+		 	animalCmgCl,
+		 	(abs(#{lon}-mapX)+abs(#{lat}-mapY)) as distance
 		 from camp_info
 		 where facltNm like concat('%',#{searchText},'%')
 		 <if test = "searchType != '-선택-'">and doNm like concat('%',#{searchType},'%')</if> 
 		 <if test = "searchType2 != '-선택-'">and sigunguNm like concat('%',#{searchType2},'%')</if>
-		 <choose>
-		 	<when test="animalCheck == '가능'">
-		 		and animalCmgCl like concat(#{animalCheck},'%')
-		 	</when>
-		 	<otherwise>
-		 		and animalCmgCl like '불가능'
-		 	</otherwise>
-		 </choose>
+		 <if test="animalCheck == '가능'">and animalCmgCl like concat(#{animalCheck},'%')</if>
+		 order by
+	 		 distance 
 		 limit #{startNo}, #{pageSize}
 	 </select>
 	 <!-- 캠핑장 검색별 개수 -->
 	 <select id="selectSearchCount" parameterType="hashmap" resultType="int">
 	 	 select  
-		 	count(idx)
+		 	count(*)
 		 from camp_info
 		 where facltNm like concat('%',#{searchText},'%')
-		 <if test = "searchType != '-선택-'">and doNm like concat('%',#{searchType},'%')</if>
-		 <if test = "searchType2 != '-선택-'">and sigunguNm like concat('%',#{searchType2},'%')</if>
-		 <choose>
-		 	<when test="animalCheck == '가능'">
-		 		and animalCmgCl like concat(#{animalCheck},'%')
-		 	</when>
-		 	<otherwise>
-		 		and animalCmgCl like '불가능'
-		 	</otherwise>
-		 </choose>
+		<if test = "searchType != '-선택-'">and doNm like concat('%',#{searchType},'%')</if>
+		<if test = "searchType2 != '-선택-'">and sigunguNm like concat('%',#{searchType2},'%')</if>
+	 	<if test="animalCheck == '가능'">and animalCmgCl like concat(#{animalCheck},'%')
+	 	</if>
 	 </select>
 	 
 	

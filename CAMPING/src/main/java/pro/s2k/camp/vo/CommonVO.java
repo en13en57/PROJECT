@@ -19,6 +19,9 @@ public class CommonVO {
 	private String searchType;
 	private String searchType2;
 	private String animalCheck;
+	
+	private double lon;//(mapX)
+	private double lat;//(mapY)
 
 	
 	public String getSearchType() {
@@ -51,6 +54,24 @@ public class CommonVO {
 
 	public void setAnimalCheck(String animalCheck) {
 		this.animalCheck = animalCheck;
+	}
+	
+	
+
+	public double getLon() {
+		return lon;
+	}
+
+	public void setLon(double lon) {
+		this.lon = lon;
+	}
+
+	public double getLat() {
+		return lat;
+	}
+
+	public void setLat(double lat) {
+		this.lat = lat;
 	}
 
 	public CommonVO() {
@@ -141,7 +162,8 @@ public class CommonVO {
 	public String toString() {
 		return "CommonVO [p=" + p + ", s=" + s + ", b=" + b + ", currentPage=" + currentPage + ", pageSize=" + pageSize
 				+ ", blockSize=" + blockSize + ", mode=" + mode + ", searchText=" + searchText + ", searchType="
-				+ searchType + ", searchType2=" + searchType2 + ", animalCheck=" + animalCheck + "]";
+				+ searchType + ", searchType2=" + searchType2 + ", animalCheck=" + animalCheck + ", lon=" + lon
+				+ ", lat=" + lat + "]";
 	}
 
 }

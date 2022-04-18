@@ -5,9 +5,10 @@ package pro.s2k.camp.vo;
 import java.util.List;
 import java.util.Map;
 
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement
+@XmlAccessorType
 public class PagingVO<T> {
 	
 	private List<T> list; // 1페이지 분량의 데이터를 담을 리스트

@@ -13,21 +13,29 @@ import pro.s2k.camp.vo.NoticeVO;
 public interface CampDAO {
 	
 	// 일반야영장 불러오기
-	List<Map<String, Object>> selectCampsitel();
+	List<CampInfoVO> selectCampSitel(HashMap<String, Object> map);
+	
 	//idx로 불러오기
-	Map<String, Object> selectCamplInfo(int idx); // 생각을 좀만 더 해봐
+	CampInfoVO selectCamplInfo(int idx); 
+	
 	// 자동차야영장 불러오기
-	List<Map<String, Object>> selectcarCampground();
+	List<CampInfoVO> selectcarCampGround(HashMap<String, Object> map);
+	
 	//글램핑 불러오기
-	List<Map<String, Object>> selectGlamping();
+	List<CampInfoVO> selectGlamping(HashMap<String, Object> map);
+	
 	//카라반 불러오기
-	List<Map<String, Object>> selectCaravan();
+	List<CampInfoVO> selectCaravan(HashMap<String, Object> map);
 	
 	// 메인에 개수찍기
 	int selectCountTotal();
 	int selectCountCampsitel();
 	int selectCountCar();
 	int selectCountGlamping();
+	
+	int selectCountSite();
+	int selectCountGround();
+	int selectCountCaravan();
 
 	// 검색기능
 	List<CampInfoVO> selectSearchList(HashMap<String, Object> map);
