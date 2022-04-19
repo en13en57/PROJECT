@@ -161,10 +161,11 @@
 			selectOption2 = selectOption2.options[selectOption2.selectedIndex].text;
 		
 		document.getElementById("searchType").value = selectOption;
+		alert(selectOption);
 		document.getElementById("searchType2").value = selectOption2; 
 	    document.getElementById("formAction").submit(); 
-	    test();
 	} 
+
 	/* 	if(selectOption != null){
 			infoSubmit();	 */
 	
@@ -254,24 +255,19 @@ table {
 	width: 80px;
 }
 
-.th-3 {
-	width: 150px;
-}
-
-.th-4 {
-	width: 90px;
-}
-
-.th-5 {
-	width: 60px;
-}
-
-.th-6 {
-	width: 40px;
-}
-
 select option[value=""][disabled] {
 	display: none;
+}
+
+.info-title {
+    display: block;
+    background: #50627F;
+    color: #fff;
+    text-align: center;
+    height: 24px;
+    line-height:22px;
+    border-radius:4px;
+    padding:0px 10px;
 }
 </style>
 
@@ -327,8 +323,6 @@ select option[value=""][disabled] {
 
 		<form action="/selectSearchCamp.do" method="post" id="formAction">
 			<sec:csrfInput />
-			<input type="hidden" id="lon" name="lon" />
-			<input type="hidden" id="lat" name="lat" />
 			<div class="title">캠핑장 검색하기</div>
 			<br>
 			<div class="mb-4 row">
@@ -382,7 +376,7 @@ select option[value=""][disabled] {
 			
 			</div>
 			<div style="text-align: center;">
-				<button  onclick="send();" class="btn btn-primary" 
+				<button onclick="send();" class="btn btn-primary" 
 					style="width: 200px; height: 40px;" value="검색">검색</button>
 			</div>
 		</form>
@@ -390,7 +384,7 @@ select option[value=""][disabled] {
 		<div style="padding-top: 60px;"></div>
 		<div class="col-sm-3" style="font-size: 20px;">검색결과 리스트</div>
 		<br />
-		<div style="width:100%; height:324px; overflow:auto">
+		<div style="width:100%; height:390px; overflow:auto">
 			<table>
 				<tr>
 					<th class="th-1" style="padding-top: 5px;">사진</th>
@@ -402,11 +396,22 @@ select option[value=""][disabled] {
 				<c:if test="${pv.totalCount>0 }">
 					<c:if test="${not empty pv.list }">
 						<c:forEach var="vo" items="${pv.list }" varStatus="vs">
+							<input type="hidden" id="facltNm${vs.index }" name="var" value="${vo.facltNm }"/>
+							<input type="hidden" id="mapX${vs.index }" value="${vo.mapX }"/>
+							<input type="hidden" id="mapY${vs.index }" value="${vo.mapY }"/>
+							<input type="hidden" id="idx${vs.index }" value="${vo.idx }"/>
+							<input type="hidden" id="induty${vs.index }" value="${vo.induty }"/>
+							<input type="hidden" id="addr1${vs.index }" value="${vo.addr1 }"/>
+							<input type="hidden" id="firstImageUrl${vs.index }" value="${vo.firstImageUrl }"/>
+							<input type="hidden" id="lineIntro${vs.index }" value="${vo.lineIntro }"/>
 							<tr>
 								<td style="border: 1px solid gray;">
 									<img style="width: 100%; height: 100%;"	src="${vo.firstImageUrl }" onerror="this.style.display='none'" />
 								</td>
-								<td><div style="font-weight: bold; text-align: left;">${vo.facltNm }</div>
+								<td>
+								<%-- document.getElementById('dView${vs.index }').submit() --%>
+									<a style="cursor: pointer;" onclick="test3(${vs.index});"><c:out value="${vo.facltNm }"></c:out> </a>
+								
 									<div style="padding-top: 20px;">${vo.lineIntro }</div>
 									<div style="color: gray; text-align: left; font-weight: bold;">${vo.addr1 }</div>
 								</td>
@@ -432,7 +437,6 @@ select option[value=""][disabled] {
 	</div>
 	
 	<div id="map" style="width: 50%; height: 900px; margin-left: 10px;"></div>
-
 	<br>
 
 	<script type="text/javascript"
@@ -457,12 +461,9 @@ select option[value=""][disabled] {
 
                   var lat = position.coords.latitude, // 위도
                  	  lon = position.coords.longitude; // 경도
-                  document.getElementById("lon").value = lon;
-                  document.getElementById("lat").value = lat;
 
                   var locPosition = new kakao.maps.LatLng(lat, lon), // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
                   message = '<div style="padding:5px; color:white; width:250px; background-color:blue;">현재위치</div>';
-
                   // 마커와 인포윈도우를 표시합니다
                   displayMarker(locPosition, message);
 
@@ -474,19 +475,14 @@ select option[value=""][disabled] {
 
          displayMarker(locPosition, message);
       }
-      
-      function setCookie(key, value, expiredays) {
-  	    let todayDate = new Date();
-  	    todayDate.setDate(todayDate.getDate() + expiredays); // 현재 시각 + 일 단위로 쿠키 만료 날짜 변경
-  	    document.cookie = lat + "=" + lat + "; path=/; expires=" + todayDate.toGMTString() + ";";
-  	    document.cookie = lon + "=" + lon + "; path=/; expires=" + todayDate.toGMTString() + ";";
-  	}
+
 
       // 마커 이미지의 이미지 주소입니다
       var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
       var mappingData = {};
       var positions = new Array();
       var overlaies = new Array();
+      
       var csrf_token = "${_csrf.token}";
       
       function test() {
@@ -519,10 +515,8 @@ select option[value=""][disabled] {
                   var imageSize = new kakao.maps.Size(30, 30);
 
                   // 마커 이미지를 생성합니다   
-                  if (positions[a].kndNm === '일반야영장') {
-                     var markerImage = new kakao.maps.MarkerImage(
+                  var markerImage = new kakao.maps.MarkerImage(
                            imageSrc, imageSize);
-                  }
 
                   var marker = new kakao.maps.Marker({
                      map : map, // 마커를 표시할 지도
@@ -550,51 +544,128 @@ select option[value=""][disabled] {
             }
          });
       }
-
+      
       function test2(map, marker) {
-         return function() {
-            var code = marker.getTitle();
-            map.setCenter(marker.getPosition());
-            var iwContent = '<div style="padding:5px; color:black; width:1000px; height:400px; font-size: 20px;">'
-                  + '<form action="/camp/detailPage.do" method="post" target="_blank" onsubmit=window.open("/camp/detailPage.do", "상세보기페이지", "width=1225, height=900, toolbar=no, menubar=no, scrollbars=no, resizable=yes" );">'
-                  + '<input type="hidden" name="var" value="'+code+'">'
-                  + '<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />'
-                  + '<div style="font-size:35px; padding-top :20px; font-weight: bold;">'
-                  + mappingData[code].data.facltNm
-                  + '</div> <br>'
-                  + '<div class="row">'
-                  + '<div class="col-md-1" style="padding-right: 1px;"><img src="' + mappingData[code].data.firstImageUrl +'"style="width:250px; height:250px;"></div>'
-                  + '<div class="col-md-8 style="width :100%;">'
-                  + '<div class="col-md-6" style="padding-left: 200px; width :100%; font-weight: bold; font-size:20px;">주소 : '
-                  + mappingData[code].data.addr1
-                  + '</div>'
-                  + '<div class="col-md-6" style="padding-left: 200px; width :100%; font-weight: bold; font-size:20px;">유형 : '
-                  + mappingData[code].data.induty
-                  + '</div>'
-                  + '<div class="col-md-6" style="padding-left: 200px; width :100%; font-weight: bold; font-size:20px;">소개 : '
-                  + mappingData[code].data.lineIntro
-                  + '</div>'
-                  + '</div>'
-                  + '<div style="text-align:center"> <input type="submit" style="background-color:blue; color:white;" value="상세페이지"> </div> </form>'
-                  +
+          return function() {
+             var code = marker.getTitle();
+             map.setCenter(marker.getPosition());
+             var iwContent = '<div style="padding:5px; color:black; width:800px; height:300px; font-size: 20px;">'
+                   + '<form action="/camp/detailPage.do" method="post" target="_blank" onsubmit=window.open("/camp/detailPage.do", "상세보기페이지", "width=1225, height=900, toolbar=no, menubar=no, scrollbars=no, resizable=yes" );">'
+                   + '<input type="hidden" name="var" value="'+code+'">'
+                   + '<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />'
+                   + '<div style="font-size:35px; padding-top :20px; font-weight: bold;">'
+                   + mappingData[code].data.facltNm
+                   + '</div> <br>'
+                   + '<div class="row">'
+                   + '<div class="col-md-1" style="padding-right: 1px;"><img src="' + mappingData[code].data.firstImageUrl +'"style="width:200px; height:200px;"></div>'
+                   + '<div class="col-md-11 style="width :100%;">'
+                   + '<div class="col-md-6" style="padding-left: 200px; width :100%; font-weight: bold; font-size:20px;">주소 : '
+                   + mappingData[code].data.addr1
+                   + '</div>'
+                   + '<div class="col-md-6" style="padding-left: 200px; width :100%; font-weight: bold; font-size:20px;">유형 : '
+                   + mappingData[code].data.induty
+                   + '</div>'
+                   + '<div class="col-md-6" style="padding-left: 200px; width :100%; font-weight: bold; font-size:20px;">소개 : '
+                   + mappingData[code].data.lineIntro
+                   + '</div>'
+                   + '</div>'
+                   + '</div>'
+                   + '<div style="text-align:center"> <input type="submit" style="background-color:blue; color:white;" value="상세페이지"> </div>'
+                   + '</form>'
+                   + '</div>'
 
-                  '</div>'
+             // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+             console.log(mappingData[code].data);
+             iwPosition = new kakao.maps.LatLng(marker.getPosition()); //인포윈도우 표시 위치입니다
+             iwRemoveable = true;
+             // 인포윈도우를 생성합니다
+             var infowindow = new kakao.maps.InfoWindow({
+                position : iwPosition,
+                content : iwContent,
+                removable : iwRemoveable
+             });
+             infowindow.open(map, marker);
+          }
+        
+       }
+	  function test3(idx) {
+		  var campFacltNm = document.getElementById('facltNm'+idx).value;
+		  var campX = document.getElementById('mapX'+idx).value;
+		  var campY = document.getElementById('mapY'+idx).value;
+		  var campIdx = document.getElementById('idx'+idx).value;
+		  var campInduty = document.getElementById('induty'+idx).value;
+		  var campAddr1 = document.getElementById('addr1'+idx).value;
+		  var campFirstImageUrl = document.getElementById('firstImageUrl'+idx).value;
+		  var campLineIntro = document.getElementById('lineIntro'+idx).value;
+		  var spotObj = {
+             name : campIdx,
+             title : campFacltNm,
+             latlng : new kakao.maps.LatLng(campY,campX),
+             kndNm : campInduty
+             };
+          var overlay = {
+             name : campFacltNm
+          }
+             positions.push(spotObj);
+             overlaies.push(overlay);
 
-            // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
-            console.log(mappingData[code].data);
-            iwPosition = new kakao.maps.LatLng(marker.getPosition()); //인포윈도우 표시 위치입니다
-            iwRemoveable = true;
-            // 인포윈도우를 생성합니다
-            var infowindow = new kakao.maps.InfoWindow({
-               position : iwPosition,
-               content : iwContent,
-               removable : iwRemoveable
-            });
-            infowindow.open(map, marker);
-
-         }
+       	  var marker = new kakao.maps.Marker({
+             position : new kakao.maps.LatLng(campY,campX), // 마커를 표시할 위치
+             title : campFacltNm, // 마커의 타이틀(마우스를 올리면 타이틀 표기)
+          // 마커 이미지 
+          });  
+          /* map.setCenter(marker.getPosition()); */
+          // 마커를 클릭 시 커스텀 오버레이 생성
+          /* kakao.maps.event.addListener(marker, 'click', test4( map, marker));  */
+          test4(map,marker,idx);
       }
+      
+     function test4(map,marker,idx) {
+             map.setCenter(marker.getPosition());
+	         var campFacltNm = document.getElementById('facltNm'+idx).value;
+	       	 var campInduty = document.getElementById('induty'+idx).value;
+			 var campAddr1 = document.getElementById('addr1'+idx).value;
+			 var campFirstImageUrl = document.getElementById('firstImageUrl'+idx).value;
+			 var campLineIntro = document.getElementById('lineIntro'+idx).value;
+			 
+             var iwContent = '<div style="padding:5px; color:black; width:800px; height:300px; font-size: 20px;">'
+                   + '<form action="/camp/detailPage.do" method="post" target="_blank" onsubmit=window.open("/camp/detailPage.do", "상세보기페이지", "width=1225, height=900, toolbar=no, menubar=no, scrollbars=no, resizable=yes" );">'
+                   + '<input type="hidden" name="var" value="'+campFacltNm+'">'
+                   + '<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />'
+                   + '<div style="font-size:35px; padding-top :20px; font-weight: bold;">'
+                   + campFacltNm
+                   + '</div> <br>'
+                   + '<div class="row">'
+                   + '<div class="col-md-1" style="padding-right: 1px;"><img src="' + campFirstImageUrl +'"style="width:200px; height:200px;"></div>'
+                   + '<div class="col-md-11 style="width :100%;">'
+                   + '<div class="col-md-6" style="padding-left: 200px; width :100%; font-weight: bold; font-size:20px;">주소 : '
+                   + campAddr1
+                   + '</div>'
+                   + '<div class="col-md-6" style="padding-left: 200px; width :100%; font-weight: bold; font-size:20px;">유형 : '
+                   + campInduty
+                   + '</div>'
+                   + '<div class="col-md-6" style="padding-left: 200px; width :100%; font-weight: bold; font-size:20px;">소개 : '
+                   + campLineIntro
+                   + '</div>'
+                   + '</div>'
+                   + '</div>'
+                   + '<div style="text-align:center"> <input type="submit" style="background-color:blue; color:white;" value="상세페이지"> </div>'
+                   + '</form>'
+                   + '</div>'
 
+             // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+             iwPosition = new kakao.maps.LatLng(marker.getPosition()); //인포윈도우 표시 위치입니다
+             iwRemoveable = true;
+             // 인포윈도우를 생성합니다
+             var infowindow = new kakao.maps.InfoWindow({
+                position : iwPosition,
+                content : iwContent,
+                removable : iwRemoveable
+             });
+             infowindow.open(map, marker);
+       } 
+  	
+		
       function displayMarker(locPosition, message) {
 
          // 마커를 생성합니다
@@ -621,6 +692,7 @@ select option[value=""][disabled] {
       $(document).ready(function() {
          test();
       });
+     
    </script>
 
 

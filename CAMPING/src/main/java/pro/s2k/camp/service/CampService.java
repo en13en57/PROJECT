@@ -36,7 +36,7 @@ public interface CampService {
 		PagingVO<CampInfoVO> selectCaravan(CommonVO commonVO);
 		
 		// 정보 조회
-		CampInfoVO selectCamplInfo(int idx);
+		CampInfoVO selectCamplInfo(String facltNm);
 		
 		PagingVO<CampInfoVO> selectSearchList(CommonVO commVO);
 		

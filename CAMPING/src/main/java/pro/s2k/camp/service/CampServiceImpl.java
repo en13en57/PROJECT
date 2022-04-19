@@ -159,8 +159,8 @@ public class CampServiceImpl implements CampService {
 	}
 
 	@Override
-	public CampInfoVO selectCamplInfo(int idx) {
-		return campDAO.selectCamplInfo(idx);
+	public CampInfoVO selectCamplInfo(String facltNm) {
+		return campDAO.selectCamplInfo(facltNm);
 	}
 	
 	

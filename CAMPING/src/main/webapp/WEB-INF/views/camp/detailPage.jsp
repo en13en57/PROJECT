@@ -79,7 +79,7 @@
 	<br>
 	<div class="pic" style="text-align: center;">
 		<img src="${result.firstImageUrl }"
-			style="width: 400px; height: 200px;">
+			style="width: 400px; height: 200px;" onerror="this.style.display='none'">
 	</div>
 	<div class="col-md-8"
 		style="padding-top: 30px; padding-left: 3px; margin: 3px; float: left; font-weight: bold;">

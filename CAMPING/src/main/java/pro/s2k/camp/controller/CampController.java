@@ -55,6 +55,31 @@ public class CampController {
       model.addAttribute("cv", commonVO); 
       return "/camp/campsite";
    }
+	@RequestMapping(value = "/selectSearchCamp.do", produces = "application/json; charset=UTF8")
+	public String selectSearchCamp (@CookieValue(name="lat", required=false) Double lat,@CookieValue(name="lon", required=false) Double lon,
+			@RequestParam String searchType, @RequestParam String searchType2,
+			@RequestParam String searchText, HttpServletRequest request, HttpSession session, @ModelAttribute CommonVO commVO, Model model) throws JsonProcessingException, ParseException {
+		commVO.setLon(lon);
+		log.info("########"+lon);
+		commVO.setLat(lat);
+		log.info("########"+lat);
+		log.info("!!!!!!2222"+searchType);
+		session.setAttribute("p", request.getParameter("p"));
+		String animalCheck = request.getParameter("animalCheck");
+		session.setAttribute("searchType", searchType);
+		session.setAttribute("searchType2", searchType2);
+		session.setAttribute("searchText", searchText);
+		session.setAttribute("animalCheck", animalCheck);
+		PagingVO<CampInfoVO> pv = campService.selectSearchList(commVO);
+		pv.setSearchText(searchText);
+		pv.setSearchType(searchType);
+		pv.setSearchType2(searchType2);
+		pv.setAnimalCheck(animalCheck);
+		model.addAttribute("pv", pv);
+		model.addAttribute("cv", commVO);
+		return "/camp/campsite";
+	}
+	
 	
 	@RequestMapping(value ={"/camp/selectCampSitel.do"}, method = RequestMethod.POST)
 	@ResponseBody
@@ -74,13 +99,14 @@ public class CampController {
 		if(session.getAttribute("p")!=null) {
 			commonVO.setP(Integer.parseInt((String) session.getAttribute("p")));
 		}
+		log.info("%%%%%"+session.getAttribute("p"));
 		if(searchType!=null) {
 			if(!searchType.equals("-선택-")) {
 				PagingVO<CampInfoVO> pv = campService.selectSearchList(commonVO);
 				log.info("#####@@@@@"+pv);
-				pv.setSearchText(searchText);
 				pv.setSearchType(searchType);
 				pv.setSearchType2(searchType2);
+				pv.setSearchText(searchText);
 				pv.setAnimalCheck(animalCheck);
 				ObjectMapper mapper = new ObjectMapper();
 				String jsonParse = mapper.writeValueAsString(pv);
@@ -90,9 +116,12 @@ public class CampController {
 				JSONObject jsonList = (JSONObject) objectJson;
 				String list = (String)(jsonList.get("list")+"");
 				log.info("#####@@@@@2"+list);
+				session.removeAttribute("searchType");
 				return list;
 				}else {
-					PagingVO<CampInfoVO> pv = campService.selectCampSitel(commonVO);
+					PagingVO<CampInfoVO> pv = campService.selectSearchList(commonVO);
+					pv.setSearchText(searchText);
+					pv.setAnimalCheck(animalCheck);
 					ObjectMapper mapper = new ObjectMapper();
 					String jsonParse = mapper.writeValueAsString(pv);
 					JSONParser jsonParser = new JSONParser();
@@ -100,6 +129,8 @@ public class CampController {
 					objectJson = jsonParser.parse(jsonParse);
 					JSONObject jsonList = (JSONObject)objectJson;
 					String list = (String)(jsonList.get("list")+"");
+					log.info("!!!!!!!!!!!!!!!!1");
+					session.removeAttribute("searchType");
 					return list;
 				}
 		}else {
@@ -111,6 +142,8 @@ public class CampController {
 			objectJson = jsonParser.parse(jsonParse);
 			JSONObject jsonList = (JSONObject)objectJson;
 			String list = (String)(jsonList.get("list")+"");
+			log.info("!!!!!!!!!!!!!!!!2");
+			session.removeAttribute("searchType");
 			return list;
 		}
 	}
@@ -128,37 +161,14 @@ public class CampController {
 		return "/camp/glamping";
 	}
 	
-	@RequestMapping(value = "/selectSearchCamp.do", produces = "application/json; charset=UTF8")
-	public String selectSearchCamp (@CookieValue(name="lat", required=false) Double lat,@CookieValue(name="lon", required=false) Double lon,
-			@RequestParam String searchType, @RequestParam String searchType2,
-			@RequestParam String searchText, HttpServletRequest request, HttpSession session, @ModelAttribute CommonVO commVO, Model model) throws JsonProcessingException, ParseException {
-		commVO.setLon(lon);
-		commVO.setLat(lat);
-		session.setAttribute("p", request.getParameter("p"));
-		String animalCheck = request.getParameter("animalCheck");
-		session.setAttribute("searchType", searchType);
-		session.setAttribute("searchType2", searchType2);
-		session.setAttribute("searchText", searchText);
-		session.setAttribute("animalCheck", animalCheck);
-		PagingVO<CampInfoVO> pv = campService.selectSearchList(commVO);
-		pv.setSearchText(searchText);
-		pv.setSearchType(searchType);
-		pv.setSearchType2(searchType2);
-		pv.setAnimalCheck(animalCheck);
-		model.addAttribute("pv", pv);
-		model.addAttribute("cv", commVO);
-		return "/camp/campsite";
+	@RequestMapping(value={"/camp/detailPage.do"}, method = RequestMethod.POST)
+	public String selectinfo(@RequestParam("var") String facltNm ,Model model) {	    
+		CampInfoVO pv = campService.selectCamplInfo(facltNm);
+		//					보낼이름			, null 값이고 아무거나
+		//addAttribute(String attributeName, @Nullable Object attributeValue) 이 형태로 작성해야한다고요.
+		model.addAttribute("result",pv);
+		return "/camp/detailPage";
 	}
-	
-//	@RequestMapping(value={"/camp/detailPage.do"}, method = RequestMethod.POST)
-//	public String selectinfo(@RequestParam("var") int idx ,Model model) {	    
-//		Map<String, Object> result = new HashMap<String, Object>();
-//		result = campService.selectCamplInfo(idx);
-//		//					보낼이름			, null 값이고 아무거나
-//		//addAttribute(String attributeName, @Nullable Object attributeValue) 이 형태로 작성해야한다고요.
-//		model.addAttribute("result",result);
-//		return "/camp/detailPage";
-//	}
 
 //	@RequestMapping(value ={"/camp/selectCampsitel.do"}, method = RequestMethod.POST) 
 //	@ResponseBody

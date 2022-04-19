@@ -39,8 +39,8 @@
  		select count(*) from camp_info where induty like '%일반야영장%'
  	</select>
 	
-	 <!-- idx 조회  -->
-	 <select id="selectCamplInfo" resultType="map" >
+	 <!-- facltNm 조회  -->
+	 <select id="selectCamplInfo" resultType="campInfoVO" >
 	  select  
 	 	idx,
 	 	lineIntro,
@@ -63,85 +63,7 @@
 	 	mapY,
 	 	homepage,
 	 	animalCmgCl
-	 from camp_info where idx = #{idx}
-	 </select>
-	 
-	 
-	 <!-- 2. 자동차야영장 불러오기 -->
-	<select id="selectcarCampground" resultType="map" >
-	 select  
-	 	idx,
-	 	lineIntro,
-	 	posblFcltyCl,
-	 	themaEnvrnCl,
-	 	firstImageUrl, 
-	 	doNm,
-	 	sbrsEtc,
-	 	sigunguNm,
-	 	zipcode, 
-	 	lctCl,
-	 	sbrsCl,
-	 	addr1,
-	 	addr2,
-	 	facltNm,
-	 	homepage,
-	 	resveUrl,
-	 	induty,
-	 	mapX,
-	 	mapY,
-	 	homepage,
-	 	animalCmgCl
-	 from camp_info where induty like '%자동차야영장%' 
-	 </select>
-	 
-	  <!-- 3. 글램핑 불러오기 -->
-	<select id="selectGlamping" resultType="map" >
-	 select  
-	 	idx,
-	 	lineIntro,
-	 	posblFcltyCl,
-	 	themaEnvrnCl,
-	 	firstImageUrl, 
-	 	doNm,
-	 	sigunguNm,
-	 	zipcode, 
-	 	lctCl,
-	 	addr1,
-	 	addr2,
-	 	facltNm,
-	 	homepage,
-	 	resveUrl,
-	 	induty,
-	 	mapX,
-	 	mapY,
-	 	homepage,
-	 	animalCmgCl
-	 from camp_info where induty like '%글램핑%' 
-	 </select>
-	 
-	   <!-- 4. 카라반 불러오기 -->
-	<select id="selectCaravan" resultType="map" >
-	 select  
-	 	idx,
-	 	lineIntro,
-	 	posblFcltyCl,
-	 	themaEnvrnCl,
-	 	firstImageUrl, 
-	 	doNm,
-	 	sigunguNm,
-	 	zipcode, 
-	 	lctCl,
-	 	addr1,
-	 	addr2,
-	 	facltNm,
-	 	homepage,
-	 	resveUrl,
-	 	induty,
-	 	mapX,
-	 	mapY,
-	 	homepage,
-	 	animalCmgCl
-	 from camp_info where induty like '%카라반%' 
+	 from camp_info where facltNm = #{facltNm}
 	 </select>
 	 
 	 <!-- 캠핑장 이름으로 찾기 -->
@@ -170,7 +92,7 @@
 		 from camp_info
 		 where facltNm like concat('%',#{searchText},'%')
 		 <if test = "searchType != '-선택-'">and doNm like concat('%',#{searchType},'%')</if> 
-		 <if test = "searchType2 != '-선택-'">and sigunguNm like concat('%',#{searchType2},'%')</if>
+		 <if test = "searchType2 != '-선택-'">and addr1 like concat('%',#{searchType2},'%')</if>
 		 <if test="animalCheck == '가능'">and animalCmgCl like concat(#{animalCheck},'%')</if>
 		 order by
 	 		 distance 
@@ -183,7 +105,7 @@
 		 from camp_info
 		 where facltNm like concat('%',#{searchText},'%')
 		<if test = "searchType != '-선택-'">and doNm like concat('%',#{searchType},'%')</if>
-		<if test = "searchType2 != '-선택-'">and sigunguNm like concat('%',#{searchType2},'%')</if>
+		<if test = "searchType2 != '-선택-'">and addr1 like concat('%',#{searchType2},'%')</if>
 	 	<if test="animalCheck == '가능'">and animalCmgCl like concat(#{animalCheck},'%')
 	 	</if>
 	 </select>

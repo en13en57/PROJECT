@@ -16,7 +16,7 @@ public interface CampDAO {
 	List<CampInfoVO> selectCampSitel(HashMap<String, Object> map);
 	
 	//idx로 불러오기
-	CampInfoVO selectCamplInfo(int idx); 
+	CampInfoVO selectCamplInfo(String facltNm); 
 	
 	// 자동차야영장 불러오기
 	List<CampInfoVO> selectcarCampGround(HashMap<String, Object> map);

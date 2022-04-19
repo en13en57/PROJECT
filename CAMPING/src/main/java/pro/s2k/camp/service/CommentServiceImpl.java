@@ -82,10 +82,8 @@ public class CommentServiceImpl implements CommentService {
 		}
 	}
 	
-	
-	
 	@Override
-	public void update(CommentVO commentVO, String[] delFiles, String realPath) {
+	public void update(CommentVO commentVO) {
 		if(commentVO!=null) {
 			// DB에서 해당 글번호의 글 읽어온다.
 			CommentVO dbVO = commentDAO.selectByIdx(commentVO.getCo_idx());
@@ -96,7 +94,7 @@ public class CommentServiceImpl implements CommentService {
 	}
 
 	@Override
-	public void delete(CommentVO commentVO, String uploadPath) {
+	public void delete(CommentVO commentVO) {
 		if(commentVO!=null) {		
 			CommentVO dbVO = commentDAO.selectByIdx(commentVO.getCo_idx());
 			if(dbVO!=null) {
@@ -155,15 +153,5 @@ public class CommentServiceImpl implements CommentService {
 		return coCount;
 	}
 
-	@Override
-	public void update(CommentVO commentVO) {
-		if(commentVO!=null) {
-			// DB에서 해당 글번호의 글 읽어온다.
-			CommentVO dbVO = commentDAO.selectByIdx(commentVO.getCo_idx());
-			if(dbVO!=null) {
-				commentDAO.update(commentVO);
-			}
-		}
-	}
 }
 

@@ -403,10 +403,8 @@ public class BoardController {
 			@ModelAttribute CommentVO commentVO, 
 			HttpServletRequest request,
 			RedirectAttributes redirectAttributes) {
-		// 실제 경로 구하고
-		String realPath = request.getSession().getServletContext().getRealPath("upload");
 		// 서비스를 호출하여 삭제를 수행하고
-		commentService.delete(commentVO, realPath);
+		commentService.delete(commentVO);
 		
 		// redirect시 GET전송 하기
 		// return "redirect:/board/list?p=1&s=" + commVO.getPageSize() + "&b=" + commVO.getBlockSize();
