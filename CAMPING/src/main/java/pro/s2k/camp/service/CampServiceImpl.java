@@ -162,6 +162,25 @@ public class CampServiceImpl implements CampService {
 	public CampInfoVO selectCamplInfo(String facltNm) {
 		return campDAO.selectCamplInfo(facltNm);
 	}
+
+	@Override
+	public PagingVO<CampInfoVO> selectRandom(CommonVO commonVO) {
+		PagingVO<CampInfoVO> pagingVO = null;
+		try {
+			int totalCount = campDAO.selectCountRandom();
+			
+			pagingVO = new PagingVO<>(commonVO.getCurrentPage(), commonVO.getPageSize(), commonVO.getBlockSize(), totalCount);
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			map.put("startNo", pagingVO.getStartNo());
+			map.put("pageSize", pagingVO.getPageSize());
+			List<CampInfoVO> list = campDAO.selectRandom(map);
+			
+			pagingVO.setList(list);
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return pagingVO;
+	}
 	
 	
 }

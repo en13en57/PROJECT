@@ -166,19 +166,6 @@
 	    document.getElementById("formAction").submit(); 
 	} 
 
-	/* 	if(selectOption != null){
-			infoSubmit();	 */
-	
-/* 	function selectInfo(index){
-		var infoIdx = document.getElementById('mb_idx');
-		infoIdx.value = document.getElementById('idx'+index).innerHTML;
-		if(infoIdx != null){
-			infoSubmit();							
-		}
-	}
-	function infoSubmit(){
-		document.getElementById('infoForm').submit();
-	} */
 </script>
 
 
@@ -296,17 +283,16 @@ select option[value=""][disabled] {
 			</select>
 		</div>
 		<div id="selectfst" class="col-sm-2" style="float: left;">
-			<select name="list" id="list" onchange="window.open(value,'_self');">
-				<option value="/camp/campsite.do" selected>일반야영장</option>
-				<option value="/camp/carCampground.do">자동차야영장</option>
-				<option value="/camp/caravan.do">카라반</option>
-				<option value="/camp/glamping.do">글램핑</option>
+			<select name="list" id="list" onchange="window.open(value,'_self');" >
+				<option selected disabled>-선택-</option>
+				<option value="/camp/campsite.do" >캠핑장 찾기</option>
 			</select>
 		</div>
 		<div id="selectsnd" class="col-sm-2"
 			style="float: left; display: none;">
 			<select name="list" id="list" onchange="window.open(value,'_self');">
-				<option value="../board/review.do" selected>캠핑후기</option>
+				<option selected disabled>-선택-</option>
+				<option value="../board/review.do" >캠핑후기</option>
 				<option value="../board/notice.do">공지사항</option>
 				<option value="../board/QnA.do">QnA</option>
 			</select>
@@ -316,10 +302,10 @@ select option[value=""][disabled] {
 	<br>
 	<div>
 		<p
-			style="font-size: 50px; padding-left: 12%; padding-top: 5%; font-weight: bold;">일반야영장</p>
+			style="font-size: 50px; padding-left: 12%; padding-top: 5%; font-weight: bold;">캠핑장 찾기</p>
 	</div>
 	<div
-		style="width: 50%; border: 1px solid gray; padding-left: 10px; padding-right: 0px; float: left;">
+		style="width: 50%; height: 900px; border: 1px solid gray; padding-left: 10px; padding-right: 0px; float: left;">
 
 		<form action="/selectSearchCamp.do" method="post" id="formAction">
 			<sec:csrfInput />
@@ -443,6 +429,7 @@ select option[value=""][disabled] {
 		src="//dapi.kakao.com/v2/maps/sdk.js?appkey=eae203b516d5693eb4a9560f2bb8505b"></script>
 
 	<script>
+	  var infowindow;
       var container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
       var options = { //지도를 생성할 때 필요한 기본 옵션
          center : new kakao.maps.LatLng(33.450701, 126.570667), //지도의 중심좌표.
@@ -482,7 +469,7 @@ select option[value=""][disabled] {
       var mappingData = {};
       var positions = new Array();
       var overlaies = new Array();
-      
+      alert(searchType);
       var csrf_token = "${_csrf.token}";
       
       function test() {
@@ -492,6 +479,7 @@ select option[value=""][disabled] {
             dataType : "json",
             beforeSend : function(xhr) {
                xhr.setRequestHeader("X-CSRF-TOKEN", csrf_token);
+               xhr.setRequestHeader("p",<c:out value='${pv.currentPage}'/>);
             },
             success : function(data) {
                var list = data;
@@ -584,9 +572,8 @@ select option[value=""][disabled] {
                 content : iwContent,
                 removable : iwRemoveable
              });
-             infowindow.open(map, marker);
+	             infowindow.open(map, marker);
           }
-        
        }
 	  function test3(idx) {
 		  var campFacltNm = document.getElementById('facltNm'+idx).value;
@@ -662,7 +649,7 @@ select option[value=""][disabled] {
                 content : iwContent,
                 removable : iwRemoveable
              });
-             infowindow.open(map, marker);
+	             infowindow.open(map, marker);
        } 
   	
 		
@@ -684,7 +671,7 @@ select option[value=""][disabled] {
          });
 
          // 인포윈도우를 마커위에 표시합니다 
-         infowindow.open(map, marker);
+          infowindow.open(map, marker);
 
          // 지도 중심좌표를 접속위치로 변경합니다
          map.setCenter(locPosition);

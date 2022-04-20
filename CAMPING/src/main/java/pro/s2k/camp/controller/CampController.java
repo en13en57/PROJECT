@@ -17,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -50,7 +51,6 @@ public class CampController {
 	  commonVO.setLon(lon);
 	  commonVO.setLat(lat);
       PagingVO<CampInfoVO> pv = campService.selectCampSitel(commonVO);
-      session.setAttribute("p", request.getParameter("p"));
       model.addAttribute("pv", pv);
       model.addAttribute("cv", commonVO); 
       return "/camp/campsite";
@@ -60,11 +60,8 @@ public class CampController {
 			@RequestParam String searchType, @RequestParam String searchType2,
 			@RequestParam String searchText, HttpServletRequest request, HttpSession session, @ModelAttribute CommonVO commVO, Model model) throws JsonProcessingException, ParseException {
 		commVO.setLon(lon);
-		log.info("########"+lon);
 		commVO.setLat(lat);
-		log.info("########"+lat);
 		log.info("!!!!!!2222"+searchType);
-		session.setAttribute("p", request.getParameter("p"));
 		String animalCheck = request.getParameter("animalCheck");
 		session.setAttribute("searchType", searchType);
 		session.setAttribute("searchType2", searchType2);
@@ -84,22 +81,21 @@ public class CampController {
 	@RequestMapping(value ={"/camp/selectCampSitel.do"}, method = RequestMethod.POST)
 	@ResponseBody
 	public String selectCampsitel(@CookieValue(name="lat", required=false) Double lat,@CookieValue(name="lon", required=false) Double lon,
+			@RequestHeader(value = "p", required = false)int p,
 			@ModelAttribute CommonVO commonVO, HttpServletRequest request, Model model,HttpSession session) throws Exception  {
 		String searchType = (String) session.getAttribute("searchType");
 		String searchType2 = (String) session.getAttribute("searchType2");
 		String searchText = (String) session.getAttribute("searchText");
 		String animalCheck = (String) session.getAttribute("animalCheck");
-		log.info("$$$$$"+searchType);
 			commonVO.setSearchType(searchType);
 			commonVO.setSearchType2(searchType2);
 			commonVO.setSearchText(searchText);
 			commonVO.setAnimalCheck(animalCheck);
 			commonVO.setLon(lon);
 			commonVO.setLat(lat);
-		if(session.getAttribute("p")!=null) {
-			commonVO.setP(Integer.parseInt((String) session.getAttribute("p")));
-		}
-		log.info("%%%%%"+session.getAttribute("p"));
+			commonVO.setP(p);
+		log.info("%%%%%"+p);
+		log.info("%%%%%"+searchType);
 		if(searchType!=null) {
 			if(!searchType.equals("-선택-")) {
 				PagingVO<CampInfoVO> pv = campService.selectSearchList(commonVO);

@@ -33,8 +33,6 @@
 		var logout = document.logout;
 		logout.submit();
 	}
-	alert("${sessionScope.mvo}");
-	
 	  if (navigator.geolocation) {
 
 	         // GeoLocation을 이용해서 접속 위치를 얻어옵니다
@@ -68,13 +66,13 @@
 </script>
 <style>
 .swiper-container {
-	width: 90%;
+	width: 100%;
 	height: 200px;
 	margin: 20px auto;
 }
 
-#dd {
-font-size: 13px;
+#name {
+font-size: 12px;
 color : yellow;
 font-weight: bold;
 }
@@ -82,7 +80,7 @@ font-weight: bold;
 .swiper-slide {
 	text-align: center;
 	font-size: 18px;
-	width: 60%;
+	width: 100%;
 	/* Center slide text vertically */
 	display: -webkit-box;
 	display: -ms-flexbox;
@@ -147,87 +145,15 @@ table {
 			<!-- Swiper -->
 			<div class="swiper-container">
 				<div class="swiper-wrapper">
-					<div class="swiper-slide">
-						<img width=100%
-							src="${pageContext.request.contextPath }/resources/images/Camp1.jpg">
-						<div class="swiper-slide-text">
-							<p id="dd">우리두리캠핑장</p>
+					<c:forEach var="vo" items="${pv.list }" varStatus="vs">
+						<div class="swiper-slide">
+							<img width=100%
+								src="${vo.firstImageUrl }">
+							<div class="swiper-slide-text">
+								<p id="name"><a style="cursor: pointer;" onclick="location.href='/camp/campsite.do'">${vo.facltNm }</a></p>
+							</div>
 						</div>
-					</div>
-
-					<div class="swiper-slide">
-						<img width=100%
-							src="${pageContext.request.contextPath }/resources/images/Camp2.jpg">
-						<div class="swiper-slide-text">
-							<p id="dd">땡땡이글램핑</p>
-						</div>
-					</div>
-
-					<div class="swiper-slide">
-						<img width=100%
-							src="${pageContext.request.contextPath }/resources/images/Camp3.jpg">
-						<div class="swiper-slide-text">
-							<p id="dd">수정 오토캠핑장</p>
-						</div>
-					</div>
-
-					<div class="swiper-slide">
-						<img width=100%
-							src="${pageContext.request.contextPath }/resources/images/Camp4.jpg">
-						<div class="swiper-slide-text">
-							<p id="dd">왕터 리조트</p>
-						</div>
-					</div>
-
-					<div class="swiper-slide">
-						<img width=100%
-							src="${pageContext.request.contextPath }/resources/images/Camp5.jpg">
-						<div class="swiper-slide-text">
-							<p id="dd">칠포 그린로즈 야영장</p>
-						</div>
-					</div>
-
-					<div class="swiper-slide">
-						<img width=100%
-							src="${pageContext.request.contextPath }/resources/images/Camp6.jpg">
-						<div class="swiper-slide-text">
-							<p id="dd">달빛 담은 캠핑장</p>
-						</div>
-					</div>
-
-					<div class="swiper-slide">
-						<img width=100%
-							src="${pageContext.request.contextPath }/resources/images/Camp7.jpg">
-						<div class="swiper-slide-text">
-							<p id="dd">독립기념관 캠핑장</p>
-						</div>
-					</div>
-
-					<div class="swiper-slide">
-						<img width=100%
-							src="${pageContext.request.contextPath }/resources/images/Camp8.jpg">
-						<div class="swiper-slide-text">
-							<p id="dd">강진 사포해변공원</p>
-						</div>
-					</div>
-
-					<div class="swiper-slide">
-						<img width=100%
-							src="${pageContext.request.contextPath }/resources/images/Camp9.jpg">
-						<div class="swiper-slide-text">
-							<p id="dd">스카이운학 캠핑장</p>
-						</div>
-					</div>
-
-					<div class="swiper-slide">
-						<img width=100%
-							src="${pageContext.request.contextPath }/resources/images/Camp10.jpg">
-						<div class="swiper-slide-text">
-							<p id="dd">다둥이네 캠핑장</p>
-						</div>
-					</div>
-
-					<p>
+					</c:forEach>
 				</div>
 
 				<!-- Add Pagination -->

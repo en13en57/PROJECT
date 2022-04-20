@@ -29,14 +29,29 @@
 	 	animalCmgCl,
 	 	(abs(#{lon}-mapX)+abs(#{lat}-mapY)) as distance
 	 from camp_info 
-	 where induty like '%일반야영장%' 
 	 order by
 	 	distance 
 	 limit #{startNo}, #{pageSize}
 	 </select>
-	 
 	 <select id="selectCountSite" resultType="int">
- 		select count(*) from camp_info where induty like '%일반야영장%'
+ 		select count(*) from camp_info
+ 	</select>
+ 	
+	 <!-- 메인에 사용 랜덤 뽑기 -->
+	<select id="selectRandom" parameterType="hashmap" resultType="campInfoVO">
+	 select  
+	 	idx,
+		firstImageUrl, 
+	 	facltNm
+	 from camp_info 
+	 where firstImageUrl is not null or firstImageUrl != ''
+	 order by
+	 	rand() 
+	 limit #{startNo}, #{pageSize}
+	 </select>
+	 <!-- 사진 있는것만 개수 뽑기 -->
+	 <select id="selectCountRandom" resultType="int">
+ 		select count(*) from camp_info where firstImageUrl is not null or firstImageUrl != ''
  	</select>
 	
 	 <!-- facltNm 조회  -->

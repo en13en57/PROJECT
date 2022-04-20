@@ -15,9 +15,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
 import pro.s2k.camp.dao.CampDAO;
+import pro.s2k.camp.service.CampService;
 import pro.s2k.camp.service.NoticeService;
 import pro.s2k.camp.service.QnAService;
 import pro.s2k.camp.service.ReviewService;
+import pro.s2k.camp.vo.CampInfoVO;
 import pro.s2k.camp.vo.CommonVO;
 import pro.s2k.camp.vo.NoticeVO;
 import pro.s2k.camp.vo.PagingVO;
@@ -42,6 +44,11 @@ public class HomeController {
 	@Autowired
 	private CampDAO campDAO; 
 
+	@Autowired
+	private CampService campService; 
+	
+	
+
 	@RequestMapping(value ={"/main.do" , "/mainOK.do","/main", "/"}, method = RequestMethod.GET)
 	public String home(HttpServletRequest request,Locale locale, Model model, CommonVO commonVO) {
 //		 PagingVO<NoticeVO> nv = noticeService.selectList(commonVO);
@@ -58,6 +65,8 @@ public class HomeController {
 			model.addAttribute("carCamp", carCamp);
 		int glamping = campDAO.selectCountGlamping();
 			model.addAttribute("glamping", glamping);
+		PagingVO<CampInfoVO> pv = campService.selectRandom(commonVO);
+		model.addAttribute("pv", pv);
 		return "main";
 	}
 

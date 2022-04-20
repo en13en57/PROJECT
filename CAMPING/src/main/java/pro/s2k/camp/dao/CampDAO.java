@@ -41,4 +41,6 @@ public interface CampDAO {
 	List<CampInfoVO> selectSearchList(HashMap<String, Object> map);
 	int selectSearchCount(CommonVO commonVO);
 	
+	List<CampInfoVO> selectRandom(HashMap<String, Object> map);
+	int selectCountRandom();
 }

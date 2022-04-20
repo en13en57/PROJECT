@@ -29,6 +29,8 @@ public interface CommentDAO {
 	// 삭제표시값이 0인 모든 데이터 가져오기
 	List<CommentVO> selectDelList();
 	
+	int selectMaxSeq(int idx);
+	
 	// 저장한 idx값 알아내기 (현재 Sequence값)
 	int selectSeq();
 	// 대댓

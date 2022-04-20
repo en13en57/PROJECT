@@ -11,7 +11,7 @@
 		from
 			camp_comment a
 		where rv_idx = #{rv_idx}
-		order by co_ref  , co_seq 
+		order by co_ref , co_seq 
 	</select>
 	<!-- co_idx에 따른 1개얻기 -->
 	<select id="selectByIdx" parameterType="int" resultType="commentVO">
@@ -71,8 +71,8 @@
 			co_idx = #{co_idx}
 	</update>
 	
-	<select id="">
-	
+	<select id="selectMaxSeq" parameterType="int" resultType="int">
+		select nvl(max(co_seq),0) + 1 from camp_comment where co_ref=#{co_ref}
 	</select>
 	 
 	 <!-- 삭제 -->

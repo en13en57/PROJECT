@@ -99,4 +99,5 @@ public class CampInfoVO {
 	private String induty;
 	private double mapX;
 	private double mapY;
+	
 }
