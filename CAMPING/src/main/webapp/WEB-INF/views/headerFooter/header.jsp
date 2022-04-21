@@ -60,10 +60,7 @@
 						<li><a href="/main.do">Home</a></li>
 						<li><a href="#">캠핑장</a>
 							<ul>
-								<li><a href="../camp/campsite.do">일반 야영장</a></li>
-								<li><a href="../camp/carCampground.do">자동차 야영장</a></li>
-								<li><a href="../camp/caravan.do">카라반</a></li>
-								<li><a href="../camp/glamping.do">글램핑</a></li>
+								<li><a href="../camp/campsite.do">캠핑장 찾기</a></li>
 							</ul></li>
 						<li><a href="#">캠핑톡</a>
 							<ul>
@@ -83,11 +80,8 @@
 								<li><a href="/main.do">Home</a></li>
 								<li><a href="#">캠핑장</a>
 									<ul>
-										<li><a href="../camp/campsite.do">일반 야영장</a></li>
-										<li><a href="../camp/carCampground.do">자동차 야영장</a></li>
-										<li><a href="../camp/caravan.do">카라반</a></li>
-										<li><a href="../camp/glamping.do">글램핑</a></li>
-									</ul></li>
+								<li><a href="../camp/campsite.do">캠핑장 찾기</a></li>
+							</ul></li>
 								<li><a href="#">캠핑톡</a>
 									<ul>
 										<li><a href="../board/notice.do">공지사항</a></li>
@@ -118,10 +112,7 @@
 								<li><a href="/main.do">Home</a></li>
 								<li><a href="#">캠핑장</a>
 									<ul>
-										<li><a href="../camp/campsite.do">일반 야영장</a></li>
-										<li><a href="../camp/carCampground.do">자동차 야영장</a></li>
-										<li><a href="../camp/caravan.do">카라반</a></li>
-										<li><a href="../camp/glamping.do">글램핑</a></li>
+										<li><a href="../camp/campsite.do">캠핑장 찾기</a></li>
 									</ul></li>
 								<li><a href="#">캠핑톡</a>
 									<ul>
@@ -155,10 +146,7 @@
 								<li><a href="/main.do">Home</a></li>
 								<li><a href="#">캠핑장</a>
 									<ul>
-									<li><a href="../camp/campsite.do">일반 야영장</a></li>
-										<li><a href="../camp/carCampground.do">자동차 야영장</a></li>
-										<li><a href="../camp/caravan.do">카라반</a></li>
-										<li><a href="../camp/glamping.do">글램핑</a></li>
+										<li><a href="../camp/campsite.do">캠핑장 찾기</a></li>
 									</ul></li>
 								<li><a href="#">캠핑톡</a>
 									<ul>
@@ -184,10 +172,7 @@
 								<li><a href="/main.do">Home</a></li>
 								<li><a href="#">캠핑장</a>
 									<ul>
-											<li><a href="../camp/campsite.do">일반 야영장</a></li>
-										<li><a href="../camp/carCampground.do">자동차 야영장</a></li>
-										<li><a href="../camp/caravan.do">카라반</a></li>
-										<li><a href="../camp/glamping.do">글램핑</a></li>
+										<li><a href="../camp/campsite.do">캠핑장 찾기</a></li>
 									</ul></li>
 								<li><a href="#">캠핑톡</a>
 									<ul>

@@ -38,5 +38,6 @@ public interface CommentDAO {
 	// ref=idx
 	void refEqalIdx();
 	
-	
+	int selectLev(HashMap<String, Integer> map);
+	Integer selectComment(HashMap<String, Integer> map);
 }

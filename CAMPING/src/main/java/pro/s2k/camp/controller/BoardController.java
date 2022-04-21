@@ -282,6 +282,23 @@ public class BoardController {
 		redirectAttributes.addFlashAttribute("map", map);
 		return map;
 	}
+	
+	// 저장
+		@RequestMapping(value = "/board/rereply.do", method = RequestMethod.POST, produces = "application/json; charset=UTF8")
+		@ResponseBody
+		public Map<String, String> rereply(@ModelAttribute CommonVO commVO, @ModelAttribute CommentVO commentVO,
+				HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) { 
+			commentVO.setCo_ip(request.getRemoteAddr()); // 아이피 추가로 넣어주고
+			commentService.reply(commentVO);
+			Map<String, String> map = new HashMap<>();
+			map.put("p", commVO.getCurrentPage() + "");
+			map.put("s", commVO.getPageSize() + "");
+			map.put("b", commVO.getBlockSize() + "");
+			map.put("rv_idx", commentVO.getRv_idx() + "");
+			redirectAttributes.addFlashAttribute("map", map);
+			return map;
+		}
+	
 
 	@RequestMapping(value = "/board/reviewInsertOk.do", method = RequestMethod.POST)
 	public String reviewInserOkPOST(@ModelAttribute CommonVO commVO, @ModelAttribute ReviewVO reviewVO,
@@ -302,21 +319,7 @@ public class BoardController {
 		return "redirect:/board/review.do";
 	}
 
-	// 저장
-	@RequestMapping(value = "/board/rereply.do", method = RequestMethod.POST, produces = "application/json; charset=UTF8")
-	@ResponseBody
-	public Map<String, String> rereply(@ModelAttribute CommonVO commVO, @ModelAttribute CommentVO commentVO,
-			HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) { 
-		commentVO.setCo_ip(request.getRemoteAddr()); // 아이피 추가로 넣어주고
-		commentService.reply(commentVO);
-		Map<String, String> map = new HashMap<>();
-		map.put("p", commVO.getCurrentPage() + "");
-		map.put("s", commVO.getPageSize() + "");
-		map.put("b", commVO.getBlockSize() + "");
-		map.put("rv_idx", commentVO.getRv_idx() + "");
-		redirectAttributes.addFlashAttribute("map", map);
-		return map;
-	}
+	
 
 	// 저장
 	@RequestMapping(value = "/board/reviewInsert.do")

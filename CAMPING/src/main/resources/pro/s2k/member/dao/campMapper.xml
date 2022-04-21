@@ -42,16 +42,17 @@
 	 select  
 	 	idx,
 		firstImageUrl, 
-	 	facltNm
+	 	facltNm,
+	 	homepage
 	 from camp_info 
-	 where firstImageUrl is not null or firstImageUrl != ''
+	 where firstImageUrl like concat('https%')
 	 order by
 	 	rand() 
 	 limit #{startNo}, #{pageSize}
 	 </select>
 	 <!-- 사진 있는것만 개수 뽑기 -->
 	 <select id="selectCountRandom" resultType="int">
- 		select count(*) from camp_info where firstImageUrl is not null or firstImageUrl != ''
+ 		select count(*) from camp_info where firstImageUrl like concat('https%')
  	</select>
 	
 	 <!-- facltNm 조회  -->

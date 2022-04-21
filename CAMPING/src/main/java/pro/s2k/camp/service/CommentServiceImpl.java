@@ -52,6 +52,7 @@ public class CommentServiceImpl implements CommentService {
 			commentDAO.refEqalIdx();
 		}
 	}
+//	commentVO.getCo_lev()<=commentDAO.selectLev(map)
 	@Override // 답변 저장
 	public void reply(CommentVO commentVO) {
 		if(commentVO!=null) {
@@ -59,9 +60,21 @@ public class CommentServiceImpl implements CommentService {
 			HashMap<String, Integer> map = new HashMap<>();
 			map.put("co_ref", commentVO.getCo_ref());
 			map.put("co_seq", commentVO.getCo_seq());
-			commentDAO.updateSeq(map);
-			// seq는 그대로
-			commentVO.setCo_seq(commentVO.getCo_seq()+1);
+			HashMap<String, Integer> map2 = new HashMap<>();
+			map2.put("co_ref", commentVO.getCo_ref());
+			map2.put("co_seq", commentVO.getCo_seq()+1);
+			
+			if(commentVO.getCo_seq()!=0) {
+				if(!(commentDAO.selectComment(map) < (commentDAO.selectComment(map2)!=null ? commentDAO.selectComment(map2):0))) {
+					commentVO.setCo_seq(commentVO.getCo_seq()+1);
+					commentDAO.updateSeq(map);
+				}else {
+					commentVO.setCo_seq(commentVO.getCo_seq()+2);
+					commentDAO.updateSeq(map2);
+				}
+			}else {
+				commentVO.setCo_seq(commentDAO.selectMaxSeq(commentVO.getCo_ref())+1);
+			}
 			// lev는 +1
 			commentVO.setCo_lev(commentVO.getCo_lev()+1);
 			

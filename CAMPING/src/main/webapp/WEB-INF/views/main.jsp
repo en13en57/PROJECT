@@ -147,10 +147,10 @@ table {
 				<div class="swiper-wrapper">
 					<c:forEach var="vo" items="${pv.list }" varStatus="vs">
 						<div class="swiper-slide">
-							<img width=100%
-								src="${vo.firstImageUrl }">
+							<a style="cursor: pointer;" onclick="location.href='${vo.homepage}'"><img width=100%
+								src="${vo.firstImageUrl }"></a>
 							<div class="swiper-slide-text">
-								<p id="name"><a style="cursor: pointer;" onclick="location.href='/camp/campsite.do'">${vo.facltNm }</a></p>
+								<p id="name"><a style="cursor: pointer;" onclick="location.href='${vo.homepage}'">${vo.facltNm }</a></p>
 							</div>
 						</div>
 					</c:forEach>
