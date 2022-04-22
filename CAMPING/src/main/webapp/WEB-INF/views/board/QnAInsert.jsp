@@ -299,11 +299,7 @@ b {
       <section
          style="padding-right: 10%; padding-left: 10%; margin: 0 auto;">
          <form action="${pageContext.request.contextPath}/board/QnAInsertOk.do" method="post" onsubmit="return formCheck();">
-         <sec:csrfInput />
-             	<%-- 페이지번호, 페이지 크기, 블록크기를 숨겨서 넘긴다.  --%>
-             	
-					<input type="hidden" name="s"  value="${cv.pageSize }"/>
-					<input type="hidden" name="b"  value="${cv.blockSize }"/>
+         	<sec:csrfInput />
 					<input type="hidden" name="mb_idx"  value="${sessionScope.mvo.mb_idx }"/>
 
 				

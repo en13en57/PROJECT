@@ -33,35 +33,6 @@
 		var logout = document.logout;
 		logout.submit();
 	}
-	  if (navigator.geolocation) {
-
-	         // GeoLocation을 이용해서 접속 위치를 얻어옵니다
-	         navigator.geolocation.getCurrentPosition(function(position) {
-
-	                  var lat = position.coords.latitude, // 위도
-	                 	  lon = position.coords.longitude; // 경도
-	                  setCookie('lat', lat, 1);
-	           	      setCookie('lon', lon, 1);
-
-	                  var locPosition = new kakao.maps.LatLng(lat, lon), // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
-	                  message = '<div style="padding:5px; color:white; width:250px; background-color:blue;">현재위치</div>';
-
-
-	               });
-
-	      } else { // HTML5의 GeoLocation을 사용할 수 없을때 마커 표시 위치와 인포윈도우 내용을 설정합니다
-
-	         var locPosition = new kakao.maps.LatLng(33.450701, 126.570667), message = 'geolocation을 사용할수 없어요..'
-
-	         displayMarker(locPosition, message);
-	      }
-	      
-	      function setCookie(key, value, expiredays) {
-	  	    let todayDate = new Date();
-	  	    todayDate.setDate(todayDate.getDate() + expiredays); // 현재 시각 + 일 단위로 쿠키 만료 날짜 변경
-	  	    document.cookie = key + "=" + value + "; path=/; expires=" + todayDate.toGMTString() + ";";
-	  	}
-	      
 
 </script>
 <style>
@@ -168,7 +139,6 @@ table {
 					centeredSlides : true,
 					paginationClickable : true,
 					spaceBetween : 30,
-
 				});
 			</script>
 
@@ -360,7 +330,7 @@ table {
 									<h3 style="text-align: left">공지사항</h3>
 								</td>
 								<td>
-									<form action="/board/notice.do" method="post" id="notice">
+									<form action="/camp/campsite.do" method="post" id="notice">
 										<input type="hidden" name="${_csrf.parameterName }"
 											value="${_csrf.token }"> 
 										<a href="#"><i class="fa fa-plus fa-1" style="float: right" onclick="document.getElementById('notice').submit()"></i></a>
@@ -391,7 +361,7 @@ table {
 									<h3 style="text-align: left">QnA</h3>
 								</td>
 								<td>
-									<form action="/board/QnA.do" method="post" id="QnA">
+									<form action="/camp/campsite.do" method="post" id="QnA">
 										<input type="hidden" name="${_csrf.parameterName }"
 											value="${_csrf.token }"> 
 										<a href="#"><i class="fa fa-plus fa-1" style="float: right" onclick="document.getElementById('QnA').submit()"></i></a>
@@ -423,7 +393,7 @@ table {
 									<h3 style="text-align: left">캠핑후기</h3>
 								</td>
 								<td>
-									<form action="/board/review.do" method="post" id="review">
+									<form action="/camp/campsite.do" method="post" id="review">
 										<input type="hidden" name="${_csrf.parameterName }"
 											value="${_csrf.token }"> 
 										<a href="#"><i class="fa fa-plus fa-1" style="float: right" onclick="document.getElementById('review').submit()"></i></a>

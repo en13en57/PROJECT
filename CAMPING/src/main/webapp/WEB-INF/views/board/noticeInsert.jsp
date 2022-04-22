@@ -270,10 +270,6 @@ b {
 			style="padding-right: 10%; padding-left: 10%; margin: 0 auto;">
 			<form enctype="multipart/form-data" method="post" onsubmit="return formCheck();">
 				<sec:csrfInput/>
-				<%-- 페이지번호, 페이지 크기, 블록크기를 숨겨서 넘긴다.  --%>
-				<input type="hidden" name="p" value="${cv.currentPage }" /> 
-				<input type="hidden" name="s" value="${cv.pageSize }" /> 
-				<input type="hidden" name="b" value="${cv.blockSize }" /> 
 				<input type="hidden" name="mb_idx" value="${sessionScope.mvo.mb_idx }" />
 				<input type="hidden" name="mb_nick" value="${sessionScope.mvo.mb_nick }"/>
 				<div class="row">

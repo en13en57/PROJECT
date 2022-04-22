@@ -38,7 +38,6 @@ public class CommentServiceImpl implements CommentService {
 		return pagingVO;
 	}
 	
-	
 	@Override
 	public CommentVO selectByIdx(int idx) {
 		CommentVO commentVO = commentDAO.selectByIdx(idx);
@@ -52,7 +51,6 @@ public class CommentServiceImpl implements CommentService {
 			commentDAO.refEqalIdx();
 		}
 	}
-//	commentVO.getCo_lev()<=commentDAO.selectLev(map)
 	@Override // 답변 저장
 	public void reply(CommentVO commentVO) {
 		if(commentVO!=null) {
@@ -77,12 +75,10 @@ public class CommentServiceImpl implements CommentService {
 			}
 			// lev는 +1
 			commentVO.setCo_lev(commentVO.getCo_lev()+1);
-			
 			// 댓글 저장
 			commentDAO.reply(commentVO);
 		}
 	}
-//	commentDAO.selectMaxSeq(commentVO.getCo_ref())
 	@Override
 	public void update(CommentVO commentVO) {
 		if(commentVO!=null) {
@@ -147,12 +143,10 @@ public class CommentServiceImpl implements CommentService {
 		} // end if
 	} // end method
 
-
 	@Override
 	public int selectCoCount(int idx) {
 		int coCount = commentDAO.selectCount(idx);
 		return coCount;
 	}
-
 }
 

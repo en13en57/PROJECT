@@ -163,8 +163,8 @@ table {
 		<div style="padding-top: 70px; padding-left: 10%">
 			<div class="col-sm-2">
 				<select name="chart" id="chart" style="float: left;"
-					onchange="window.open(value,'_self');">
-					<option value="../camp/campsite.do" >캠핑장</option>
+					onchange="change(this)">
+					<option value="fst" >캠핑장</option>
 					<option value="snd" selected>캠핑톡</option>
 				</select>
 			</div>
@@ -227,7 +227,7 @@ table {
 					</tr>
 					<tr>
 						<c:if test="${pv.totalCount==0 }">
-							<td colspan="6">등록된 글이 없습니다.</td>
+							<td colspan="5">등록된 글이 없습니다.</td>
 						</c:if>
 					</tr>
 					<c:if test="${pv.totalCount>0 }">
@@ -241,7 +241,7 @@ table {
 										<c:set var="no" value="${no-1}"/>
 									</td>
 									
-									<td style="padding-bottom: 60px; text-align: left; " id="title">
+									<td style="padding-bottom: 40px; text-align: left; " id="title">
 											<form action='<c:url value='${pageContext.request.contextPath }/board/reviewView.do'/>' method="post" id="rView${vs.index }">
 					                    	     <sec:csrfInput/>
 						                           <input type="hidden" name="p" value="${pv.currentPage }"/>
@@ -254,8 +254,8 @@ table {
 					                        </form>
 				                        <jsp:useBean id="today" scope="request" class="java.util.Date"></jsp:useBean>				
 										<fmt:formatDate value="${today }" pattern="yyyyMMdd" var="day"/> 
-										<fmt:formatDate value="${vo.rv_regDate }" pattern="yyyyMMdd" var="reg"/> 
-										<c:if test="${day==reg }">
+										<fmt:formatDate value="${vo.rv_modiDate }" pattern="yyyyMMdd" var="modi"/> 
+										<c:if test="${day==modi }">
 											  <span style="color:red;">New</span>
 										</c:if>
 											<c:set var="content" value="${vo.rv_content }"/>
@@ -280,7 +280,7 @@ table {
 										</td>
 									
 									<td style="vertical-align: middle;"> 
-										<fmt:formatDate value="${vo.rv_regDate }" pattern="yy-MM-dd"/>
+										<fmt:formatDate value="${vo.rv_modiDate }" pattern="yy-MM-dd"/>
 									</td>					
 									<td style="vertical-align: middle;">
 										${vo.rv_hit }

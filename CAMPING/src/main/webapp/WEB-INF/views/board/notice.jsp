@@ -247,7 +247,7 @@ table {
 									${no }
 									<c:set var="no" value="${no-1}"/>
 								</td>
-								<td style="padding-bottom: 60px;" id="title"> 
+								<td style="padding-bottom: 40px;" id="title"> 
 								<form action='<c:url value='${pageContext.request.contextPath }/board/noticeView.do'/>' method="post" id="nView${num.index }">
 									<sec:csrfInput/>
 									<input type="hidden" name="p" value="${pv.currentPage }"/>
@@ -257,9 +257,9 @@ table {
 									<%--오늘 저장한 글이면 new  --%>
 								</form>
 								<jsp:useBean id="today" scope="request" class="java.util.Date"></jsp:useBean>				
-								<fmt:formatDate value="${today }" pattern="yyyyMMdd hh.mm.s" var="day"/> 
-								<fmt:formatDate value="${vo.nt_regDate }" pattern="yyyyMMdd hh.mm.s" var="reg"/> 
-								<c:if test="${day==reg }">
+								<fmt:formatDate value="${today }" pattern="yyyyMMdd" var="day"/> 
+								<fmt:formatDate value="${vo.nt_modiDate }" pattern="yyyyMMdd" var="modi"/> 
+								<c:if test="${day==modi }">
 									  <span style="color:red;">New</span>
 								</c:if>
 									<c:set var="content" value="${vo.nt_content }"/>
@@ -279,14 +279,11 @@ table {
 											</c:otherwise>
 										</c:choose>
 								</td>
-							<%-- 	<td style="padding-top: 50px;" id="content">
-									${vo.nt_content }
-								</td> --%>
 								<td style="vertical-align: middle;">
 									${vo.mb_nick }
 								</td>
 								<td style="vertical-align: middle;"> 
-									<fmt:formatDate value="${vo.nt_regDate }" pattern="yy-MM-dd"/>
+									<fmt:formatDate value="${vo.nt_modiDate }" pattern="yy-MM-dd"/>
 								</td>					
 								<td style="vertical-align: middle;">
 									${vo.nt_hit }

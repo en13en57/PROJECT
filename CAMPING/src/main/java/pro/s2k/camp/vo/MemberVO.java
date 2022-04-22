@@ -24,7 +24,6 @@ public class MemberVO {
 	private int mb_use;
 	private String authkey;
 	private String gr_role;
-	private String gr_idx;
 	private String socialID;
 	private int socialNumber;
 	

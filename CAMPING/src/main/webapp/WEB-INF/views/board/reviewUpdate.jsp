@@ -68,7 +68,6 @@
 				url : "reviewUpdateOk.do", // 컨트롤러에서 대기중인 URL 주소이다.
 				data :$('#rView').serialize(),
 				dataType : "text",
-				
 				success : function(idx) { // 비동기통신의 성공일경우 success콜백으로 들어옵니다. 'res'는 응답받은 데이터이다.
 					var jsonStr = JSON.parse(idx); console.log(jsonStr);
 					/* location.href='/reviewView.do?p='+jsonStr.p+'&s='+jsonStr.s+'&b='+jsonStr.b+'&rv_dix='+jsonStr.rv_idx; */

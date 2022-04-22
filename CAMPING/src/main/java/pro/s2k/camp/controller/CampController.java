@@ -1,11 +1,5 @@
 package pro.s2k.camp.controller;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -15,7 +9,6 @@ import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,192 +19,121 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import lombok.extern.slf4j.Slf4j;
-import pro.s2k.camp.dao.CampDAO;
 import pro.s2k.camp.service.CampService;
 import pro.s2k.camp.vo.CampInfoVO;
 import pro.s2k.camp.vo.CommonVO;
-import pro.s2k.camp.vo.NoticeVO;
 import pro.s2k.camp.vo.PagingVO;
 
 
 
-@Slf4j
 @Controller
 public class CampController {
 
-	
 	@Autowired
 	private CampService campService;
 	
-	
+	// 캠핑장 찾기 수행
 	@RequestMapping(value ={"/camp/campsite.do"}, method = RequestMethod.GET)
-	public String campsite(@CookieValue(name="lat", required=false) Double lat,@CookieValue(name="lon", required=false) Double lon, 
-			@ModelAttribute CommonVO commonVO, HttpServletRequest request,HttpSession session, Model model) {
-	  commonVO.setLon(lon);
-	  commonVO.setLat(lat);
-      PagingVO<CampInfoVO> pv = campService.selectCampSitel(commonVO);
-      model.addAttribute("pv", pv);
-      model.addAttribute("cv", commonVO); 
-      return "/camp/campsite";
-   }
-	@RequestMapping(value = "/selectSearchCamp.do", produces = "application/json; charset=UTF8")
-	public String selectSearchCamp (@CookieValue(name="lat", required=false) Double lat,@CookieValue(name="lon", required=false) Double lon,
-			@RequestParam String searchType, @RequestParam String searchType2,
-			@RequestParam String searchText, HttpServletRequest request, HttpSession session, @ModelAttribute CommonVO commVO, Model model) throws JsonProcessingException, ParseException {
-		commVO.setLon(lon);
-		commVO.setLat(lat);
-		log.info("!!!!!!2222"+searchType);
+	public String campsite(@ModelAttribute CommonVO commonVO, Model model,HttpServletRequest request ,HttpSession session) {
+		// 현재위치 좌표값을 받아와 세션에 넣어주고, null일경우 세션에서 받아온다
+		if(request.getParameter("lat")!=null) {
+			commonVO.setLat(Double.parseDouble(request.getParameter("lat")));
+			commonVO.setLon(Double.parseDouble(request.getParameter("lon")));
+			session.setAttribute("lat",Double.parseDouble(request.getParameter("lat")));
+			session.setAttribute("lon",Double.parseDouble(request.getParameter("lon")));
+		}else {
+			commonVO.setLat((double)session.getAttribute("lat"));
+			commonVO.setLon((double)session.getAttribute("lon"));
+		}
+		// 캠장 찾기 에서 리스트 받아오기
+		PagingVO<CampInfoVO> pv = campService.selectCampSitel(commonVO);
+		model.addAttribute("pv", pv);
+		model.addAttribute("cv", commonVO); 
+		return "/camp/campsite";
+	}
+	
+	// 캠핑장 검색해서 찾기
+	@RequestMapping(value = "/selectSearchCamp.do", produces = "application/json; charset=UTF-8")
+	public String selectSearchCamp (HttpServletRequest request, HttpSession session,CommonVO commonVO, Model model) throws JsonProcessingException, ParseException {
+		// 클라이언트 좌표값 세션에서 받아오기
+		commonVO.setLat((double)session.getAttribute("lat"));
+		commonVO.setLon((double)session.getAttribute("lon"));
+		// RequestParam으로 받으면 null일경우 아예 받을 수 가없으므로 getParameter 로 해야함
+		// 넘어온 값 받아주고
+		String searchType = request.getParameter("searchType");
+		String searchType2 = request.getParameter("searchType2");
+		String searchText = request.getParameter("searchText");
 		String animalCheck = request.getParameter("animalCheck");
+		// 서비스 인수값으로 보내기위해 vo에 담아준다
+		commonVO.setSearchType(searchType);
+		commonVO.setSearchType2(searchType2);
+		commonVO.setSearchText(searchText);
+		commonVO.setAnimalCheck(animalCheck);
+		// 지도 찍어주는 컨트롤러에서 사용하기 위해 세션에 담아둠
 		session.setAttribute("searchType", searchType);
 		session.setAttribute("searchType2", searchType2);
 		session.setAttribute("searchText", searchText);
 		session.setAttribute("animalCheck", animalCheck);
-		PagingVO<CampInfoVO> pv = campService.selectSearchList(commVO);
-		pv.setSearchText(searchText);
-		pv.setSearchType(searchType);
-		pv.setSearchType2(searchType2);
-		pv.setAnimalCheck(animalCheck);
+		PagingVO<CampInfoVO> pv = campService.selectSearchList(commonVO);
 		model.addAttribute("pv", pv);
-		model.addAttribute("cv", commVO);
+		model.addAttribute("cv", commonVO);
 		return "/camp/campsite";
 	}
 	
-	
+	// 캠핑장 찾기 지도를 표시해주는 컨트롤러
 	@RequestMapping(value ={"/camp/selectCampSitel.do"}, method = RequestMethod.POST)
 	@ResponseBody
-	public String selectCampsitel(@CookieValue(name="lat", required=false) Double lat,@CookieValue(name="lon", required=false) Double lon,
-			@RequestHeader(value = "p", required = false)int p,
+	public String selectCampsitel(@RequestHeader(value = "p", required = false)int p, // ajax에서 before send로 보낸 현재 페이지 값을 받는다
 			@ModelAttribute CommonVO commonVO, HttpServletRequest request, Model model,HttpSession session) throws Exception  {
+		// 객체를 직렬화(문자열)로 바꿔주기위해 사용 
+		ObjectMapper mapper = new ObjectMapper();
+		// 직렬화 된 문자열을 json으로 파싱
+		JSONParser jsonParser = new JSONParser();
+		// if 와 else 에서 사용하기 때문에 전역변수로 둠
+		Object objectJson = null;
+		// 세션에 담긴 검색 항목들을 담는다
 		String searchType = (String) session.getAttribute("searchType");
 		String searchType2 = (String) session.getAttribute("searchType2");
 		String searchText = (String) session.getAttribute("searchText");
 		String animalCheck = (String) session.getAttribute("animalCheck");
+			// commonVO에 담아준다
+			commonVO.setLon((double)session.getAttribute("lon"));
+			commonVO.setLat((double)session.getAttribute("lat"));
+			commonVO.setSearchText(searchText);
 			commonVO.setSearchType(searchType);
 			commonVO.setSearchType2(searchType2);
-			commonVO.setSearchText(searchText);
 			commonVO.setAnimalCheck(animalCheck);
-			commonVO.setLon(lon);
-			commonVO.setLat(lat);
-			commonVO.setP(p);
-		log.info("%%%%%"+p);
-		log.info("%%%%%"+searchType);
+			commonVO.setP(p); 
+		// searchType 이 null 이 아니면 검색을 했다는 의미이므로 검색 서비스로
 		if(searchType!=null) {
-			if(!searchType.equals("-선택-")) {
 				PagingVO<CampInfoVO> pv = campService.selectSearchList(commonVO);
-				log.info("#####@@@@@"+pv);
-				pv.setSearchType(searchType);
-				pv.setSearchType2(searchType2);
-				pv.setSearchText(searchText);
-				pv.setAnimalCheck(animalCheck);
-				ObjectMapper mapper = new ObjectMapper();
 				String jsonParse = mapper.writeValueAsString(pv);
-				JSONParser jsonParser = new JSONParser();
-				Object objectJson = null;
 				objectJson = jsonParser.parse(jsonParse);
 				JSONObject jsonList = (JSONObject) objectJson;
 				String list = (String)(jsonList.get("list")+"");
-				log.info("#####@@@@@2"+list);
 				session.removeAttribute("searchType");
 				return list;
-				}else {
-					PagingVO<CampInfoVO> pv = campService.selectSearchList(commonVO);
-					pv.setSearchText(searchText);
-					pv.setAnimalCheck(animalCheck);
-					ObjectMapper mapper = new ObjectMapper();
-					String jsonParse = mapper.writeValueAsString(pv);
-					JSONParser jsonParser = new JSONParser();
-					Object objectJson = null; 
-					objectJson = jsonParser.parse(jsonParse);
-					JSONObject jsonList = (JSONObject)objectJson;
-					String list = (String)(jsonList.get("list")+"");
-					log.info("!!!!!!!!!!!!!!!!1");
-					session.removeAttribute("searchType");
-					return list;
-				}
+		// null이 아니면 기존의 거리순으로 표기
 		}else {
 			PagingVO<CampInfoVO> pv = campService.selectCampSitel(commonVO);
-			ObjectMapper mapper = new ObjectMapper();
+			// pv값을 직렬화 하여준다
 			String jsonParse = mapper.writeValueAsString(pv);
-			JSONParser jsonParser = new JSONParser();
-			Object objectJson = null; 
+			// json으로 파싱
 			objectJson = jsonParser.parse(jsonParse);
+			// Object로 만들어 주고 
 			JSONObject jsonList = (JSONObject)objectJson;
+			// 리스트에 찍어주고
 			String list = (String)(jsonList.get("list")+"");
-			log.info("!!!!!!!!!!!!!!!!2");
+			// 세션에 담아준 searchType만 if문 판단을 위해 지워준다
 			session.removeAttribute("searchType");
 			return list;
 		}
 	}
-	
-	@RequestMapping(value ={"/camp/caravan.do"}, method = RequestMethod.GET)
-	public String caravan() {
-		return "/camp/caravan";
-	}
-	@RequestMapping(value ={"/camp/carCampground.do"}, method = RequestMethod.GET)
-	public String carCampground() {
-		return "/camp/carCampground";
-	}
-	@RequestMapping(value ={"/camp/glamping.do"}, method = RequestMethod.GET)
-	public String glamping() {
-		return "/camp/glamping";
-	}
-	
+	// 해당 캠핑장 상세 페이지
 	@RequestMapping(value={"/camp/detailPage.do"}, method = RequestMethod.POST)
-	public String selectinfo(@RequestParam("var") String facltNm ,Model model) {	    
+	public String selectinfo(@RequestParam("var") String facltNm,Model model) {	    
 		CampInfoVO pv = campService.selectCamplInfo(facltNm);
-		//					보낼이름			, null 값이고 아무거나
-		//addAttribute(String attributeName, @Nullable Object attributeValue) 이 형태로 작성해야한다고요.
 		model.addAttribute("result",pv);
 		return "/camp/detailPage";
 	}
-
-//	@RequestMapping(value ={"/camp/selectCampsitel.do"}, method = RequestMethod.POST) 
-//	@ResponseBody
-//	public PagingVO<CampInfoVO> selectCampsitel(@RequestParam String searchType, @RequestParam String searchType2,
-//			@RequestParam String searchText, HttpServletRequest request,CommonVO commVO) {
-//		PagingVO<CampInfoVO> pv = campService.selectSearchList(commVO); //ArrayList : 상위 리스트
-//		pv.setSearchText(searchText);
-//		pv.setSearchType(searchType);
-//		pv.setSearchType2(searchType2);
-//		String animalCheck = request.getParameter("animalCheck");
-//		pv.setAnimalCheck(animalCheck);
-//		return pv;
-//	}
-	
-//	@RequestMapping(value ={"/camp/selectCampsitel.do"}, method = RequestMethod.POST) 
-//	@ResponseBody
-//	public List<Map<String, Object>> selectCampsitel() {
-//		List<Map<String, Object>> result = new ArrayList<>();  //ArrayList : 상위 리스트
-//		result = campService.selectCampsitel();
-//		log.info("##############"+result);
-//		return result;	
-//	}
-//	
-//	@RequestMapping(value ={"/camp/selectcarCampground.do"}, method = RequestMethod.POST) 
-//	@ResponseBody
-//	public List<Map<String, Object>> selectcarCampground() {
-//		List<Map<String, Object>> result = new ArrayList<>();  //ArrayList : 상위 리스트
-//		result = campService.selectcarCampground();
-//		return result;	
-//	}
-//	
-//	@RequestMapping(value ={"/camp/selectGlamping.do"}, method = RequestMethod.POST) 
-//	@ResponseBody
-//	public List<Map<String, Object>> selectGlamping() {
-//		List<Map<String, Object>> result = new ArrayList<>();  //ArrayList : 상위 리스트
-//		result = campService.selectGlamping();
-//		return result;	
-//	}
-//	
-//	@RequestMapping(value ={"/camp/selectCaravan.do"}, method = RequestMethod.POST) 
-//	@ResponseBody
-//	public List<Map<String, Object>> selectCaravan() {
-//		List<Map<String, Object>> result = new ArrayList<>();  //ArrayList : 상위 리스트
-//		result = campService.selectCaravan();
-//		return result;	
-//	}
-	
-	
-	
 }

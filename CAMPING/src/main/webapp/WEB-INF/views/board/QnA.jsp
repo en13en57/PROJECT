@@ -225,7 +225,7 @@ table {
 					</tr>
 					<tr>
 						<c:if test="${pv.totalCount==0 }">
-							<td colspan="6">등록된 글이 없습니다.</td>
+							<td colspan="5">등록된 글이 없습니다.</td>
 						</c:if>
 					</tr>
 					<c:if test="${pv.totalCount>0 }">
@@ -238,7 +238,7 @@ table {
 										<c:set var="no" value="${no-1}"/>
 									</td>
 									
-									<td style="padding-bottom: 60px;" id="title">
+									<td style="padding-bottom: 40px;" id="title">
 
 										<form action='<c:url value='${pageContext.request.contextPath }/board/QnAView.do'/>' method="post" id="rView${vs.index }">
 				                    	     <sec:csrfInput/>
@@ -252,8 +252,8 @@ table {
 				                        </form>
 				                        <jsp:useBean id="today" scope="request" class="java.util.Date"></jsp:useBean>				
 										<fmt:formatDate value="${today }" pattern="yyyyMMdd" var="day"/> 
-										<fmt:formatDate value="${vo.qna_regDate }" pattern="yyyyMMdd" var="reg"/> 
-										<c:if test="${day==reg }">
+										<fmt:formatDate value="${vo.qna_modiDate }" pattern="yyyyMMdd" var="modi"/> 
+										<c:if test="${day==modi }">
 											  <span style="color:red;">New</span>
 										</c:if>
 										<c:set var="content" value="${vo.qna_content }"/>
@@ -273,15 +273,12 @@ table {
 											</c:otherwise>
 										</c:choose>
 									</td>
-									<%-- <td style="padding-top: 50px;" id="content">
-										${vo.qna_content }
-									</td> --%>
 									<td style="vertical-align: middle;">
 										${vo.mb_nick }
 										</td>
 									
 									<td style="vertical-align: middle;"> 
-										<fmt:formatDate value="${vo.qna_modiDate }" pattern="yy-MM-dd HH:mm:ss"/>
+										<fmt:formatDate value="${vo.qna_modiDate }" pattern="yy-MM-dd"/>
 									</td>					
 										<c:choose>
 											<c:when test="${vo.qna_read==0 }">

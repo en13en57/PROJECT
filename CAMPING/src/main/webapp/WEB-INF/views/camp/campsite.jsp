@@ -152,8 +152,7 @@
 		}
 	}
 
-
-	function send() {
+	function sendType() {
 		var selectOption = document.getElementById("h_area1");
 			selectOption = selectOption.options[selectOption.selectedIndex].text;
 		
@@ -161,11 +160,10 @@
 			selectOption2 = selectOption2.options[selectOption2.selectedIndex].text;
 		
 		document.getElementById("searchType").value = selectOption;
-		alert(selectOption);
 		document.getElementById("searchType2").value = selectOption2; 
 	    document.getElementById("formAction").submit(); 
+	
 	} 
-
 </script>
 
 
@@ -307,7 +305,7 @@ select option[value=""][disabled] {
 	<div
 		style="width: 50%; height: 900px; border: 1px solid gray; padding-left: 10px; padding-right: 0px; float: left;">
 
-		<form action="/selectSearchCamp.do" method="post" id="formAction">
+		<form action="/selectSearchCamp.do" method="get" id="formAction">
 			<sec:csrfInput />
 			<div class="title">캠핑장 검색하기</div>
 			<br>
@@ -362,7 +360,7 @@ select option[value=""][disabled] {
 			
 			</div>
 			<div style="text-align: center;">
-				<button onclick="send();" class="btn btn-primary" 
+				<button onclick="sendType();" class="btn btn-primary" 
 					style="width: 200px; height: 40px;" value="검색">검색</button>
 			</div>
 		</form>
@@ -469,7 +467,6 @@ select option[value=""][disabled] {
       var mappingData = {};
       var positions = new Array();
       var overlaies = new Array();
-      alert(searchType);
       var csrf_token = "${_csrf.token}";
       
       function test() {

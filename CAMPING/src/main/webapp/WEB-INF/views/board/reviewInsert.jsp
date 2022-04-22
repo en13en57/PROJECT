@@ -314,8 +314,6 @@ b {
          style="padding-right: 10%; padding-left: 10%; margin: 0 auto;">
          <form  method="post" enctype="multipart/form-data"  >
                <sec:csrfInput/>  
-               <input type="hidden" name="s"  value="${cv.pageSize }"/>
-               <input type="hidden" name="b"  value="${cv.blockSize }"/>
                <input type="hidden" name="mb_idx"  value="${sessionScope.mvo.mb_idx }"/>
          
             
