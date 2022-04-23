@@ -1,4 +1,4 @@
-package pro.s2k.camp.controller;
+package pro.s2k.camp.service;
 
 import java.io.IOException;
 import java.io.PrintWriter;

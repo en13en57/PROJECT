@@ -262,15 +262,15 @@ table {
 											<c:set var="title" value="${vo.rv_title }"/>
 										<c:choose>
 											<c:when test="${fn:length(title) >= 20 }">
-												<a href="#" onclick="document.getElementById('rView${vs.index}').submit()"><c:out value="${fn:substring(title,0,20) }" />...</a>
+												<a href="#" onclick="document.getElementById('rView${vs.index}').submit()"><c:out value="${fn:substring(title,0,20) }" />...&nbsp;<span style="font-size: 11px;">(${vo.coCount })</span></a>
 												<c:if test="${fn:contains(content,'img')}">
 				                        			<img style="width: 25px; height: 25px; vertical-align: middle;"	src="${pageContext.request.contextPath }/resources/images/image.png" alt="" />
 			                        			</c:if>
 											</c:when>
 											<c:otherwise>
-												<a href="#" onclick="document.getElementById('rView${vs.index}').submit()"><c:out value="${title}" /></a>
+												<a href="#" onclick="document.getElementById('rView${vs.index}').submit()"><c:out value="${title}" />&nbsp;<span style="font-size: 11px;">(${vo.coCount })</span></a>
 												<c:if test="${fn:contains(content,'img')}">
-				                        			<img style="width: 25px; height: 25px; vertical-align: middle;"	src="${pageContext.request.contextPath }/resources/images/image.png" alt="" />
+				                        			<img style="width: 25px; height: 25px; vertical-align: middle;" src="${pageContext.request.contextPath }/resources/images/image.png" alt="" />
 			                        			</c:if>
 											</c:otherwise>
 										</c:choose>

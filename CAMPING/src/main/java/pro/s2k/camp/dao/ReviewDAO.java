@@ -21,12 +21,9 @@ public interface ReviewDAO {
 	void delete1(int idx); // del비교
 	void delete2(int idx); // del비교X
 	void updateDel(int idx);
-	List<ReviewVO> selectDelList();
 	
 	// 해당 리뷰 작성한 mb_idx만 불러오기
 	int selectMb_idx(int idx);
-	// 댓글 개수 세기
-	int selectCoCount(int idx);
 	
 	List<ReviewVO> selectSearchList(HashMap<String, Object> map);
 	int selectSearchCount(CommonVO commVO);

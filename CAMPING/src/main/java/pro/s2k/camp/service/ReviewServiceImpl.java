@@ -2,6 +2,7 @@ package pro.s2k.camp.service;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,15 +33,14 @@ public class ReviewServiceImpl implements ReviewService {
 			int totalCount = reviewDAO.selectCount();
 			// 페이지 계산
 			pagingVO = new PagingVO<>(commVO.getCurrentPage(), commVO.getPageSize(), commVO.getBlockSize(), totalCount);
-			log.info(pagingVO.getStartNo() + "히히히");
 			// 글을 읽어오기
 			HashMap<String, Integer> map = new HashMap<String, Integer>();
 			map.put("startNo", pagingVO.getStartNo());
 			map.put("pageSize", pagingVO.getPageSize());
 			List<ReviewVO> list = reviewDAO.selectList(map);
-
 			// 완성된 리스트를 페이징 객체에 넣는다.
 			pagingVO.setList(list);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -74,7 +74,6 @@ public class ReviewServiceImpl implements ReviewService {
 				// 1. 글수정
 				reviewDAO.update(reviewVO);
 				// 2. 새롭게 첨부된 첨부 파일의 정보도 저장해 주어야 한다.
-
 			}
 		}
 	}

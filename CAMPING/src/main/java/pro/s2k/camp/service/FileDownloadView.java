@@ -1,4 +1,4 @@
-package pro.s2k.camp.controller;
+package pro.s2k.camp.service;
 
 
 import java.io.File;
@@ -37,7 +37,7 @@ public class FileDownloadView extends AbstractView {
         OutputStream out = response.getOutputStream();
         FileInputStream fis = null;
         
-        //파일 카피 후 마무리
+        // 파일 카피 후 마무리
         try {
             fis = new FileInputStream(file);
             FileCopyUtils.copy(fis, out);

@@ -57,7 +57,7 @@ public class HomeController {
 		PagingVO<ReviewVO> rv = reviewService.selectList(commonVO);
 	     	model.addAttribute("rv", rv);
 	    // 캠핑장의 총 개수 찍기
-		int total = campDAO.selectCountTotal();
+		int total = campDAO.selectCountSite();
 			model.addAttribute("total", total);
 		// 캠핑장의 일반야영장 개수 찍기
 		int campSite = campDAO.selectCountCampsitel();

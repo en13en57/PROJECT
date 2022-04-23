@@ -58,7 +58,7 @@
 	}
 
 	function noticeInsert() {
-		location.href = "/board/noticeInsert.do";
+		document.getElementById("sendForm").submit();
 	}
 	
 	function change(val) {
@@ -322,6 +322,9 @@ table {
 			<br>
 		</section>
 		<br>
+		<form action="/board/noticeInsert.do" id="sendForm" method="post">
+			<sec:csrfInput/>
+		</form>
 
 <!-- Footer -->
 	<%@ include file="../headerFooter/footer.jsp"%>

@@ -31,6 +31,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import lombok.extern.slf4j.Slf4j;
+import pro.s2k.camp.dao.CommentDAO;
 import pro.s2k.camp.service.CommentService;
 import pro.s2k.camp.service.NoticeService;
 import pro.s2k.camp.service.QnAService;
@@ -58,6 +59,9 @@ public class BoardController {
 
 	@Autowired
 	private QnAService qnaService;
+	
+	@Autowired 
+	CommentDAO commentDAO;
 
 	// 403 오류 -----------------------------
 	@RequestMapping("/403.do")
@@ -260,7 +264,7 @@ public class BoardController {
 
 	// 리뷰 목록보기
 	@RequestMapping(value = "/board/review.do")
-	public String review(HttpServletRequest request, @ModelAttribute CommonVO commonVO, Model model) {
+	public String review(HttpServletRequest request, @ModelAttribute CommonVO commonVO, Model model, ReviewVO reviewVO) {
 		// 리뷰 list
 		PagingVO<ReviewVO> pv = reviewService.selectList(commonVO);
 		model.addAttribute("pv", pv);

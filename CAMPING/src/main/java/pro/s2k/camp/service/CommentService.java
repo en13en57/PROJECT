@@ -17,7 +17,4 @@ public interface CommentService {
 	void delete(CommentVO commentVO);
 	// 댓글
 	void reply(CommentVO commentVO);
-	
-	int selectCoCount(int idx);
-	
 }

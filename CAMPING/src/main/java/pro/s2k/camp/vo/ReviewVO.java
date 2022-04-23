@@ -39,6 +39,7 @@ public class ReviewVO {
 	private String rv_ip;
 	private int rv_hit;
 	private int del;
+	private int coCount;
 	
 	private String mb_nick;
 
