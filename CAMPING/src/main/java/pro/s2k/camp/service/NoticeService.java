@@ -1,4 +1,6 @@
 package pro.s2k.camp.service;
+import java.util.Map;
+
 import pro.s2k.camp.vo.CommonVO;
 import pro.s2k.camp.vo.FileUploadVO;
 import pro.s2k.camp.vo.NoticeVO;
@@ -7,7 +9,7 @@ import pro.s2k.camp.vo.PagingVO;
 public interface NoticeService {
 	PagingVO<NoticeVO> selectList(CommonVO commonVO);
 	
-	NoticeVO selectByIdx(int up_idx);
+	NoticeVO selectByIdx(Map<String, Integer> map);
 	
 	void insert(NoticeVO noticeVO);
 

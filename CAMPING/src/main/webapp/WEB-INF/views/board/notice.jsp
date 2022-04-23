@@ -254,8 +254,9 @@ table {
 									<input type="hidden" name="s" value="${pv.pageSize }"/>
 									<input type="hidden" name="b" value="${pv.blockSize }"/>
 									<input type="hidden" name="nt_idx" value="${vo.nt_idx }"/>
-									<%--오늘 저장한 글이면 new  --%>
+									<input type="hidden" name="mode" value="1"/>
 								</form>
+								<%--오늘 저장한 글이면 new  --%>
 								<jsp:useBean id="today" scope="request" class="java.util.Date"></jsp:useBean>				
 								<fmt:formatDate value="${today }" pattern="yyyyMMdd" var="day"/> 
 								<fmt:formatDate value="${vo.nt_modiDate }" pattern="yyyyMMdd" var="modi"/> 

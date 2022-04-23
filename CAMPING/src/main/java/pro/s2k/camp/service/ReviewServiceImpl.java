@@ -48,10 +48,12 @@ public class ReviewServiceImpl implements ReviewService {
 	}
 
 	@Override
-	public ReviewVO selectByIdx(int idx) {
-		ReviewVO reviewVO = reviewDAO.selectByIdx(idx); // 글 1개를 가져온다.
-		reviewVO.setRv_hit(reviewVO.getRv_hit() + 1);
-		reviewDAO.updateHit(idx);
+	public ReviewVO selectByIdx(Map<String, Integer> map) {
+		ReviewVO reviewVO = reviewDAO.selectByIdx(map.get("rv_idx")); // 글 1개를 가져온다.
+		if(map.get("mode")==1) {
+			reviewDAO.updateHit(map.get("rv_idx"));
+			reviewVO.setRv_hit(reviewVO.getRv_hit() + 1);
+		}
 		return reviewVO;
 	}
 

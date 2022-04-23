@@ -1,6 +1,8 @@
 package pro.s2k.camp.service;
 
 
+import java.util.Map;
+
 import pro.s2k.camp.vo.CommonVO;
 import pro.s2k.camp.vo.PagingVO;
 import pro.s2k.camp.vo.ReviewVO;
@@ -9,7 +11,7 @@ public interface ReviewService {
 	// 목록보기
 	PagingVO<ReviewVO> selectList(CommonVO commVO);
 	// 내용보기 - 글 1
-	ReviewVO selectByIdx(int idx);
+	ReviewVO selectByIdx(Map<String, Integer> map);
 	// 원본글 저장
 	void insert(ReviewVO reviewVO);
 

@@ -249,7 +249,6 @@ table {
 						                           <input type="hidden" name="b" value="${pv.blockSize }"/>
 						                           <input type="hidden" name="rv_idx" value="${vo.rv_idx }"/>
 						                           <input type="hidden" name="mode" value="1"/>
-						                           <input type="hidden" name="h" value="1"/>
 					                        
 					                        </form>
 				                        <jsp:useBean id="today" scope="request" class="java.util.Date"></jsp:useBean>				

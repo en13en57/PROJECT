@@ -5,6 +5,7 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -64,13 +65,15 @@ public class NoticeServiceImpl implements NoticeService{
 	}
 
 	@Override
-	public NoticeVO selectByIdx(int idx) {
-		NoticeVO noticeVO = noticeDAO.selectByIdx(idx);
+	public NoticeVO selectByIdx(Map<String, Integer> map) {
+		NoticeVO noticeVO = noticeDAO.selectByIdx(map.get("nt_idx"));
 		if(noticeVO!=null) {
-			List<FileUploadVO> list = fileUploadDAO.selectList(idx);
+			List<FileUploadVO> list = fileUploadDAO.selectList(map.get("nt_idx"));
 			noticeVO.setFileList(list);
-			noticeDAO.incrementHits(idx);
-			noticeVO.setNt_hit(noticeVO.getNt_hit()+1);
+			if(map.get("mode")!=null) {
+				noticeDAO.incrementHits(map.get("nt_idx"));
+				noticeVO.setNt_hit(noticeVO.getNt_hit() + 1);
+			}
 			
 		}
 		return noticeVO;
