@@ -28,10 +28,6 @@
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath }/resources/assets/css/swiper.min.css">
 <script type="text/javascript">
-
-
-
-
 	function logoutSubmit() {
 		var logout = document.logout;
 		logout.submit();
