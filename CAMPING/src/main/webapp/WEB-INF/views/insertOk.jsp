@@ -8,7 +8,9 @@
 <link rel="shortcut icon" type="image/x-icon"
 	href="${pageContext.request.contextPath }/resources/assets/css/images/logo.png" />
 <title>캠핑은 NG캠핑!</title>
+<%-- 반응형 디자인 --%>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<%-- 부트스트랩 SDK 시작 --%>
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
 	rel="stylesheet">
@@ -18,25 +20,18 @@
 	src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
 <script
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<%-- 다음 우편번호 API --%>
-<script
-	src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
-	rel="stylesheet"
-	integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
-	crossorigin="anonymous">
-
+	rel="stylesheet">
+<%-- 부트스트랩 SDK 끝 --%>
+<%-- jQuery SDK --%>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<%-- css --%>
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath }/resources/assets/css/main.css" />
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath }/resources/assets/css/swiper.min.css">
-<script type="text/javascript">
-	
-</script>
 
 <style type="text/css">
 #banner1 {
@@ -45,18 +40,14 @@
 }
 </style>
 
+<%-- 페이지의 스크립트 유형을 지원하지 않거나, 브라우저가 스크립트를 비활성화한 경우 보여줄 HTML 구획을 정의 --%>
 <noscript>
 	<link rel="stylesheet"
 		href="${pageContext.request.contextPath }/resources/assets/css/noscript.css" />
 </noscript>
-
-
-
-
 </head>
-</head>
+
 <body class="is-preload landing">
-
 
 		<!-- Header -->
 		<%@ include file="headerFooter/header.jsp"%>
@@ -75,7 +66,6 @@
 
 		<!-- Footer -->
 		<%@ include file="headerFooter/footer.jsp"%>
-
 
 	<!-- Scripts -->
 	<script

@@ -1,10 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%-- JSTL 사용 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<%@ taglib prefix="sec"	uri="http://www.springframework.org/security/tags"%>
-
+<%@ taglib prefix="sec"
+	uri="http://www.springframework.org/security/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,7 +13,9 @@
 <link rel="shortcut icon" type="image/x-icon"
 	href="${pageContext.request.contextPath }/resources/assets/css/images/logo.png" />
 <title>NG캠핑</title>
+<%-- 반응형 디자인 --%>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<%-- 부트스트랩 SDK 시작 --%>
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
 	rel="stylesheet">
@@ -22,23 +25,18 @@
 	src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
 <script
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
+<%-- 부트스트랩 SDK 끝 --%>
+<%-- jQuery SDK --%>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
-	rel="stylesheet">
+<%-- css --%>
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath }/resources/assets/css/main.css" />
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath }/resources/assets/css/swiper.min.css">
 
-
-
 <script type="text/javascript">
-	function logoutSubmit() {
-		var logout = document.logout;
-		logout.submit();
-	}
+	// 네비게이션 첫번째 옵션 변경시 두번째 옵션 변경
 	function change(val) {
 		if (val.value == 'fst') {
 			document.getElementById("selectfst").style.display = 'inline';
@@ -48,7 +46,7 @@
 			document.getElementById("selectsnd").style.display = 'inline';
 		}
 	}
-
+	// select시 첫번째 옵션 변경시 두번째 옵션 변경 시,도별 지역구
 	var cat1_num = new Array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
 			16);
 	var cat1_name = new Array('서울', '부산', '대구', '인천', '광주', '대전', '울산', '강원',
@@ -138,6 +136,7 @@
 	cat2_name[16] = new Array('제천시', '청주시 상당구', '청주시 흥덕구', '충주시', '괴산군', '단양군',
 			'보은군', '영동군', '옥천군', '음성군', '진천군', '청원군');
 
+	// select시 첫번째 옵션 변경시 두번째 옵션 변경
 	function cat1_change(key, sel) {
 		if (key == '')
 			return;
@@ -151,7 +150,8 @@
 			sel.options[i + 1] = new Option(name[i], val[i]);
 		}
 	}
-
+	
+	// 상단 시군구 변경 값 input value로 설정
 	function sendType() {
 		var selectOption = document.getElementById("h_area1");
 			selectOption = selectOption.options[selectOption.selectedIndex].text;
@@ -162,11 +162,8 @@
 		document.getElementById("searchType").value = selectOption;
 		document.getElementById("searchType2").value = selectOption2; 
 	    document.getElementById("formAction").submit(); 
-	
 	} 
 </script>
-
-
 
 <style type="text/css">
 image /x-icon {
@@ -245,27 +242,25 @@ select option[value=""][disabled] {
 }
 
 .info-title {
-    display: block;
-    background: #50627F;
-    color: #fff;
-    text-align: center;
-    height: 24px;
-    line-height:22px;
-    border-radius:4px;
-    padding:0px 10px;
+	display: block;
+	background: #50627F;
+	color: #fff;
+	text-align: center;
+	height: 24px;
+	line-height: 22px;
+	border-radius: 4px;
+	padding: 0px 10px;
 }
 </style>
 
+<%-- 페이지의 스크립트 유형을 지원하지 않거나, 브라우저가 스크립트를 비활성화한 경우 보여줄 HTML 구획을 정의 --%>
 <noscript>
 	<link rel="stylesheet"
 		href="${pageContext.request.contextPath }/resources/assets/css/noscript.css" />
 </noscript>
-<script language=javascript>
-	
-</script>
-
-</head>
 <body class="is-preload landing">
+
+	<!-- header -->
 	<%@ include file="../headerFooter/header.jsp"%>
 
 	<!-- Banner -->
@@ -281,16 +276,16 @@ select option[value=""][disabled] {
 			</select>
 		</div>
 		<div id="selectfst" class="col-sm-2" style="float: left;">
-			<select name="list" id="list" onchange="window.open(value,'_self');" >
+			<select name="list" id="list" onchange="window.open(value,'_self');">
 				<option selected disabled>-선택-</option>
-				<option value="/camp/campsite.do" >캠핑장 찾기</option>
+				<option value="/camp/campsite.do">캠핑장 찾기</option>
 			</select>
 		</div>
 		<div id="selectsnd" class="col-sm-2"
 			style="float: left; display: none;">
 			<select name="list" id="list" onchange="window.open(value,'_self');">
 				<option selected disabled>-선택-</option>
-				<option value="../board/review.do" >캠핑후기</option>
+				<option value="../board/review.do">캠핑후기</option>
 				<option value="../board/notice.do">공지사항</option>
 				<option value="../board/QnA.do">QnA</option>
 			</select>
@@ -300,7 +295,8 @@ select option[value=""][disabled] {
 	<br>
 	<div>
 		<p
-			style="font-size: 50px; padding-left: 12%; padding-top: 5%; font-weight: bold;">캠핑장 찾기</p>
+			style="font-size: 50px; padding-left: 12%; padding-top: 5%; font-weight: bold;">캠핑장
+			찾기</p>
 	</div>
 	<div
 		style="width: 50%; height: 900px; border: 1px solid gray; padding-left: 10px; padding-right: 0px; float: left;">
@@ -342,10 +338,10 @@ select option[value=""][disabled] {
 						<option value='16'>충북</option>
 					</select>
 				</div>
-				
-				<input type="hidden" id="searchType" name="searchType" value="" /> <input
-					type="hidden" id="searchType2" name="searchType2" value="" />
-				
+
+				<input type="hidden" id="searchType" name="searchType" value="" />
+				<input type="hidden" id="searchType2" name="searchType2" value="" />
+
 				<div class="col-sm-3" style="padding-left: 0px;">
 					<select id="h_area2" onChange="cat2_change(this.value)">
 						<option>-선택-</option>
@@ -353,22 +349,22 @@ select option[value=""][disabled] {
 				</div>
 			</div>
 			<div style="text-align: left;">
-				
+
 				<input type="checkbox" id="animalCheck" value="가능"
 					name="animalCheck"> <label class="form-check-label"
 					for="animalCheck"> 반려동물 동반여부 </label> <br>
-			
+
 			</div>
 			<div style="text-align: center;">
-				<button onclick="sendType();" class="btn btn-primary" 
+				<button onclick="sendType();" class="btn btn-primary"
 					style="width: 200px; height: 40px;" value="검색">검색</button>
 			</div>
 		</form>
-	
+		<!-- 거리순으로 리스트 -->
 		<div style="padding-top: 60px;"></div>
 		<div class="col-sm-3" style="font-size: 20px;">검색결과 리스트</div>
 		<br />
-		<div style="width:100%; height:390px; overflow:auto">
+		<div style="width: 100%; height: 390px; overflow: auto">
 			<table>
 				<tr>
 					<th class="th-1" style="padding-top: 5px;">사진</th>
@@ -379,50 +375,55 @@ select option[value=""][disabled] {
 				</c:if>
 				<c:if test="${pv.totalCount>0 }">
 					<c:if test="${not empty pv.list }">
+						<!-- 좌측 리스트 캠핑장 이름 클릭시 우측 지도 좌표중앙으로, 상세페이지 띄우기위한 input (forEach안에서 개개별 캠핑장 정보를 위해)-->
 						<c:forEach var="vo" items="${pv.list }" varStatus="vs">
-							<input type="hidden" id="facltNm${vs.index }" name="var" value="${vo.facltNm }"/>
-							<input type="hidden" id="mapX${vs.index }" value="${vo.mapX }"/>
-							<input type="hidden" id="mapY${vs.index }" value="${vo.mapY }"/>
-							<input type="hidden" id="idx${vs.index }" value="${vo.idx }"/>
-							<input type="hidden" id="induty${vs.index }" value="${vo.induty }"/>
-							<input type="hidden" id="addr1${vs.index }" value="${vo.addr1 }"/>
-							<input type="hidden" id="firstImageUrl${vs.index }" value="${vo.firstImageUrl }"/>
-							<input type="hidden" id="lineIntro${vs.index }" value="${vo.lineIntro }"/>
+							<input type="hidden" id="facltNm${vs.index }" name="var"
+								value="${vo.facltNm }" />
+							<input type="hidden" id="mapX${vs.index }" value="${vo.mapX }" />
+							<input type="hidden" id="mapY${vs.index }" value="${vo.mapY }" />
+							<input type="hidden" id="idx${vs.index }" value="${vo.idx }" />
+							<input type="hidden" id="induty${vs.index }"
+								value="${vo.induty }" />
+							<input type="hidden" id="addr1${vs.index }" value="${vo.addr1 }" />
+							<input type="hidden" id="firstImageUrl${vs.index }"
+								value="${vo.firstImageUrl }" />
+							<input type="hidden" id="lineIntro${vs.index }"
+								value="${vo.lineIntro }" />
 							<tr>
-								<td style="border: 1px solid gray;">
-									<img style="width: 100%; height: 100%;"	src="${vo.firstImageUrl }" onerror="this.style.display='none'" />
-								</td>
-								<td>
-								<%-- document.getElementById('dView${vs.index }').submit() --%>
-									<a style="cursor: pointer;" onclick="test3(${vs.index});"><c:out value="${vo.facltNm }"></c:out> </a>
-								
+								<td style="border: 1px solid gray;"><img
+									style="width: 100%; height: 100%;" src="${vo.firstImageUrl }"
+									onerror="this.style.display='none'" /></td>
+								<td><a style="cursor: pointer;"
+									onclick="test3(${vs.index});"><c:out value="${vo.facltNm }"></c:out>
+								</a>
+
 									<div style="padding-top: 20px;">${vo.lineIntro }</div>
 									<div style="color: gray; text-align: left; font-weight: bold;">${vo.addr1 }</div>
 								</td>
 							</tr>
-						</c:forEach>	
-					</c:if>	
+						</c:forEach>
+					</c:if>
 				</c:if>
 			</table>
 		</div>
 
-        <c:if test="${pv.totalCount!=0 }">
- 			<c:if test="${pv.searchType==null }">
-				<div style="border: none;text-align: center;">
-						${pv.pageList}
-				</div>
-			</c:if>  
-			<c:if test="${pv.searchType!=null }">
-				<div style="border: none;text-align: center;">
-					${pv.pageList3}
+		<c:if test="${pv.totalCount!=0 }">
+			<c:if test="${pv.searchType==null }">
+				<div style="border: none; text-align: center;">${pv.pageList}
 				</div>
 			</c:if>
-        </c:if>
+			<c:if test="${pv.searchType!=null }">
+				<div style="border: none; text-align: center;">
+					${pv.pageList3}</div>
+			</c:if>
+		</c:if>
 	</div>
-	
+
+	<!-- 지도 -->
 	<div id="map" style="width: 50%; height: 900px; margin-left: 10px;"></div>
 	<br>
 
+	<!-- 카카맵 api사용 SDK -->
 	<script type="text/javascript"
 		src="//dapi.kakao.com/v2/maps/sdk.js?appkey=eae203b516d5693eb4a9560f2bb8505b"></script>
 
@@ -430,31 +431,29 @@ select option[value=""][disabled] {
 	  var infowindow;
       var container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
       var options = { //지도를 생성할 때 필요한 기본 옵션
-         center : new kakao.maps.LatLng(33.450701, 126.570667), //지도의 중심좌표.
+         center : new kakao.maps.LatLng(33.450701, 126.570667), //지도의 중심좌표
          level : 6
       //지도의 레벨(확대, 축소 정도)
       };
-
-     
       
       var map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
 		
+      // 접속한 클라이언트의 현재 위치 위도 경도를 받아온다
       if (navigator.geolocation) {
-
-         // GeoLocation을 이용해서 접속 위치를 얻어옵니다
+         // GeoLocation을 이용해서 접속 위치를 얻어온다
          navigator.geolocation.getCurrentPosition(function(position) {
 
                   var lat = position.coords.latitude, // 위도
                  	  lon = position.coords.longitude; // 경도
 
-                  var locPosition = new kakao.maps.LatLng(lat, lon), // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
-                  message = '<div style="padding:5px; color:white; width:250px; background-color:blue;">현재위치</div>';
-                  // 마커와 인포윈도우를 표시합니다
+                  var locPosition = new kakao.maps.LatLng(lat, lon), // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성한다
+                  message = '<div style="text-align: center; padding:5px; color:white; width:180px; background-color:blue;">현재위치</div>';
+                  // 마커와 인포윈도우를 표시한다
                   displayMarker(locPosition, message);
 
                });
 
-      } else { // HTML5의 GeoLocation을 사용할 수 없을때 마커 표시 위치와 인포윈도우 내용을 설정합니다
+      } else { // HTML5의 GeoLocation을 사용할 수 없을때 마커 표시 위치와 인포윈도우 내용을 설정한다
 
          var locPosition = new kakao.maps.LatLng(33.450701, 126.570667), message = 'geolocation을 사용할수 없어요..'
 
@@ -462,7 +461,7 @@ select option[value=""][disabled] {
       }
 
 
-      // 마커 이미지의 이미지 주소입니다
+      // 마커 이미지 주소
       var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
       var mappingData = {};
       var positions = new Array();
@@ -472,11 +471,11 @@ select option[value=""][disabled] {
       function test() {
          $.ajax({
             type : "post",
-            url : "/camp/selectCampSitel.do",
+            url : "/camp/selectCampSitel.do", // 컨트롤러에서 대기중인 url
             dataType : "json",
-            beforeSend : function(xhr) {
-               xhr.setRequestHeader("X-CSRF-TOKEN", csrf_token);
-               xhr.setRequestHeader("p",<c:out value='${pv.currentPage}'/>);
+            beforeSend : function(xhr) { // ajax돌기전 정보 보내기
+               xhr.setRequestHeader("X-CSRF-TOKEN", csrf_token); 
+               xhr.setRequestHeader("p",<c:out value='${pv.currentPage}'/>); // 현재 페이지별의 캠핑장 정보를 가져오기위해 보낸다
             },
             success : function(data) {
                var list = data;
@@ -496,10 +495,10 @@ select option[value=""][disabled] {
                }
 
                for (var a = 0; a < positions.length; a++) {
-                  // 마커 이미지의 이미지 크기 입니다
+                  // 마커 이미지 크기
                   var imageSize = new kakao.maps.Size(30, 30);
 
-                  // 마커 이미지를 생성합니다   
+                  // 마커 이미지를 생성  
                   var markerImage = new kakao.maps.MarkerImage(
                            imageSrc, imageSize);
 
@@ -530,6 +529,7 @@ select option[value=""][disabled] {
          });
       }
       
+      // 마커 클릭시 해당 캠핑장의 정보
       function test2(map, marker) {
           return function() {
              var code = marker.getTitle();
@@ -559,11 +559,11 @@ select option[value=""][disabled] {
                    + '</form>'
                    + '</div>'
 
-             // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+             // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능
              console.log(mappingData[code].data);
-             iwPosition = new kakao.maps.LatLng(marker.getPosition()); //인포윈도우 표시 위치입니다
+             iwPosition = new kakao.maps.LatLng(marker.getPosition()); //인포윈도우 표시 위치
              iwRemoveable = true;
-             // 인포윈도우를 생성합니다
+             // 인포윈도우를 생성
              var infowindow = new kakao.maps.InfoWindow({
                 position : iwPosition,
                 content : iwContent,
@@ -572,6 +572,7 @@ select option[value=""][disabled] {
 	             infowindow.open(map, marker);
           }
        }
+      // 좌측의 리스트의 캠핑장 이름 클릭시 우측 클릭한 캠핑장 마커 중심으로 이동
 	  function test3(idx) {
 		  var campFacltNm = document.getElementById('facltNm'+idx).value;
 		  var campX = document.getElementById('mapX'+idx).value;
@@ -598,12 +599,11 @@ select option[value=""][disabled] {
              title : campFacltNm, // 마커의 타이틀(마우스를 올리면 타이틀 표기)
           // 마커 이미지 
           });  
-          /* map.setCenter(marker.getPosition()); */
           // 마커를 클릭 시 커스텀 오버레이 생성
-          /* kakao.maps.event.addListener(marker, 'click', test4( map, marker));  */
           test4(map,marker,idx);
       }
       
+     // 클릭한 캠핑장 상세펭이지 출력
      function test4(map,marker,idx) {
              map.setCenter(marker.getPosition());
 	         var campFacltNm = document.getElementById('facltNm'+idx).value;
@@ -637,10 +637,10 @@ select option[value=""][disabled] {
                    + '</form>'
                    + '</div>'
 
-             // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
-             iwPosition = new kakao.maps.LatLng(marker.getPosition()); //인포윈도우 표시 위치입니다
+             // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능
+             iwPosition = new kakao.maps.LatLng(marker.getPosition()); //인포윈도우 표시 위치
              iwRemoveable = true;
-             // 인포윈도우를 생성합니다
+             // 인포윈도우를 생성
              var infowindow = new kakao.maps.InfoWindow({
                 position : iwPosition,
                 content : iwContent,
@@ -648,10 +648,9 @@ select option[value=""][disabled] {
              });
 	             infowindow.open(map, marker);
        } 
-  	
-		
+	
+      // 현재 위치 표시
       function displayMarker(locPosition, message) {
-
          // 마커를 생성합니다
          var marker = new kakao.maps.Marker({
             map : map,
@@ -659,12 +658,11 @@ select option[value=""][disabled] {
          });
 
          var iwContent = message, // 인포윈도우에 표시할 내용
-         iwRemoveable = true;
+         iwRemoveable = false;
 
          // 인포윈도우를 생성합니다
          var infowindow = new kakao.maps.InfoWindow({
             content : iwContent,
-            removable : iwRemoveable
          });
 
          // 인포윈도우를 마커위에 표시합니다 
@@ -678,7 +676,6 @@ select option[value=""][disabled] {
       });
      
    </script>
-
 
 	<!-- Footer -->
 	<%@ include file="../headerFooter/footer.jsp"%>
@@ -698,10 +695,7 @@ select option[value=""][disabled] {
 		src="${pageContext.request.contextPath }/resources/assets/js/util.js"></script>
 	<script
 		src="${pageContext.request.contextPath }/resources/assets/js/main.js"></script>
- 	<script
+	<script
 		src="${pageContext.request.contextPath}/resources/assets/js/common.js"></script>
-
-
-
 </body>
 </html>

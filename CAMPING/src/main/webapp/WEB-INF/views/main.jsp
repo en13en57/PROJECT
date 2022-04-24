@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%-- JSTL 사용 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
@@ -8,7 +9,9 @@
 <link rel="shortcut icon" type="image/x-icon"
 	href="${pageContext.request.contextPath }/resources/assets/css/images/logo.png" />
 <title>캠핑은 NG캠핑!</title>
+<%-- 반응형 디자인 --%>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<%-- 부트스트랩 SDK 시작 --%>
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
 	rel="stylesheet">
@@ -18,23 +21,16 @@
 	src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
 <script
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
+<%-- 부트스트랩 SDK 끝 --%>
+<%-- jQuery SDK --%>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-
-<meta charset="utf-8" />
+<%-- css --%>
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath }/resources/assets/css/main.css" />
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath }/resources/assets/css/swiper.min.css">
-<script type="text/javascript"
-	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=eae203b516d5693eb4a9560f2bb8505b"></script>
-<script type="text/javascript">
-	function logoutSubmit() {
-		var logout = document.logout;
-		logout.submit();
-	}
 
-</script>
 <style>
 .swiper-container {
 	width: 100%;
@@ -43,9 +39,9 @@
 }
 
 #name {
-font-size: 12px;
-color : yellow;
-font-weight: bold;
+	font-size: 12px;
+	color: yellow;
+	font-weight: bold;
 }
 
 .swiper-slide {
@@ -86,20 +82,25 @@ font-weight: bold;
 table {
 	table-layout: fixed;
 }
-#title{
-	white-space:nowrap; text-overflow:ellipsis; overflow:hidden;
-}
 
+#title {
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
 </style>
 
+<%-- 페이지의 스크립트 유형을 지원하지 않거나, 브라우저가 스크립트를 비활성화한 경우 보여줄 HTML 구획을 정의 --%>
 <noscript>
 	<link rel="stylesheet"
 		href="${pageContext.request.contextPath }/resources/assets/css/noscript.css" />
 </noscript>
 </head>
+
 <body class="is-preload landing">
+
 	<!-- header -->
-	<%@ include file="headerFooter/header.jsp" %>
+	<%@ include file="headerFooter/header.jsp"%>
 
 	<!-- Banner -->
 	<section id="banner">
@@ -113,15 +114,20 @@ table {
 				</p>
 			</header>
 
-			<!-- Swiper -->
+			<!-- Swiper(드래그 하여 사용하는 자바스크립트) -->
 			<div class="swiper-container">
 				<div class="swiper-wrapper">
+					<!-- 사진 or 텍스트 클릭시 해당 캠핑장 홈페이지로 이동 -->
 					<c:forEach var="vo" items="${pv.list }" varStatus="vs">
 						<div class="swiper-slide">
-							<a style="cursor: pointer;" onclick="location.href='${vo.homepage}'"><img width=100%
+							<a style="cursor: pointer;"
+								onclick="location.href='${vo.homepage}'"><img width=100%
 								src="${vo.firstImageUrl }"></a>
 							<div class="swiper-slide-text">
-								<p id="name"><a style="cursor: pointer;" onclick="location.href='${vo.homepage}'">${vo.facltNm }</a></p>
+								<p id="name">
+									<a style="cursor: pointer;"
+										onclick="location.href='${vo.homepage}'">${vo.facltNm }</a>
+								</p>
 							</div>
 						</div>
 					</c:forEach>
@@ -130,6 +136,7 @@ table {
 				<!-- Add Pagination -->
 				<div class="swiper-pagination"></div>
 			</div>
+			<!-- swiper 자바 스크립트 -->
 			<script
 				src="${pageContext.request.contextPath }/resources/assets/js/swiper.min.js"></script>
 			<script>
@@ -142,8 +149,6 @@ table {
 				});
 			</script>
 
-			<!-- Add Pagination -->
-			<div class="swiper-pagination"></div>
 		</div>
 	</section>
 
@@ -151,8 +156,7 @@ table {
 	<!-- One -->
 	<section id="one" class="spotlight style1 bottom">
 		<span class="image fit main"><img
-			src="${pageContext.request.contextPath }/resources/assets/css/images/pic02.jpg"
-			alt="" /></span>
+			src="https://t1.daumcdn.net/cfile/tistory/99989F33599F790205" alt="" /></span>
 		<div class="content">
 			<div class="container">
 				<div class="row">
@@ -230,7 +234,6 @@ table {
 		</div>
 	</section>
 
-
 	<section id="four" class="spotlight style3 left">
 		<span class="image fit main"><img
 			src="https://i2.wp.com/kingshope.kr/wp-content/uploads/2021/07/20210715_091542.png?fit=1024%2C617&ssl=1"
@@ -252,7 +255,6 @@ table {
 			</ul>
 		</div>
 	</section>
-
 
 	<section id="five" class="spotlight style4 right">
 		<span class="image fit main bottom"><img
@@ -276,10 +278,7 @@ table {
 		</div>
 	</section>
 
-
-
-
-	<!-- Four -->
+	<!-- 캠핑장 유형별 개수 표시 -->
 	<section id="six" class="wrapper style1 special fade-up">
 		<div class="container">
 			<header class="major">
@@ -310,15 +309,12 @@ table {
 						<h3>글램핑/카라반</h3>
 						<p>글램핑/카라반 테마의 캠핑장 갯수입니다.</p>
 					</section>
-					<section>
-						<!-- 	<br> <br> <a href="#seven" class="goto-next scrolly">Next</a> -->
-					</section>
 				</div>
 			</div>
 		</div>
 	</section>
 
-	<!-- 게시판 및 공지사항 -->
+	<!-- 게시판 최근글부터 메인 페이지에 리스트 -->
 	<section id="seven" style="background-color: #E44C65">
 		<div class="container">
 			<div class="box alt">
@@ -332,8 +328,9 @@ table {
 								<td>
 									<form action="/camp/campsite.do" method="post" id="notice">
 										<input type="hidden" name="${_csrf.parameterName }"
-											value="${_csrf.token }"> 
-										<a href="#"><i class="fa fa-plus fa-1" style="float: right" onclick="document.getElementById('notice').submit()"></i></a>
+											value="${_csrf.token }"> <a href="#"><i
+											class="fa fa-plus fa-1" style="float: right"
+											onclick="document.getElementById('notice').submit()"></i></a>
 									</form>
 								</td>
 							</tr>
@@ -346,8 +343,8 @@ table {
 								<c:forEach var="vo" items="${nv.list }">
 									<tr>
 										<td colspan="2" style="text-align: left" id="title"><i
-											class="fa fa-angle-right" aria-hidden="true" ></i><font
-												color="white">${vo.nt_title }</font></td>
+											class="fa fa-angle-right" aria-hidden="true"></i><font
+											color="white">${vo.nt_title }</font></td>
 									</tr>
 								</c:forEach>
 							</c:if>
@@ -363,8 +360,9 @@ table {
 								<td>
 									<form action="/camp/campsite.do" method="post" id="QnA">
 										<input type="hidden" name="${_csrf.parameterName }"
-											value="${_csrf.token }"> 
-										<a href="#"><i class="fa fa-plus fa-1" style="float: right" onclick="document.getElementById('QnA').submit()"></i></a>
+											value="${_csrf.token }"> <a href="#"><i
+											class="fa fa-plus fa-1" style="float: right"
+											onclick="document.getElementById('QnA').submit()"></i></a>
 									</form>
 								</td>
 							</tr>
@@ -377,8 +375,8 @@ table {
 								<c:forEach var="vo" items="${qv.list }">
 									<tr>
 										<td colspan="2" style="text-align: left" id="title"><i
-											class="fa fa-angle-right" aria-hidden="true" ></i> <font
-												color="white">${vo.qna_title }</font></td>
+											class="fa fa-angle-right" aria-hidden="true"></i> <font
+											color="white">${vo.qna_title }</font></td>
 									</tr>
 								</c:forEach>
 							</c:if>
@@ -395,8 +393,9 @@ table {
 								<td>
 									<form action="/camp/campsite.do" method="post" id="review">
 										<input type="hidden" name="${_csrf.parameterName }"
-											value="${_csrf.token }"> 
-										<a href="#"><i class="fa fa-plus fa-1" style="float: right" onclick="document.getElementById('review').submit()"></i></a>
+											value="${_csrf.token }"> <a href="#"><i
+											class="fa fa-plus fa-1" style="float: right"
+											onclick="document.getElementById('review').submit()"></i></a>
 									</form>
 								</td>
 							</tr>
@@ -409,8 +408,8 @@ table {
 								<c:forEach var="vo" items="${rv.list }">
 									<tr>
 										<td colspan="2" style="text-align: left" id="title"><i
-											class="fa fa-angle-right" aria-hidden="true" ></i> <font
-												color="white">${vo.rv_title }</font></td>
+											class="fa fa-angle-right" aria-hidden="true"></i> <font
+											color="white">${vo.rv_title }</font></td>
 									</tr>
 								</c:forEach>
 							</c:if>
@@ -423,7 +422,7 @@ table {
 	</section>
 
 	<!-- Footer -->
-<%@ include file="headerFooter/footer.jsp" %>
+	<%@ include file="headerFooter/footer.jsp"%>
 
 	<!-- Scripts -->
 	<script
@@ -442,6 +441,7 @@ table {
 		src="${pageContext.request.contextPath }/resources/assets/js/util.js"></script>
 	<script
 		src="${pageContext.request.contextPath }/resources/assets/js/main.js"></script>
+	<!-- 클릭시 맨 상단으로 올라가는 기능 -->
 	<div style="position: fixed; bottom: 10px; right: 10px; z-index: 100;">
 		<a href="#banner" style="text-decoration: underline;"><img
 			src="${pageContext.request.contextPath }/resources/assets/css/images/top.png"></a>

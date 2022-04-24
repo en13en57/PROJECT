@@ -1,6 +1,6 @@
-<%@page import="pro.s2k.camp.vo.MemberVO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%-- JSTL 사용 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
@@ -9,7 +9,9 @@
 <link rel="shortcut icon" type="image/x-icon"
 	href="${pageContext.request.contextPath }/resources/assets/css/images/logo.png" />
 <title>캠핑은 NG캠핑!</title>
+<%-- 반응형 디자인 --%>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<%-- 부트스트랩 SDK 시작 --%>
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
 	rel="stylesheet">
@@ -19,86 +21,78 @@
 	src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
 <script
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
+<%-- 부트스트랩 SDK 끝 --%>
+<%-- jQuery SDK --%>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<%-- 다음 우편번호 API --%>
-<script
-	src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-
+<%-- css --%>
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath }/resources/assets/css/main.css" />
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath }/resources/assets/css/swiper.min.css">
-
 <script type="text/javascript">
-
-function ajaxTOsend(){
-	$.ajax({
-		type : "GET", 
-		url : "passwordCorrectOk.do", 
-		data :$('#memberVOForm').serialize(), 
-		dataType : "text",
-		success : function(result) {
-			console.log(result)
-			if (result==1) {
-				alert('비밀번호 변경에 성공했습니다. 다시 로그인해주세요.');
-				location.href ='/main.do'; 
-			}else if(result == 0){
-				alert('오류가 발생했습니다. 다시 비밀번호를 수정해주세요.');
-				$("#password").val ='';
-				$("#password1").val ='';	
-
+	function ajaxToSend() {
+		// 비밀번호 변경시 사용할 ajax
+		$.ajax({
+			type : "GET",
+			url : "passwordCorrectOk.do", // 컨트롤러에서 대기중인 url
+			data : $('#memberVOForm').serialize(), // 해당 폼의 정보들
+			dataType : "text",
+			success : function(result) {
+				console.log(result)
+				if (result == 1) { // 리턴값이 1일 때
+					alert('비밀번호 변경에 성공했습니다. 다시 로그인해주세요.');
+					location.href = '/main.do';
+				} else if (result == 0) { // 리턴값이 0일 때 
+					alert('오류가 발생했습니다. 다시 비밀번호를 수정해주세요.');
+					$("#password").val = '';
+					$("#passwordCheck").val = '';
+				}
+			},
+			error : function(XMLHttpRequest, textStatus, errorThrown) { // java에서 에러가 나는 경우 탐.
+				alert("오류발생")
 			}
-			
-		},
-		error : function(XMLHttpRequest, textStatus, errorThrown) { // java에서 에러가 나는 경우 탐.
-			alert("오류발생") 
-		}
-		
-});
-}
-$(function() {
-	$("#password1").keyup(function() {
-		var pw = $('#password').val();
-		var pw2 = $('#password1').val();
-
-		if (pw != '' || pw2 != '') {
-			if (pw == pw2) {
-				$('#pwcheckval').html('Matching').css('color', 'white');
-			} else {
-				$('#pwcheckval').html('Not Matching').css('color', 'yellow');
-			}
-
-		}
-
-	});
-
-	$("#password1").focus(function() {
-		if ($("#password").val() == '') {
-			alert('비밀번호 입력칸을 먼저 입력해주세요.');
-			$("#password").focus();
-		}
-		 
-	});
-});
-
-function logoutSubmit() {
-	var logout = document.logout;
-	logout.submit();
-}
-
-function formCheck() {
-	var regPass = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,15}$/;
-	var value = $("#password").val();
-	if (!regPass.test(value)) {
-		alert('영문, 숫자, 특수기호 조합으로 8-15자리로 입력해주세요.');
-		$("#password").focus();
-		return false;
+		});
 	}
-}
+	
+	$(function() {
+		$("#passwordCheck").keyup(function() { // 두번째 비밀번호 입력칸 입력 시
+			var pw = $('#password').val();
+			var pw2 = $('#passwordCheck').val();
+			if (pw != '' || pw2 != '') {	// 미입력인지 체크
+				if (pw == pw2) {	// 같다면
+					$('#pwcheckval').html('일치').css('color', 'white');
+				} else {
+					$('#pwcheckval').html('미일치').css('color', 'yellow');
+				}
+			}
+		});
 
-
+		$("#passwordCheck").focus(function() {	// 두번째 비밀번호 입력칸 이동시
+			if ($("#password").val() == '') {	// 첫번째 비밀번호 입력칸이 비었을 때 
+				alert('비밀번호 입력칸을 먼저 입력해주세요.');
+				$("#password").focus();			// 첫번째 비밀번호 입력칸으로 이동
+			}
+		});
+	});
+	
+	// 로그아웃
+	function logoutSubmit() {
+		var logout = document.logout;
+		logout.submit();
+	}
+	// 비밀번호 글자 제한
+	function formCheck() {
+		var regPass = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,15}$/;
+		var value = $("#password").val();
+		if (!regPass.test(value)) {
+			alert('영문, 숫자, 특수기호 조합으로 8-15자리로 입력해주세요.');
+			$("#password").focus();
+			return false;
+		}
+	}
 </script>
+
 <style>
 #banner1 {
 	padding: 100px 0;
@@ -114,25 +108,27 @@ function formCheck() {
 }
 </style>
 
+<%-- 페이지의 스크립트 유형을 지원하지 않거나, 브라우저가 스크립트를 비활성화한 경우 보여줄 HTML 구획을 정의 --%>
 <noscript>
 	<link rel="stylesheet"
 		href="${pageContext.request.contextPath }/resources/assets/css/noscript.css" />
 </noscript>
 </head>
+
 <body class="is-preload landing">
 
 	<!-- header -->
 	<%@ include file="../headerFooter/header.jsp"%>
 
 	<!-- Banner -->
-
 	<section id="banner1">
 		<div id="content1">
 			<div id="member_position">
 				<div class="mb-4">
-					<form action="memberInfo/passwordCorrectOk.do" method="post" name="memberVOForm" id="memberVOForm">
+					<form action="memberInfo/passwordCorrectOk.do" method="post"
+						name="memberVOForm" id="memberVOForm">
 						<input type="hidden" name="mb_ID" value="${mvo.mb_ID }">
-						<sec:csrfInput/>
+						<sec:csrfInput />
 						<div style="width: 50%;">
 							<div class="title">비밀번호 수정</div>
 							<br>
@@ -150,13 +146,12 @@ function formCheck() {
 								<label for="password" class="col-sm-3 col-form-label"
 									id="pwcheck">비밀번호확인 </label>
 								<div class="col-sm-6">
-									<input type="password" class="form-control" id="password1"
+									<input type="password" class="form-control" id="passwordCheck"
 										placeholder="비밀번호확인" required maxlength="15">
 								</div>
 							</div>
-
 							<div style="text-align: right;">
-									<input type="button" value="수정하기" onclick="ajaxTOsend();">
+								<input type="button" value="수정하기" onclick="ajaxToSend();">
 							</div>
 						</div>
 					</form>
@@ -186,9 +181,5 @@ function formCheck() {
 		src="${pageContext.request.contextPath }/resources/assets/js/util.js"></script>
 	<script
 		src="${pageContext.request.contextPath }/resources/assets/js/main.js"></script>
-	<div style="position: fixed; bottom: 10px; right: 10px; z-index: 100;">
-		<a href="#banner" style="text-decoration: underline;"><img
-			src="${pageContext.request.contextPath }/resources/assets/css/images/top.png"></a>
-	</div>
 </body>
 </html>

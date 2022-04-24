@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%-- JSTL 사용 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,7 +9,9 @@
 <link rel="shortcut icon" type="image/x-icon"
 	href="${pageContext.request.contextPath }/resources/assets/css/images/logo.png" />
 <title>캠핑은 NG캠핑!</title>
+<%-- 반응형 디자인 --%>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<%-- 부트스트랩 SDK 시작 --%>
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
 	rel="stylesheet">
@@ -19,19 +21,24 @@
 	src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
 <script
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
+<%-- 부트스트랩 SDK 끝 --%>
+<%-- jQuery SDK --%>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-
-<meta charset="utf-8" />
+<%-- css --%>
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath }/resources/assets/css/main.css" />
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath }/resources/assets/css/swiper.min.css">
+
 <script type="text/javascript">
+	// 로그아웃시
 	function logoutSubmit() {
 		var logout = document.logout;
 		logout.submit();
 	}
+	
+	// 리스트된 정보중 클릭 해당 정보 번호 가져오기
 	function selectInfo(index){
 		var infoIdx = document.getElementById('mb_idx');
 		infoIdx.value = document.getElementById('idx'+index).innerHTML;
@@ -39,39 +46,21 @@
 			infoSubmit();							
 		}
 	}
+	
+	// 폼액션 실행 전송하기
 	function infoSubmit(){
 		document.getElementById('infoForm').submit();
 	}
 </script>
-<style>
 
-.swiper-container {
-	width: 90%;
-	height: 200px;
-	margin: 20px auto;
-}
-
-#banner1 {
-	padding: 100px 0;
-	top: 20px;
-}
-
-#content1 {
-	text-align: left;
-}
-
-#member_position {
-	padding-left: 25%;
-}
-
-
-</style>
-
+<%-- 페이지의 스크립트 유형을 지원하지 않거나, 브라우저가 스크립트를 비활성화한 경우 보여줄 HTML 구획을 정의 --%>
 <noscript>
 	<link rel="stylesheet"
 		href="${pageContext.request.contextPath }/resources/assets/css/noscript.css" />
 </noscript>
+
 </head>
+
 <body class="is-preload landing">
 
 	<!-- header -->
@@ -95,7 +84,7 @@
 			<div class="col-sm-2" style="float: right;">
 				<input type="text" name="searchText" value="${searchtext }"/> 
 			</div>
-
+			<!-- 옵션 선택에 따라 검색 옵션 변경 -->
 			<div class="col-sm-1.8" style="float: right;">
 				<select name="searchType" id="searchType" style="float: left;">
 					<option value="all" selected>전체</option>
@@ -115,16 +104,17 @@
 			<div style="width:90%; height:200px; overflow:auto">
 				<table style="width: 100%; font-size: 17px;" id="infoTable">
 					<tr>
-						<c:if test="${pv.totalCount==0 }">
-							<td colspan="6">등록된 사용자가 없습니다.</td>
-						</c:if>
-					</tr>
-					<tr>
 						<th> No </th>
 						<th> 아이디 </th>
 						<th> 이름 </th>
 						<th> 닉네임 </th>
 						<th> 권한 </th>
+					</tr>
+					<tr></tr>
+					<tr>
+						<c:if test="${pv.totalCount==0 }">
+							<td colspan="6">등록된 사용자가 없습니다.</td>
+						</c:if>
 					</tr>
 					<c:if test="${pv.totalCount > 0 }">
 						<c:if test="${not empty pv.list }">
@@ -141,7 +131,6 @@
 					</c:if>
 				</table>
 				</div>
-				
 				<input type="hidden" id="mb_idx" name="mb_idx">
 			</form>
 		</div>
@@ -149,6 +138,7 @@
 		<form method="post">
 			<sec:csrfInput/>
 			<div style="padding-left: 12%;">
+				<!-- 회원 선택시 띄워주는 정보 -->
 				<table class="table table-bordered" style="width: 90%; color: white; font-size: 17px;">
 					<tr>
 						<th colspan="5" style="text-align: left; padding-left: 2%; font-size: 20px; font-weight: bold;" >정보보기</th>
@@ -198,7 +188,7 @@
 		</form>
 	</div>
 
-<!-- Footer -->
+	<!-- Footer -->
 	<%@ include file="../headerFooter/footer.jsp"%>
 
 	<!-- Scripts -->

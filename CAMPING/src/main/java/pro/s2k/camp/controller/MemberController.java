@@ -569,8 +569,10 @@ public class MemberController {
 
 	// 비밀번호 찾기 위한 정보를 post로 받을 경우
 	@RequestMapping(value = {"/userInfo/findPasswordOk.do","/resetPasswordOk.do"}, method = RequestMethod.POST)
-	public String findPasswordOkPOST(@ModelAttribute MemberVO memberVO, Model model) {
+	public String findPasswordOkPOST(@ModelAttribute MemberVO memberVO, Model model, HttpServletRequest request) {
 		MemberVO vo = memberService.passwordsearch(memberVO);
+		String mode = request.getParameter("mode");
+		model.addAttribute("mode", mode);
 		if (vo == null) {
 			// 찾아야 하는 정보가 없는 경우
 			return "redirect:/userInfo/findPassword.do?error";
@@ -583,25 +585,6 @@ public class MemberController {
 			memberService.sendPassword(memberVO);
 			// 만들어진 임시 비밀번호 메일로 보낸다.
 			return "/userInfo/findPasswordOk";
-		}
-	}
-
-	// 비밀번호 초기화를 위한 정보를 Post로 받을 경우
-	@RequestMapping(value = "/resetPasswordOk.do", method = RequestMethod.POST)
-	public String resetPasswordOk(@ModelAttribute MemberVO memberVO, Model model) {
-		MemberVO vo = memberService.passwordsearch(memberVO);
-		if (vo == null) {
-			// 찾아야 하는 정보가 없는 경우
-			return "redirect:/admin/memberManage.do?error";
-		} else {
-			// 찾아야하는 정보가 있는 경우
-			// 임시비밀번호를 만들어서 DB에 저장
-			String newPassword = memberService.makePassword(15);
-			memberVO.setMb_password(newPassword);
-			memberService.updatePassword(memberVO);
-			memberService.sendPassword(memberVO);
-			// 만들어진 임시 비밀번호 메일로 보낸다.
-			return "/admin/resetPasswordOk";
 		}
 	}
 
@@ -671,7 +654,7 @@ public class MemberController {
 	}
 
 	// 마이페이지 닉네임 수정 완료시
-	@RequestMapping(value = "/memberInfo/memberpageOk.do", method = RequestMethod.GET, produces = "text/plain;charset=UTF-8")
+	@RequestMapping(value = "/memberInfo/memberPageOk.do", method = RequestMethod.GET, produces = "text/plain;charset=UTF-8")
 	@ResponseBody
 	public String memberPageOk(@ModelAttribute MemberVO memberVO, @RequestParam String mb_nick, HttpSession session,
 			HttpServletRequest request, HttpServletResponse response) {

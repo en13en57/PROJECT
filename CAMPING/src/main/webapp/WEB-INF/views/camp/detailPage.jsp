@@ -1,17 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%-- JSTL 사용 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="sec"
 	uri="http://www.springframework.org/security/tags"%>
-
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-
 <title>NG캠핑</title>
+<%-- 반응형 디자인 --%>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="shortcut icon" type="image/x-icon"
 	href="${pageContext.request.contextPath }/resources/assets/css/images/logo.png" />
@@ -27,22 +27,13 @@
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 
-
-<script type="text/javascript">
-	
-</script>
-
-
-
-<style type="text/css">
-</style>
-
+<%-- 페이지의 스크립트 유형을 지원하지 않거나, 브라우저가 스크립트를 비활성화한 경우 보여줄 HTML 구획을 정의 --%>
 <noscript>
 	<link rel="stylesheet"
 		href="${pageContext.request.contextPath }/resources/assets/css/noscript.css" />
 </noscript>
-
 </head>
+
 <body>
 	<br>
 	<div>
@@ -79,7 +70,8 @@
 	<br>
 	<div class="pic" style="text-align: center;">
 		<img src="${result.firstImageUrl }"
-			style="width: 400px; height: 200px;" onerror="this.style.display='none'">
+			style="width: 400px; height: 200px;"
+			onerror="this.style.display='none'">
 	</div>
 	<div class="col-md-8"
 		style="padding-top: 30px; padding-left: 3px; margin: 3px; float: left; font-weight: bold;">
@@ -99,20 +91,16 @@
 	</div>
 	<div style="padding-top: 71px; padding-left: 8px;">
 		<div style="background-color: #CACACA; height: 200px; width: 1800px;">
-			<div style="padding-top: 25px; padding-left: 10px; font-size: 15px; font-weight: bold;">
-			소개 :  ${result.lineIntro } <br>
-			주소 :  ${result.addr1 } <br>
-			부대시설 :  ${result.sbrsCl } <br>
-			부대시설 기타 :  ${result.sbrsEtc } <br>
-			주변이용가능시설 :  ${result.posblFcltyCl } <br>
-			테마환경 :  ${result.themaEnvrnCl } <br>
-			애완견 동반 여부 :  ${result.animalCmgCl }
-			    
-				
+			<div
+				style="padding-top: 25px; padding-left: 10px; font-size: 15px; font-weight: bold;">
+				소개 : ${result.lineIntro } <br> 주소 : ${result.addr1 } <br>
+				부대시설 : ${result.sbrsCl } <br> 부대시설 기타 : ${result.sbrsEtc } <br>
+				주변이용가능시설 : ${result.posblFcltyCl } <br> 테마환경 :
+				${result.themaEnvrnCl } <br> 애완견 동반 여부 : ${result.animalCmgCl }
 			</div>
 		</div>
 		<div
-			style="background-color: #DCDCDC; height: 50px; width: 1600px; padding-top: 10px; text-align:center; font-size: 20px;">
+			style="background-color: #DCDCDC; height: 50px; width: 1600px; padding-top: 10px; text-align: center; font-size: 20px;">
 			<a href="${result.homepage }">해당 홈페이지로 이동</a>
 		</div>
 	</div>
