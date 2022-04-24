@@ -283,6 +283,7 @@ public class BoardController {
 			ReviewVO reviewVO, CommentVO commentVO) {
 		// 리뷰 1개 보기
 		// 한개의 후기글의 정보를 가져와서
+		log.info("@@@@"+commonVO.getMode());
 		Map<String, Integer> map = new HashMap<>();
 		map.put("mode", commonVO.getMode());
 		map.put("rv_idx", reviewVO.getRv_idx());
@@ -362,8 +363,10 @@ public class BoardController {
 	public String updatePost(HttpServletRequest request, @ModelAttribute CommonVO commonVO, Model model,
 			ReviewVO reviewVO) {
 		// 리뷰글 번호를 가져와 정보 가져오기
+		log.info("####"+reviewVO.getRv_idx());
 		Map<String, Integer> map = new HashMap<>();
 		map.put("rv_idx", reviewVO.getRv_idx());
+		map.put("mode", commonVO.getMode());
 		reviewVO = reviewService.selectByIdx(map);
 		model.addAttribute("rv", reviewVO);
 		model.addAttribute("cv", commonVO);
