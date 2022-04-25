@@ -177,7 +177,7 @@ public class BoardController {
 		return "/board/noticeUpdate";
 	}
 
-	// 겟으로 접근시 403으로 보
+	// get으로 접근시 403으로 보냄
 	@RequestMapping(value = "/board/noticeUpdate.do", method = RequestMethod.GET)
 	public String noticeUpdate() {
 		return "403";
@@ -237,7 +237,7 @@ public class BoardController {
 		return "redirect:/board/notice.do";
 	}
 
-	// 겟으로 오면 403으로 보냄
+	// get으로 오면 403으로 보냄
 	@RequestMapping(value = "/board/noticeDelete.do", method = RequestMethod.GET)
 	public String noticeDelete() {
 		return "403";
@@ -364,7 +364,7 @@ public class BoardController {
 		return "/board/reviewInsert";
 	}
 
-	// 겟으로 접근하면 리뷰 리스트로 보내버린다
+	// get으로 접근하면 리뷰 리스트로 보내버린다
 	@RequestMapping(value = "/reviewInsertOk.do", method = RequestMethod.GET)
 	public String reviewInsertOk() {
 		return "redirect:/review.do";
@@ -403,7 +403,7 @@ public class BoardController {
 		return map;
 	}
 
-	// 겟으로 접근시 리뷰 리스트로 보냄
+	// get으로 접근시 리뷰 리스트로 보냄
 	@RequestMapping(value = "/board/reviewDeleteOk.do", method = RequestMethod.GET)
 	public String deleteOk() {
 		return "redirect:/board/review";
