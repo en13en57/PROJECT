@@ -64,6 +64,14 @@
 			document.getElementById("selectsnd").style.display = 'inline';
 		}
 	}
+	
+	// 검색시 인수값으로 계속 넘겨주기 위한 스크립트
+	function noticeSearch(){
+		var selectOption = document.getElementById("searchType");
+		selectOption = selectOption.options[selectOption.selectedIndex].value;
+		document.getElementById("searchResult").value = selectOption;
+		document.getElementById("searchAction").submit();
+	}
 </script>
 
 <style type="text/css">
@@ -192,23 +200,24 @@ table {
 	</div>
 	<!-- 검색 기능 -->
 	<div style="padding-right: 10%; padding-bottom: 3%;">
-		<form action="/selectSearchNotice.do" method="post">
+		<form action="/selectSearchNotice.do" method="get" id="searchAction">
 			<sec:csrfInput />
 			<div class="col-sm-1" style="float: right;">
-				<input type="submit" value="검색">
+				<input type="button" value="검색" onclick="noticeSearch();">
 			</div>
 
 			<div class="col-sm-2" style="float: right;">
-				<input type="text" name="searchText" value="${searchText }" />
+				<input type="text" name="searchText"/>
 			</div>
 			<!-- 선택시 값, 아니면 공백 -->
 			<div class="col-sm-1.8" style="float: right;">
-				<select name="searchType" id="searchType" style="float: left;">
+				<select id="searchType" style="float: left;">
 					<option value="all" selected>전체</option>
 					<option value="title" ${searchType eq 'title' ? 'selected' : '' }>제목</option>
 					<option value="content"
 						${searchType eq 'content' ? 'selected' : '' }>내용</option>
 				</select>
+				<input type="hidden" name="searchType" id="searchResult" />
 			</div>
 		</form>
 	</div>
@@ -262,7 +271,7 @@ table {
 									<c:when test="${fn:length(title) >= 20 }">
 										<a style="cursor: pointer;"
 											onclick="document.getElementById('nView${num.index }').submit()"><c:out
-												value="${fn:substring(title,0,20) }" />...</a>
+												value="${fn:substring(title,0,20) }" />...&nbsp;</a>
 										<!-- 내용에 <img 라는 단어가 있으면 사진이미지 표시 -->
 										<c:if test="${fn:contains(content,'<img')}">
 											<img
@@ -274,7 +283,7 @@ table {
 									<c:otherwise>
 										<a style="cursor: pointer;"
 											onclick="document.getElementById('nView${num.index }').submit()"><c:out
-												value="${title}" /></a>
+												value="${title}" />&nbsp;</a>
 										<c:if test="${fn:contains(content,'<img')}">
 											<img
 												style="width: 25px; height: 25px; vertical-align: middle;"
@@ -302,12 +311,20 @@ table {
 		</table>
 		<!-- 페이징 글개수가 없으면 나오지않고 -->
 		<c:if test="${pv.totalCount==0 }">
-			<div style="border: none; text-align: center;"></div>
-		</c:if>
-		<!-- 있으면 나옴 -->
-		<c:if test="${pv.totalCount!=0 }">
-				<div style="border: none; text-align: center;">${pv.pageList}</div>
-		</c:if>
+           		<div style="border: none; text-align: center;"></div>
+      		</c:if>
+         	<c:if test="${pv.totalCount!=0 }">
+				<c:if test="${pv.searchType==null }">
+					<div style="border: none;text-align: center;">
+						${pv.pageList}
+					</div>
+				</c:if>
+				<c:if test="${pv.searchType!=null }">
+					<div style="border: none;text-align: center;">
+						${pv.pageList2}
+					</div>
+				</c:if>
+			</c:if>
 		<c:set value="${sessionScope.mvo.gr_role}" var="role" />
 		<c:if test="${role eq 'ROLE_ADMIN' }">
 			<button type="button" class="btn btn-outline-secondary"

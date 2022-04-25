@@ -282,7 +282,8 @@ table th {
 			<input type="hidden" name="p" value="${cv.currentPage }" /> <input
 				type="hidden" name="s" value="${cv.pageSize }" /> <input
 				type="hidden" name="b" value="${cv.blockSize }" /> <input
-				type="hidden" name="rv_idx" value="${rv.rv_idx }" />
+				type="hidden" name="rv_idx" value="${rv.rv_idx }" /> <input
+				type="hidden" name="mode" value="0" />
 			<!-- 본인이 쓴 글이면 수정 삭제 버튼 표시 -->
 			<c:choose>
 				<c:when test="${mi==mvo.mb_idx }">

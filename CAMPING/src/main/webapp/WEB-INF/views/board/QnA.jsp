@@ -63,6 +63,14 @@
 			document.getElementById("selectsnd").style.display = 'inline';
 		}
 	}
+	
+	// 검색시 인수값으로 계속 넘겨주기 위한 스크립트
+	function QnASearch(){
+		var selectOption = document.getElementById("searchType");
+		selectOption = selectOption.options[selectOption.selectedIndex].value;
+		document.getElementById("searchResult").value = selectOption;
+		document.getElementById("searchAction").submit();
+	}
 </script>
 
 <style type="text/css">
@@ -187,23 +195,24 @@ table {
 	</div>
 	<!-- 검색 기능 -->
 	<div style="padding-right: 10%; padding-bottom: 3%;">
-		<form action="/selectSearchQnA.do" method="post">
+		<form action="/selectSearchQnA.do" method="post" id="searchAction">
 			<sec:csrfInput />
 			<div class="col-sm-1" style="float: right;">
-				<input type="submit" value="검색">
+				<input type="button" value="검색" onclick="QnASearch();">
 			</div>
 			<div class="col-sm-2" style="float: right;">
-				<input type="text" name="searchText" value="${searchText }" />
+				<input type="text" name="searchText" />
 			</div>
 			<!-- 선택시 값, 아니면 공백 -->
 			<div class="col-sm-1.8" style="float: right;">
-				<select name="searchType" id="searchType" style="float: left;">
+				<select id="searchType" style="float: left;">
 					<option value="all" selected>전체</option>
 					<option value="title" ${searchType eq 'title' ? 'selected' : '' }>제목</option>
 					<option value="content"
 						${searchType eq 'content' ? 'selected' : '' }>내용</option>
 					<option value="nick" ${searchType eq 'nick' ? 'selected' : '' }>닉네임</option>
 				</select>
+				<input type="hidden" name="searchType" id="searchResult" />
 			</div>
 		</form>
 	</div>

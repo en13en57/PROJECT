@@ -79,7 +79,7 @@
 		$.ajax({
 			type : "POST",
 			url : "reviewUpdateOk.do", // 컨트롤러에서 대기중인 URL 주소
-			data : $('#rView').serialize(),
+			data : $('#rUpdate').serialize(),
 			dataType : "text",
 			success : function(idx) { // 비동기통신의 성공일경우 success콜백
 				var jsonStr = JSON.parse(idx);
@@ -279,22 +279,7 @@ b {
 			</select>
 		</div>
 	</div>
-	<div style="float: right; padding-right: 10%;">
-		<form
-			action='<c:url value='${pageContext.request.contextPath }/reviewView.do'/>'
-			method="post" id="cancel">
-			<sec:csrfInput />
-			<input type="hidden" name="p" value="${cv.currentPage }" /> <input
-				type="hidden" name="s" value="${cv.pageSize }" /> <input
-				type="hidden" name="b" value="${cv.blockSize }" /> <input
-				type="hidden" name="rv_idx" value="${rv.rv_idx }" /> <a href="#"
-				onclick="document.getElementById('cancel').submit()"><input
-				type="submit" value="취소" class="btn btn-dark btn-sm"
-				style="margin-right: 2px;"></a>
-		</form>
-	</div>
-	<br>
-	<br>
+	<br><br>
 	<div>
 		<p
 			style="font-size: 50px; padding-left: 12%; padding-top: 3%; font-weight: bold;">캠핑후기</p>
@@ -303,7 +288,7 @@ b {
 	<section style="padding-right: 10%; padding-left: 10%; margin: 0 auto;">
 		<form
 			action='<c:url value='${pageContext.request.contextPath }/board/reviewUpdateOk.do'/>'
-			method="post" id="rView" name="rView">
+			method="post" id="rUpdate" name="rUpdate">
 			<sec:csrfInput />
 			<input type="hidden" name="p" value="${cv.currentPage }" /> <input
 				type="hidden" name="s" value="${cv.pageSize }" /> <input

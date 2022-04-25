@@ -83,7 +83,7 @@ public class NoticeServiceImpl implements NoticeService {
 	@Override
 	public void insert(NoticeVO noticeVO) { // 공지 작성
 		if (noticeVO != null) {
-			// 1. 글을 조장한다.
+			// 1. 글을 저장한다.
 			noticeDAO.insert(noticeVO);
 			// 저장을 했으면 저장된 idx값을 얻어온다 (파일저장 참조)
 			int ref = noticeDAO.selectSeq(); // noticeMapper selectSeq 쿼리 실행

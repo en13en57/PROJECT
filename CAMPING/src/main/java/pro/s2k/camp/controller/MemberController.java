@@ -481,7 +481,7 @@ public class MemberController {
 			}
 		}
 		if (count == 0) {
-			// 서비스를 호출하여 동일한 아이디의 개수를 얻어소 count변수에 넣는다.
+			// 서비스를 호출하여 동일한 아이디의 개수를 얻어서 count변수에 넣는다.
 			count = memberService.idCheck(userid);
 		}
 		return count + "";

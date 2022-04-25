@@ -258,21 +258,15 @@ public class BoardController {
 	@RequestMapping(value = "/selectSearchNotice.do")
 	public String selectSearchNotice(HttpSession session, HttpServletRequest request, @ModelAttribute CommonVO commonVO,
 			Model model) {
-		// 검색 후 페이징 이동시 받아온 서치타입 및 서치텍스를 잊어버려 세션에 담음
-		if (commonVO.getSearchType()!=null || commonVO.getSearchText()!=null) {
-			session.setAttribute("searchType", commonVO.getSearchType());
-			session.setAttribute("searchText", commonVO.getSearchText());
-			PagingVO<NoticeVO> pv = noticeService.selectSearchList(commonVO);
-			model.addAttribute("pv", pv);
-			model.addAttribute("cv", commonVO);
-		} else {
-			commonVO.setSearchType((String) session.getAttribute("searchType"));
-			commonVO.setSearchText((String) session.getAttribute("searchText"));
-			// 검색한 내용에 맞춰 리스트 해준다
-			PagingVO<NoticeVO> pv = noticeService.selectSearchList(commonVO);
-			model.addAttribute("pv", pv);
-			model.addAttribute("cv", commonVO);
-		}
+		// 검색한 내용에 맞춰 리스트 해준다
+		String searchType = request.getParameter("searchType");
+		String searchText = request.getParameter("searchText")
+				.replaceAll("<(/)?([a-zA-Z]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>", "");
+		PagingVO<NoticeVO> pv = noticeService.selectSearchList(commonVO);
+		pv.setSearchType(searchType);
+		pv.setSearchText(searchText);
+		model.addAttribute("pv", pv);
+		model.addAttribute("cv", commonVO);
 		return "/board/notice";
 	}
 
@@ -454,20 +448,15 @@ public class BoardController {
 	@RequestMapping(value = "/selectSearchReview.do")
 	public String selectSearchReview(HttpSession session, HttpServletRequest request, @ModelAttribute CommonVO commonVO,
 			Model model) {
-		if (commonVO.getSearchType()!=null || commonVO.getSearchText()!=null) {
-			session.setAttribute("searchType", commonVO.getSearchType());
-			session.setAttribute("searchText", commonVO.getSearchText());
-			PagingVO<ReviewVO> pv = reviewService.selectSearchList(commonVO);
-			model.addAttribute("pv", pv);
-			model.addAttribute("cv", commonVO);
-		} else {
-			commonVO.setSearchType((String) session.getAttribute("searchType"));
-			commonVO.setSearchText((String) session.getAttribute("searchText"));
-			// 검색한 내용에 맞춰 리스트 해준다
-			PagingVO<ReviewVO> pv = reviewService.selectSearchList(commonVO);
-			model.addAttribute("pv", pv);
-			model.addAttribute("cv", commonVO);
-		}
+		// 검색한 내용에 맞춰 리스트 해준다
+		String searchType = request.getParameter("searchType");
+		String searchText = request.getParameter("searchText")
+				.replaceAll("<(/)?([a-zA-Z]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>", "");
+		PagingVO<ReviewVO> pv = reviewService.selectSearchList(commonVO);
+		pv.setSearchType(searchType);
+		pv.setSearchText(searchText);
+		model.addAttribute("pv", pv);
+		model.addAttribute("cv", commonVO);
 		return "/board/review";
 	}
 
@@ -612,20 +601,15 @@ public class BoardController {
 	@RequestMapping(value = "/selectSearchQnA.do")
 	public String selectSearchQnA(HttpSession session, HttpServletRequest request, @ModelAttribute CommonVO commonVO,
 			Model model) {
-		if (commonVO.getSearchType()!=null || commonVO.getSearchText()!=null) {
-			session.setAttribute("searchType", commonVO.getSearchType());
-			session.setAttribute("searchText", commonVO.getSearchText());
-			PagingVO<QnAVO> pv = qnaService.selectSearchList(commonVO);
-			model.addAttribute("pv", pv);
-			model.addAttribute("cv", commonVO);
-		} else {
-			commonVO.setSearchType((String) session.getAttribute("searchType"));
-			commonVO.setSearchText((String) session.getAttribute("searchText"));
-			// 검색한 내용에 맞춰 리스트 해준다
-			PagingVO<QnAVO> pv = qnaService.selectSearchList(commonVO);
-			model.addAttribute("pv", pv);
-			model.addAttribute("cv", commonVO);
-		}
+		// 검색한 내용에 맞춰 리스트 해준다
+		String searchType = request.getParameter("searchType");
+		String searchText = request.getParameter("searchText")
+				.replaceAll("<(/)?([a-zA-Z]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>", "");
+		PagingVO<QnAVO> pv = qnaService.selectSearchList(commonVO);
+		pv.setSearchType(searchType);
+		pv.setSearchText(searchText);
+		model.addAttribute("pv", pv);
+		model.addAttribute("cv", commonVO);
 		return "/board/QnA";
 	}
 

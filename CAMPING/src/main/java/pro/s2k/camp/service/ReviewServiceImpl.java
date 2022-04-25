@@ -48,8 +48,6 @@ public class ReviewServiceImpl implements ReviewService {
 
 	@Override
 	public ReviewVO selectByIdx(Map<String, Integer> map) { // 후기 조회
-		log.info("!!!"+map.get("rv_idx"));
-		log.info("!!!2"+map.get("mode"));
 		ReviewVO reviewVO = reviewDAO.selectByIdx(map.get("rv_idx")); // reviewMapper selectByIdx 쿼리 실행
 		// 인수로 받아온 mode가 1이면
 		if(map.get("mode")!=0) {
@@ -70,6 +68,7 @@ public class ReviewServiceImpl implements ReviewService {
 
 	@Override
 	public void update(ReviewVO reviewVO) { // 후기 수정
+		log.info("##@@"+ reviewVO);
 		if (reviewVO != null) {
 			// DB에서 해당 글번호의 글 읽어온다.
 			ReviewVO dbVO = reviewDAO.selectByIdx(reviewVO.getRv_idx()); // reviewMapper selectByIdx 쿼리 실행(파라미터로 vo에 객체로 담긴 후기 고유번호)
