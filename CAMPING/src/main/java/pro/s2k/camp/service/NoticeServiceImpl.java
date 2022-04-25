@@ -43,7 +43,7 @@ public class NoticeServiceImpl implements NoticeService {
 			HashMap<String, Object> map = new HashMap<String, Object>();
 			map.put("startNo", pagingVO.getStartNo()); // 시작 글번호
 			map.put("pageSize", pagingVO.getPageSize()); // 페이지당 글의 개수
-			
+
 			List<NoticeVO> list = noticeDAO.selectList(map);// noticeMapper selectList 쿼리 실행
 			// 해당 글들의 첨부파일 정보를 넣어준다.
 			if (list != null && list.size() > 0) {
@@ -72,7 +72,7 @@ public class NoticeServiceImpl implements NoticeService {
 			// mode 인수가 값이 있으면,
 			if (map.get("mode") != null) {
 				// 조회수 증가
-				noticeDAO.incrementHits(map.get("nt_idx")); // noticeMapper incrementHits 쿼리 실행 
+				noticeDAO.incrementHits(map.get("nt_idx")); // noticeMapper incrementHits 쿼리 실행
 				noticeVO.setNt_hit(noticeVO.getNt_hit() + 1); // 즉각 반영을 위해 vo에서 가져온 값을 +1 해서 vo에 다시 세팅
 			}
 
@@ -81,23 +81,23 @@ public class NoticeServiceImpl implements NoticeService {
 	}
 
 	@Override
-	public void insert(NoticeVO noticeVO) {		// 공지 작성
-		if(noticeVO!=null) {
+	public void insert(NoticeVO noticeVO) { // 공지 작성
+		if (noticeVO != null) {
 			// 1. 글을 조장한다.
 			noticeDAO.insert(noticeVO);
-			// 저장을 했으면 저장된 idx값을 얻어온다	(파일저장 참조)
-			int ref = noticeDAO.selectSeq();	// noticeMapper selectSeq 쿼리 실행
+			// 저장을 했으면 저장된 idx값을 얻어온다 (파일저장 참조)
+			int ref = noticeDAO.selectSeq(); // noticeMapper selectSeq 쿼리 실행
 			// 2. 첨부 파일의 정보도 저장해 주어야 한다.
-			List<FileUploadVO> list = noticeVO.getFileList();	// 파일리스트 가져오기 
-			if(list!=null && list.size()>0) {
-				for(FileUploadVO fileUploadVO : list) {
+			List<FileUploadVO> list = noticeVO.getFileList(); // 파일리스트 가져오기
+			if (list != null && list.size() > 0) {
+				for (FileUploadVO fileUploadVO : list) {
 					fileUploadVO.setUp_ref(ref); // 원본글번호
-					fileUploadDAO.insert(fileUploadVO);		// fileMapper insert 쿼리 실행
+					fileUploadDAO.insert(fileUploadVO); // fileMapper insert 쿼리 실행
 				}
 			}
 		}
 	}
-	
+
 	@Override
 	public void update(NoticeVO noticeVO, String path, String[] deleteFile) {
 		NoticeVO dbVO = noticeDAO.selectByIdx(noticeVO.getNt_idx());
@@ -133,17 +133,17 @@ public class NoticeServiceImpl implements NoticeService {
 	}
 
 	@Override
-	public void delete(NoticeVO noticeVO, String path) {	// 공지 삭제
-		NoticeVO dbVO = noticeDAO.selectByIdx(noticeVO.getNt_idx());	// noticeMapper selectByIdx 실행
-		if(dbVO!=null) {
+	public void delete(NoticeVO noticeVO, String path) { // 공지 삭제
+		NoticeVO dbVO = noticeDAO.selectByIdx(noticeVO.getNt_idx()); // noticeMapper selectByIdx 실행
+		if (dbVO != null) {
 			// 글삭제
-			noticeDAO.delete(noticeVO.getNt_idx());	// noticeMapper delete 실행
+			noticeDAO.delete(noticeVO.getNt_idx()); // noticeMapper delete 실행
 			// 모든 첨부파일의 목록을 읽어온다.
 			List<FileUploadVO> list = fileUploadDAO.selectList(noticeVO.getNt_idx()); // fileMapper selectList 쿼리 실행
-			if(list!=null && list.size()>0) {
-				for(FileUploadVO vo : list) {
+			if (list != null && list.size() > 0) {
+				for (FileUploadVO vo : list) {
 					// DB 파일 삭제
-					fileUploadDAO.deleteByIdx(vo.getUp_idx());	// fileMapper deleteByIdx 실행
+					fileUploadDAO.deleteByIdx(vo.getUp_idx()); // fileMapper deleteByIdx 실행
 					// 경로에 있는 실제 파일삭제
 					File file = new File(path + File.separator + vo.getSaveName());
 					file.delete();
@@ -151,26 +151,36 @@ public class NoticeServiceImpl implements NoticeService {
 			}
 		}
 	}
-	
+
 	@Override
-	public PagingVO<NoticeVO> selectSearchList(CommonVO commVO) {	// 공지 검색
+	public PagingVO<NoticeVO> selectSearchList(CommonVO commVO) { // 공지 검색
 		PagingVO<NoticeVO> pagingVO = null;
 		try {
 			// 전체 개수 구하기
-			int totalCount = noticeDAO.selectSearchCount(commVO);	// 전체 개수 카운트 qnaMapper selectCount 쿼리 실행
+			int totalCount = noticeDAO.selectSearchCount(commVO); // 전체 개수 카운트 qnaMapper selectCount 쿼리 실행
 			// 페이지 계산(현재페이지, 페이지당 글 개수, 하단에 표시할 페이지 수, 전체글수)
 			pagingVO = new PagingVO<>(commVO.getCurrentPage(), commVO.getPageSize(), commVO.getBlockSize(), totalCount);
 			// 글을 읽어오기
 			HashMap<String, Object> map = new HashMap<String, Object>();
-			map.put("startNo", pagingVO.getStartNo());		// 시작 글번호
-			map.put("pageSize", pagingVO.getPageSize());	// 페이지당 글의 개수
-			map.put("searchText",commVO.getSearchText());	// 검색 
-			map.put("searchType",commVO.getSearchType());	// 검색 셀렉트
-		
-			List<NoticeVO> list = noticeDAO.selectSearchList(map);	// noticeMapper SelectSearchList 쿼리 실행
+			map.put("startNo", pagingVO.getStartNo()); // 시작 글번호
+			map.put("pageSize", pagingVO.getPageSize()); // 페이지당 글의 개수
+			map.put("searchText", commVO.getSearchText()); // 검색
+			map.put("searchType", commVO.getSearchType()); // 검색 셀렉트
+
+			List<NoticeVO> list = noticeDAO.selectSearchList(map); // noticeMapper SelectSearchList 쿼리 실행
+			// 해당 글들의 첨부파일 정보를 넣어준다.
+			if (list != null && list.size() > 0) {
+				for (NoticeVO noticeVO : list) {
+					// 해당 글의 첨부파일 목록을 가져온다.
+					List<FileUploadVO> fileList = fileUploadDAO.selectList(noticeVO.getNt_idx()); // fileMapper
+																									// selectList 쿼리 실행
+					// vo에 넣는다.
+					noticeVO.setFileList(fileList);
+				}
+			}
 			// 완성된 리스트를 페이징 객체에 넣는다.
 			pagingVO.setList(list);
-		}catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return pagingVO;

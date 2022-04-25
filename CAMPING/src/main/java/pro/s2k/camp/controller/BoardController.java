@@ -59,8 +59,8 @@ public class BoardController {
 
 	@Autowired
 	private QnAService qnaService;
-	
-	@Autowired 
+
+	@Autowired
 	CommentDAO commentDAO;
 
 	// 403 오류 -----------------------------
@@ -256,12 +256,23 @@ public class BoardController {
 
 	// 공지사항 검색 로직
 	@RequestMapping(value = "/selectSearchNotice.do")
-	public String selectSearchNotice(HttpServletRequest request, @ModelAttribute CommonVO commonVO, Model model) {
-		log.info("#######" + commonVO);
-		// 검색한 내용에 맞춰 리스트 해준다
-		PagingVO<NoticeVO> pv = noticeService.selectSearchList(commonVO);
-		model.addAttribute("pv", pv);
-		model.addAttribute("cv", commonVO);
+	public String selectSearchNotice(HttpSession session, HttpServletRequest request, @ModelAttribute CommonVO commonVO,
+			Model model) {
+		// 검색 후 페이징 이동시 받아온 서치타입 및 서치텍스를 잊어버려 세션에 담음
+		if (commonVO.getSearchType()!=null || commonVO.getSearchText()!=null) {
+			session.setAttribute("searchType", commonVO.getSearchType());
+			session.setAttribute("searchText", commonVO.getSearchText());
+			PagingVO<NoticeVO> pv = noticeService.selectSearchList(commonVO);
+			model.addAttribute("pv", pv);
+			model.addAttribute("cv", commonVO);
+		} else {
+			commonVO.setSearchType((String) session.getAttribute("searchType"));
+			commonVO.setSearchText((String) session.getAttribute("searchText"));
+			// 검색한 내용에 맞춰 리스트 해준다
+			PagingVO<NoticeVO> pv = noticeService.selectSearchList(commonVO);
+			model.addAttribute("pv", pv);
+			model.addAttribute("cv", commonVO);
+		}
 		return "/board/notice";
 	}
 
@@ -269,7 +280,8 @@ public class BoardController {
 
 	// 리뷰 목록보기
 	@RequestMapping(value = "/board/review.do")
-	public String review(HttpServletRequest request, @ModelAttribute CommonVO commonVO, Model model, ReviewVO reviewVO) {
+	public String review(HttpServletRequest request, @ModelAttribute CommonVO commonVO, Model model,
+			ReviewVO reviewVO) {
 		// 리뷰 list
 		PagingVO<ReviewVO> pv = reviewService.selectList(commonVO);
 		model.addAttribute("pv", pv);
@@ -283,7 +295,7 @@ public class BoardController {
 			ReviewVO reviewVO, CommentVO commentVO) {
 		// 리뷰 1개 보기
 		// 한개의 후기글의 정보를 가져와서
-		log.info("@@@@"+commonVO.getMode());
+		log.info("@@@@" + commonVO.getMode());
 		Map<String, Integer> map = new HashMap<>();
 		map.put("mode", commonVO.getMode());
 		map.put("rv_idx", reviewVO.getRv_idx());
@@ -363,7 +375,7 @@ public class BoardController {
 	public String updatePost(HttpServletRequest request, @ModelAttribute CommonVO commonVO, Model model,
 			ReviewVO reviewVO) {
 		// 리뷰글 번호를 가져와 정보 가져오기
-		log.info("####"+reviewVO.getRv_idx());
+		log.info("####" + reviewVO.getRv_idx());
 		Map<String, Integer> map = new HashMap<>();
 		map.put("rv_idx", reviewVO.getRv_idx());
 		map.put("mode", commonVO.getMode());
@@ -440,10 +452,22 @@ public class BoardController {
 
 	// 리뷰에서 검색 기능
 	@RequestMapping(value = "/selectSearchReview.do")
-	public String selectSearchReview(HttpServletRequest request, @ModelAttribute CommonVO commonVO, Model model) {
-		PagingVO<ReviewVO> pv = reviewService.selectSearchList(commonVO);
-		model.addAttribute("pv", pv);
-		model.addAttribute("cv", commonVO);
+	public String selectSearchReview(HttpSession session, HttpServletRequest request, @ModelAttribute CommonVO commonVO,
+			Model model) {
+		if (commonVO.getSearchType()!=null || commonVO.getSearchText()!=null) {
+			session.setAttribute("searchType", commonVO.getSearchType());
+			session.setAttribute("searchText", commonVO.getSearchText());
+			PagingVO<ReviewVO> pv = reviewService.selectSearchList(commonVO);
+			model.addAttribute("pv", pv);
+			model.addAttribute("cv", commonVO);
+		} else {
+			commonVO.setSearchType((String) session.getAttribute("searchType"));
+			commonVO.setSearchText((String) session.getAttribute("searchText"));
+			// 검색한 내용에 맞춰 리스트 해준다
+			PagingVO<ReviewVO> pv = reviewService.selectSearchList(commonVO);
+			model.addAttribute("pv", pv);
+			model.addAttribute("cv", commonVO);
+		}
 		return "/board/review";
 	}
 
@@ -462,17 +486,17 @@ public class BoardController {
 	public String QnAInsert(@ModelAttribute CommonVO commVO, Model model) {
 		return "/board/QnAInsert";
 	}
-	
+
 	// 질문 글쓰기 수행
 	@RequestMapping(value = "/board/QnAInsertOk.do")
 	public String QnAInsertOk(@ModelAttribute CommonVO commVO, @ModelAttribute QnAVO qnaVO, HttpServletRequest request,
-			Model model) { 
+			Model model) {
 		// ip 추가
-		qnaVO.setQna_ip(request.getRemoteAddr()); 
+		qnaVO.setQna_ip(request.getRemoteAddr());
 		qnaService.insert(qnaVO);
 		return "redirect:/board/QnA.do";
 	}
-	
+
 	// 질문 수정폼 이동
 	@RequestMapping(value = "/board/QnAUpdate.do", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
 	public String QnAUpdate(HttpServletRequest request, @ModelAttribute CommonVO commVO, Model model, QnAVO qnaVO) {
@@ -481,7 +505,7 @@ public class BoardController {
 		model.addAttribute("cv", commVO);
 		return "/board/QnAUpdate";
 	}
-	
+
 	// 질문 수정 이행
 	@RequestMapping(value = "/board/QnAUpdateOk.do", method = RequestMethod.POST, produces = "application/json; charset=UTF8")
 	@ResponseBody
@@ -497,22 +521,23 @@ public class BoardController {
 		map.put("qna_idx", qnaVO.getQna_idx() + "");
 		return map;
 	}
+
 	// 답변 1개보기
 	@RequestMapping(value = "/board/QnAView.do")
 	public String QnAView(@RequestParam String role, HttpServletRequest request, Model model,
 			@ModelAttribute CommonVO commVO, QnAVO qnaVO, QnAVO qnaVO2) {
 		PagingVO<QnAVO> pagingVO = qnaService.selectList(commVO);
-			model.addAttribute("pv", pagingVO);
+		model.addAttribute("pv", pagingVO);
 		// 해당글 상세 내역
 		qnaVO = qnaService.selectByIdx(qnaVO.getQna_idx());
-			model.addAttribute("qv", qnaVO);
-			model.addAttribute("cv", commVO);
+		model.addAttribute("qv", qnaVO);
+		model.addAttribute("cv", commVO);
 		// 해당글의 답변 내역 불러오기
 		qnaVO2 = qnaService.selectByIdxAnswer(qnaVO2.getQna_idx());
-			model.addAttribute("qv2", qnaVO2);
+		model.addAttribute("qv2", qnaVO2);
 		// 본인이 쓴 글인지 판단하기위해서 사용
 		int mbIdx = qnaService.selectMb_idx(qnaVO.getQna_idx());
-			model.addAttribute("mi", mbIdx);
+		model.addAttribute("mi", mbIdx);
 		// 관리자가 해당 글을 읽었을 경우 관리자가 읽었는지 보여주기위해 +1 함
 		if (qnaVO.getQna_read() == 0 && role.equals("ROLE_ADMIN")) {
 			qnaVO.setQna_read(qnaVO.getQna_read() + 1);
@@ -525,7 +550,7 @@ public class BoardController {
 	@RequestMapping(value = "/board/answerInsertOk.do", method = RequestMethod.POST, produces = "application/json; charset=UTF8")
 	@ResponseBody
 	public Map<String, String> answerInsertOk(@RequestParam String role, @ModelAttribute CommonVO commVO,
-			@ModelAttribute QnAVO qnaVO, HttpServletRequest request, Model model) { 
+			@ModelAttribute QnAVO qnaVO, HttpServletRequest request, Model model) {
 		// ip 추가
 		qnaVO.setQna_ip(request.getRemoteAddr());
 		qnaService.answer(qnaVO);
@@ -544,9 +569,8 @@ public class BoardController {
 	public Map<String, String> answerUpdateOk(@RequestParam String role, @ModelAttribute CommonVO commVO,
 			@ModelAttribute QnAVO qnaVO, HttpServletRequest request, Model model,
 			RedirectAttributes redirectAttributes) { // redirect시 POST전송을 위해 RedirectAttributes 변수 추가
-
 		// ip 추가
-		qnaVO.setQna_ip(request.getRemoteAddr()); 
+		qnaVO.setQna_ip(request.getRemoteAddr());
 		qnaService.updateAnswer(qnaVO);
 		Map<String, String> map = new HashMap<>();
 		// 답변 수정후 같은 페이지에 머물기 위해 값들을 받아온다
@@ -584,17 +608,28 @@ public class BoardController {
 		return "QnA";
 	}
 
-	// QnA게시판 검색 기능 
+	// QnA게시판 검색 기능
 	@RequestMapping(value = "/selectSearchQnA.do")
-	public String selectSearchQnA(HttpServletRequest request, @ModelAttribute CommonVO commVO, Model model) {
-		PagingVO<QnAVO> pv = qnaService.selectSearchList(commVO);
-		model.addAttribute("pv", pv);
-		model.addAttribute("cv", commVO);
+	public String selectSearchQnA(HttpSession session, HttpServletRequest request, @ModelAttribute CommonVO commonVO,
+			Model model) {
+		if (commonVO.getSearchType()!=null || commonVO.getSearchText()!=null) {
+			session.setAttribute("searchType", commonVO.getSearchType());
+			session.setAttribute("searchText", commonVO.getSearchText());
+			PagingVO<QnAVO> pv = qnaService.selectSearchList(commonVO);
+			model.addAttribute("pv", pv);
+			model.addAttribute("cv", commonVO);
+		} else {
+			commonVO.setSearchType((String) session.getAttribute("searchType"));
+			commonVO.setSearchText((String) session.getAttribute("searchText"));
+			// 검색한 내용에 맞춰 리스트 해준다
+			PagingVO<QnAVO> pv = qnaService.selectSearchList(commonVO);
+			model.addAttribute("pv", pv);
+			model.addAttribute("cv", commonVO);
+		}
 		return "/board/QnA";
-
 	}
 
-	// 다운로드 서머노트	=========================================
+	// 다운로드 서머노트 =========================================
 	// 서머노트
 	@RequestMapping(value = "/download.do")
 	public ModelAndView download(@RequestParam HashMap<Object, Object> params, ModelAndView mv) {
@@ -628,7 +663,7 @@ public class BoardController {
 		}
 		// 파일은 MultipartFile 객체가 받아준다
 		// 파일이 존재 한다면
-		if (file != null && file.getSize() > 0) { 
+		if (file != null && file.getSize() > 0) {
 			try {
 				// 저장이름
 				String saveName = UUID.randomUUID() + "_" + file.getOriginalFilename();

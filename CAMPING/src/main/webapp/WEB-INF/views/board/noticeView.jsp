@@ -1,8 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%-- JSTL 사용 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="sec"
+	uri="http://www.springframework.org/security/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,8 +12,12 @@
 <link rel="shortcut icon" type="image/x-icon"
 	href="${pageContext.request.contextPath }/resources/assets/css/images/logo.png" />
 <title>NG캠핑</title>
+<%-- 반응형 디자인 --%>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/axicon/axicon.min.css" />
+<%-- axicon SDK --%>
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath}/resources/axicon/axicon.min.css" />
+<%-- 부트스트랩 SDK 시작 --%>
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
 	rel="stylesheet">
@@ -21,35 +27,21 @@
 	src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
 <script
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
 	rel="stylesheet">
-
-<!-- include summernote css/js -->
-<link
-	href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css"
-	rel="stylesheet">
+<%-- 부트스트랩 SDK 끝 --%>
+<%-- jQuery SDK --%>
 <script
-	src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
-<!-- 언어 -->
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/lang/summernote-ko-KR.min.js"></script>
-<script type="text/javascript">
-	
-</script>
-
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<%-- css --%>
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath }/resources/assets/css/main.css" />
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath }/resources/assets/css/swiper.min.css">
+
 <script type="text/javascript">
-	function logoutSubmit() {
-		var logout = document.logout;
-		logout.submit();
-	}
-	
+	//네비게이션 첫번째 변경시 두번째 옵션 변경
 	function change(val) {
 		if (val.value == 'fst') {
 			document.getElementById("selectfst").style.display = 'inline';
@@ -59,7 +51,6 @@
 			document.getElementById("selectsnd").style.display = 'inline';
 		}
 	}
-
 </script>
 
 <style type="text/css">
@@ -101,13 +92,13 @@ table th {
 	text-align: center;
 }
 
-#nSession{
-	padding-right: 10%; 
-	padding-left: 10%; 
+#nSession {
+	padding-right: 10%;
+	padding-left: 10%;
 	margin: 0 auto;
 }
 
-.uploadDiv dl{
+.uploadDiv dl {
 	display: table;
 	width: 100%;
 	margin-bottom: 0;
@@ -115,63 +106,58 @@ table th {
 	border-top: 1px solid #ccc;
 }
 
-.uploadDiv dt{
+.uploadDiv dt {
 	display: table-cell;
-    width: 13%;
-    text-align: center;
-    vertical-align: middle;
-    border-right: 1px solid #d2d2d2;
-    box-sizing: border-box;
+	width: 13%;
+	text-align: center;
+	vertical-align: middle;
+	border-right: 1px solid #d2d2d2;
+	box-sizing: border-box;
 }
 
-.uploadDiv dd{
+.uploadDiv dd {
 	display: table-cell;
-    width: 87%;
-    padding: 17px 25px;
-    box-sizing: border-box;
+	width: 87%;
+	padding: 17px 25px;
+	box-sizing: border-box;
 }
 
-#info>div{
-	float:left;
+#info>div {
+	float: left;
 }
 
-#date::before{
+#date::before {
 	content: "";
-    display: inline-block;
-    width: 1px;
-    height: 12px;
-    background: #ccc;
-    margin: 0 10px 0 6px;
-    vertical-align: -2px;
-}
-#date::after{
-	content: "";
-    display: inline-block;
-    width: 1px;
-    height: 12px;
-    background: #ccc;
-    margin: 0 10px 0 6px;
-    vertical-align: -2px;
+	display: inline-block;
+	width: 1px;
+	height: 12px;
+	background: #ccc;
+	margin: 0 10px 0 6px;
+	vertical-align: -2px;
 }
 
+#date::after {
+	content: "";
+	display: inline-block;
+	width: 1px;
+	height: 12px;
+	background: #ccc;
+	margin: 0 10px 0 6px;
+	vertical-align: -2px;
+}
 </style>
-
-
 
 <noscript>
 	<link rel="stylesheet"
 		href="${pageContext.request.contextPath }/resources/assets/css/noscript.css" />
 </noscript>
-
-
-
-
 </head>
+
 <body class="is-preload landing">
 	<div id="page-wrapper">
 
-	<!-- header -->
-	<%@ include file="../headerFooter/header.jsp"%>
+		<!-- header -->
+		<%@ include file="../headerFooter/header.jsp"%>
 
 		<!-- Banner -->
 		<div class="col-sm-8">
@@ -181,22 +167,22 @@ table th {
 			<div class="col-sm-2">
 				<select name="chart" id="chart" style="float: left;"
 					onchange="change(this)">
-					<option value="fst" >캠핑장</option>
+					<option value="fst">캠핑장</option>
 					<option value="snd" selected>캠핑톡</option>
 				</select>
 			</div>
-			<div id="selectfst" class="col-sm-2" style="float: left; display: none;">
+			<div id="selectfst" class="col-sm-2"
+				style="float: left; display: none;">
 				<select name="list" id="list" onchange="window.open(value,'_self');">
 					<option selected disabled>-선택-</option>
-					<option value="../camp/campsite.do" >캠핑장 찾기</option>
+					<option value="../camp/campsite.do">캠핑장 찾기</option>
 				</select>
 			</div>
-			<div id="selectsnd" class="col-sm-2"
-				style="float: left; ">
+			<div id="selectsnd" class="col-sm-2" style="float: left;">
 				<select name="list" id="list" onchange="window.open(value,'_self');">
 					<option selected disabled>-선택-</option>
-					<option value="/board/review.do" >캠핑후기</option>
-					<option value="/board/notice.do" >공지사항</option>
+					<option value="/board/review.do">캠핑후기</option>
+					<option value="/board/notice.do">공지사항</option>
 					<option value="/board/QnA.do">QnA</option>
 				</select>
 			</div>
@@ -206,38 +192,39 @@ table th {
 			<p
 				style="font-size: 50px; padding-left: 12%; padding-top: 5%; font-weight: bold;">공지사항</p>
 		</div>
-
-
 	</div>
-	<section id = "nSession">
+	<section id="nSession">
 		<form method="post">
-			<sec:csrfInput/>
-			<input type="hidden" name="p" value="${cv.currentPage }"/>
-			<input type="hidden" name="s" value="${cv.pageSize }"/>
-			<input type="hidden" name="b" value="${cv.blockSize }"/>
-			<input type="hidden" name ="nt_idx" value="${nv.nt_idx }">
-			<br>
+			<sec:csrfInput />
+			<input type="hidden" name="p" value="${cv.currentPage }" /> <input
+				type="hidden" name="s" value="${cv.pageSize }" /> <input
+				type="hidden" name="b" value="${cv.blockSize }" /> <input
+				type="hidden" name="nt_idx" value="${nv.nt_idx }"> <br>
 			<table class="table" style="border: 1px solid white;">
 				<thead class="thead-dark">
 					<tr>
 						<th>
 							<div>
-								<div style="text-align: left; font-size: 25px; font-weight: bold; padding-bottom: 1%; padding-left: 2%;">
+								<div
+									style="text-align: left; font-size: 25px; font-weight: bold; padding-bottom: 1%; padding-left: 2%;">
 									<c:out value="${nv.nt_title }"></c:out>
 								</div>
 								<div id="info" style="padding-left: 2%">
-									<div style="text-align: left; font-size: 15px;"> 
-										<c:out value="${nv.mb_nick }"></c:out> 
+									<div style="text-align: left; font-size: 15px;">
+										<c:out value="${nv.mb_nick }"></c:out>
 									</div>
 									<div id="date" style="text-align: left; font-size: 15px;">
-										<fmt:formatDate value="${nv.nt_regDate }" var="reg" pattern="yyyy.MM.dd"/>
-										<fmt:formatDate value="${nv.nt_modiDate }" var="modi" pattern="yyyy.MM.dd"/>
+										<fmt:formatDate value="${nv.nt_regDate }" var="reg"
+											pattern="yyyy.MM.dd" />
+										<fmt:formatDate value="${nv.nt_modiDate }" var="modi"
+											pattern="yyyy.MM.dd" />
 										<c:if test="${modi>reg }">
 											수정일 : <c:out value="${modi }"></c:out>
-										</c:if> 
-											<c:out value="${reg }"></c:out>
+										</c:if>
+										<c:out value="${reg }"></c:out>
 									</div>
-									<div style="text-align: left; font-size: 15px;">조회수 : 
+									<div style="text-align: left; font-size: 15px;">
+										조회수 :
 										<c:out value="${nv.nt_hit }"></c:out>
 									</div>
 								</div>
@@ -245,7 +232,8 @@ table th {
 							<div class="uploadDiv">
 								<dl>
 									<dt>
-										<span style="width: 100%; height: 100%; vertical-align: middle;">
+										<span
+											style="width: 100%; height: 100%; vertical-align: middle;">
 											<span style="display: table-cell;">첨부파일</span>
 										</span>
 									</dt>
@@ -256,7 +244,9 @@ table th {
 													<c:param name="of" value="${fvo.originalName }"></c:param>
 													<c:param name="sf" value="${fvo.saveName }"></c:param>
 												</c:url>
-												<a href="${url }" title="${fvo.originalName }"><i class="axi axi-download2"></i> ${fvo.originalName }</a><br />
+												<a href="${url }" title="${fvo.originalName }"><i
+													class="axi axi-download2"></i> ${fvo.originalName }</a>
+												<br />
 											</c:forEach>
 										</c:if>
 									</dd>
@@ -272,30 +262,32 @@ table th {
 				</tbody>
 			</table>
 			<c:choose>
-			<c:when test="${role eq 'ROLE_ADMIN' }">
-				<div style="text-align: center;">
-					<button class="btn btn-outline-secondary"
-						style="margin: auto; width: 100px; height: 60px;" formaction="/board/notice.do">목록으로</button>
-					<button class="btn btn-outline-secondary"
-						style="margin: auto; width: 100px; height: 60px;" formaction="/board/noticeUpdate.do">수정하기</button>
-					<button class="btn btn-outline-secondary"
-						style="margin: auto; width: 100px; height: 60px;" formaction="/board/noticeDelete.do">삭제하기</button>
-				</div>
-			</c:when>
-			<c:otherwise>
-				<div style="text-align: center;">
-					<button type="button" class="btn btn-outline-secondary" style="margin: auto;" onclick="history.back()">목록으로</button>
-				</div>
-			</c:otherwise>
+				<c:when test="${role eq 'ROLE_ADMIN' }">
+					<div style="text-align: center;">
+						<button class="btn btn-outline-secondary"
+							style="margin: auto; width: 100px; height: 60px;"
+							formaction="/board/notice.do">목록으로</button>
+						<button class="btn btn-outline-secondary"
+							style="margin: auto; width: 100px; height: 60px;"
+							formaction="/board/noticeUpdate.do">수정하기</button>
+						<button class="btn btn-outline-secondary"
+							style="margin: auto; width: 100px; height: 60px;"
+							formaction="/board/noticeDelete.do">삭제하기</button>
+					</div>
+				</c:when>
+				<c:otherwise>
+					<div style="text-align: center;">
+						<button type="button" class="btn btn-outline-secondary"
+							style="margin: auto;" onclick="history.back()">목록으로</button>
+					</div>
+				</c:otherwise>
 			</c:choose>
 		</form>
 	</section>
 	<br />
 
-
-<!-- Footer -->
+	<!-- Footer -->
 	<%@ include file="../headerFooter/footer.jsp"%>
-
 
 	<!-- Scripts -->
 	<script
@@ -312,8 +304,5 @@ table th {
 		src="${pageContext.request.contextPath }/resources/assets/js/util.js"></script>
 	<script
 		src="${pageContext.request.contextPath }/resources/assets/js/main.js"></script>
-
-
-
 </body>
 </html>
