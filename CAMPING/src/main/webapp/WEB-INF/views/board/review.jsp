@@ -252,8 +252,8 @@ table {
 	
 									</form> <%--오늘 저장한 글이면 new  --%> <jsp:useBean id="today" scope="request" class="java.util.Date"></jsp:useBean>
 									<fmt:formatDate value="${today }" pattern="yyyyMMdd" var="day" />
-									<fmt:formatDate value="${vo.rv_modiDate }" pattern="yyyyMMdd"
-										var="modi" /> <c:if test="${day==modi }">
+									<fmt:formatDate value="${vo.rv_regDate }" pattern="yyyyMMdd"
+										var="reg" /> <c:if test="${day==reg }">
 										<span style="color: red;">New</span>
 									</c:if> <c:set var="content" value="${vo.rv_content }" /> <c:set
 										var="title" value="${vo.rv_title }" /> 
@@ -289,7 +289,7 @@ table {
 								<td style="vertical-align: middle;">${vo.mb_nick }</td>
 	
 								<td style="vertical-align: middle;"><fmt:formatDate
-										value="${vo.rv_modiDate }" pattern="yy-MM-dd" /></td>
+										value="${vo.rv_modiDate }" pattern="yy-MM-dd HH:mm" /></td>
 								<td style="vertical-align: middle;">${vo.rv_hit }</td>
 							</tr>
 						</c:if>

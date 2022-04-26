@@ -257,7 +257,7 @@ table th {
 							<div class="col-3" style="text-align: left; font-size: 15px;">
 								등록일 :
 								<fmt:formatDate value="${qv.qna_modiDate }"
-									pattern="yyyy년 MM월 dd일 HH:mm:ss" />
+									pattern="yy-MM-dd HH:mm" />
 							</div>
 							<div class="col-4" style="text-align: right; font-size: 15px;">
 								관리자
@@ -304,7 +304,7 @@ table th {
 								<div class="col-3" style="text-align: left; font-size: 15px;">
 									등록일 :
 									<fmt:formatDate value="${qv2.qna_modiDate }"
-										pattern="yyyy년 MM월 dd일 HH:mm:ss" />
+										pattern="yy-MM-dd HH:mm" />
 								</div>
 							</div>
 						</th>

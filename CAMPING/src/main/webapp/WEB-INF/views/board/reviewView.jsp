@@ -326,7 +326,7 @@ table th {
 								<div class="col-3" style="text-align: left; font-size: 15px;">
 									등록일 :
 									<fmt:formatDate value="${rv.rv_modiDate }"
-										pattern="yyyy년 MM월 dd일 HH:mm:ss" />
+										pattern="yy-MM-dd HH:mm" />
 								</div>
 								<div class="col-4" style="text-align: right; font-size: 15px;">조회수
 									: ${rv.rv_hit }</div>
@@ -362,8 +362,16 @@ table th {
 						<!-- 삭제표시가 되어 있지 않으면 보여준다. -->
 						<c:if test="${vo.del2==0 }">
 							<c:out value="${vo.mb_nick }" />&nbsp;&nbsp;&nbsp;&nbsp; 
-							<fmt:formatDate value="${vo.co_regDate }"
-								pattern="yyyy년 MM월 dd일 HH:mm:ss" />
+								<fmt:formatDate value="${vo.co_regDate }" var="reg"
+									pattern="yy-MM-dd HH:mm" />
+								<fmt:formatDate value="${vo.co_modiDate }" var="modi"
+									pattern="yy-MM-dd HH:mm" />
+								<c:if test="${modi>reg }">
+									수정일 : <c:out value="${modi }"></c:out>
+								</c:if>
+								<c:if test="${modi==reg }">
+									<c:out value="${reg }"></c:out>
+								</c:if>
 							<!-- 삭제표시를 달아보자 -->
 							<div class="content">
 								<div

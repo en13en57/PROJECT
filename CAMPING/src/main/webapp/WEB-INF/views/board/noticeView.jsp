@@ -215,13 +215,15 @@ table th {
 									</div>
 									<div id="date" style="text-align: left; font-size: 15px;">
 										<fmt:formatDate value="${nv.nt_regDate }" var="reg"
-											pattern="yyyy.MM.dd" />
+											pattern="yy-MM-dd HH:mm" />
 										<fmt:formatDate value="${nv.nt_modiDate }" var="modi"
-											pattern="yyyy.MM.dd" />
+											pattern="yy-MM-dd HH:mm" />
 										<c:if test="${modi>reg }">
 											수정일 : <c:out value="${modi }"></c:out>
 										</c:if>
-										<c:out value="${reg }"></c:out>
+										<c:if test="${modi==reg }">
+											<c:out value="${reg }"></c:out>
+										</c:if>
 									</div>
 									<div style="text-align: left; font-size: 15px;">
 										조회수 :

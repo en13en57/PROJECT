@@ -260,9 +260,9 @@ table {
 										type="hidden" name="mode" value="1" />
 								</form> <%--오늘 저장한 글이면 new  --%> <jsp:useBean id="today"
 									scope="request" class="java.util.Date"></jsp:useBean> <fmt:formatDate
-									value="${today }" pattern="yyyyMMdd" var="day" /> <fmt:formatDate
-									value="${vo.nt_modiDate }" pattern="yyyyMMdd" var="modi" /> <c:if
-									test="${day==modi }">
+									value="${today }" pattern="yy.MM.dd" var="day" /> <fmt:formatDate
+									value="${vo.nt_regDate }" pattern="yy.MM.dd" var="reg" /> <c:if
+									test="${day==reg }">
 									<span style="color: red;">New</span>
 								</c:if> <c:set var="content" value="${vo.nt_content }" /> <c:set
 									var="title" value="${vo.nt_title }" /> 
@@ -295,7 +295,7 @@ table {
 							</td>
 							<td style="vertical-align: middle;">${vo.mb_nick }</td>
 							<td style="vertical-align: middle;"><fmt:formatDate
-									value="${vo.nt_modiDate }" pattern="yy-MM-dd" /></td>
+									value="${vo.nt_regDate }" pattern="yy-MM-dd HH:mm" /></td>
 							<td style="vertical-align: middle;">${vo.nt_hit }</td>
 							<td style="vertical-align: middle;">
 								<%-- 첨부파일 표시 --%> <c:if test="${not empty vo.fileList }">

@@ -255,8 +255,8 @@ table {
 								</form> <%--오늘 저장한 글이면 new  --%> <jsp:useBean id="today"
 									scope="request" class="java.util.Date"></jsp:useBean> <fmt:formatDate
 									value="${today }" pattern="yyyyMMdd" var="day" /> <fmt:formatDate
-									value="${vo.qna_modiDate }" pattern="yyyyMMdd" var="modi" /> <c:if
-									test="${day==modi }">
+									value="${vo.qna_regDate }" pattern="yyyyMMdd" var="reg" /> <c:if
+									test="${day==reg }">
 									<span style="color: red;">New</span>
 								</c:if><c:set var="title" value="${vo.qna_title }" /> 
 									<!-- 제목이 20자 이상이면, 20자 이후 ...으로 표기  -->
@@ -275,7 +275,7 @@ table {
 							</td>
 							<td style="vertical-align: middle;">${vo.mb_nick }</td>
 							<td style="vertical-align: middle;"><fmt:formatDate
-									value="${vo.qna_modiDate }" pattern="yy-MM-dd" /></td>
+									value="${vo.qna_regDate }" pattern="yy-MM-dd HH:mm" /></td>
 							<c:choose>
 								<c:when test="${vo.qna_read==0 }">
 									<td style="vertical-align: middle;">미확인</td>
